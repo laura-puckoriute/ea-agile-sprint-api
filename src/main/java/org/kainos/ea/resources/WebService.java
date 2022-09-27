@@ -1,28 +1,38 @@
 package org.kainos.ea.resources;
 
+import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.controller.Jobs;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.JobRoles;
+import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
 
 @Path("/api")
 public class WebService {
 
-    public DatabaseConnection databaseConnector;
+    private static JobsService jobsService;
 
     public WebService() {
-        this.databaseConnector = new DatabaseConnection();
+        DatabaseConnection databaseConnector = new DatabaseConnection();
+        jobsService = new JobsService(new Jobs(), databaseConnector);
     }
     @GET
     @Path("/getjobroles")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JobRoles> getJobRoles() throws SQLException {
-        return Jobs.getJobRoles(databaseConnector.getConnection());
+    public Response getJobRoles() throws SQLException, DatabaseConnectionException {
+        try {
+            return Response.ok(jobsService.getJobRoles()).build();
+        } catch (SQLException | DatabaseConnectionException e) {
+            System.out.println(e);
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
     }
 }

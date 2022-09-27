@@ -1,13 +1,16 @@
 package org.kainos.ea.util;
 
+import org.kainos.ea.exception.DatabaseConnectionException;
+
 import java.io.FileInputStream;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConnection {
     private static java.sql.Connection conn;
 
-    public java.sql.Connection getConnection() {
+    public java.sql.Connection getConnection() throws DatabaseConnectionException, SQLException {
         String user;
         String password;
         String host;
