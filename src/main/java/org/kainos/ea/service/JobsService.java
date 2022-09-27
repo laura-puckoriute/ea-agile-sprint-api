@@ -17,6 +17,6 @@ public class JobsService {
         this.databaseConnection = databaseConnection;
     }
     public List<JobRoles> getJobRoles() throws SQLException, DatabaseConnectionException {
-        return Jobs.getJobRoles(databaseConnection.getConnection());
+        return jobs.getJobRoles(databaseConnection.getConnection());
     }
 }

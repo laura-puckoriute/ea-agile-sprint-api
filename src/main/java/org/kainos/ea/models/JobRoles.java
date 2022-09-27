@@ -14,7 +14,8 @@ public class JobRoles {
             @JsonProperty("jobtitle") String jobTitle,
             @JsonProperty("jobfamily") String jobFamily,
             @JsonProperty("band") String band,
-            @JsonProperty("capability") String capability) {
+            @JsonProperty("capability") String capability)
+            {
         this.setJobTitle(jobTitle);
         this.setJobFamily(jobFamily);
         this.setBand(band);

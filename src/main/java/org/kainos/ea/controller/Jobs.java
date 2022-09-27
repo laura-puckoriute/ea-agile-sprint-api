@@ -12,12 +12,12 @@ import java.util.List;
 public class Jobs {
 
     //US001 - View Job Roles
-    public static List<JobRoles> getJobRoles(Connection c) throws SQLException {
+    public List<JobRoles> getJobRoles(Connection c) throws SQLException {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
                 "SELECT * "
-                        + "FROM Role;");
+                        + "FROM Roles;");
 
         List<JobRoles> jobRoles = new ArrayList<>();
 
