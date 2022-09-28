@@ -48,7 +48,7 @@ public class JobRolesData {
 
             jobSpecification.setTitle( rs.getString("title") );
             jobSpecification.setDescription( rs.getString("description") );
-            jobSpecification.setDescription( rs.getString("link") );
+            jobSpecification.setLink( rs.getString("link") );
 
         }
 
