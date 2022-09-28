@@ -26,9 +26,7 @@ public class JobRolesData {
         while (rs.next()) {
             JobRolesResponse jobs = new JobRolesResponse(
                     rs.getInt("id"),
-                    rs.getString("title"),
-                    rs.getString("description"),
-                    rs.getString("link")
+                    rs.getString("title")
             );
 
             jobRoleNoForeignKeys.add(jobs);
