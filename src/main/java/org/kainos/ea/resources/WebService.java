@@ -25,7 +25,7 @@ public class WebService {
         jobsService = new JobsService(new Jobs(), databaseConnector);
     }
     @GET
-    @Path("/getjobroles")
+    @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobRoles() throws SQLException, DatabaseConnectionException {
         try {
