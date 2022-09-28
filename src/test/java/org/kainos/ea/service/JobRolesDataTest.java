@@ -2,7 +2,7 @@ package org.kainos.ea.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kainos.ea.controller.Jobs;
+import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.util.DatabaseConnection;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-public class JobsTest {
+public class JobRolesDataTest {
 
-    Jobs jobs = Mockito.mock(Jobs.class);
+    JobRolesData jobRolesData = Mockito.mock(JobRolesData.class);
     DatabaseConnection databaseConnector = Mockito.mock(DatabaseConnection.class);
 
-    JobsService jobsService = new JobsService(jobs, databaseConnector);
+    JobsService jobsService = new JobsService(jobRolesData, databaseConnector);
 
     Connection conn;
 
@@ -34,7 +34,7 @@ public class JobsTest {
         expectedResult.add(j);
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobs.getJobRoles(conn)).thenReturn(expectedResult);
+        Mockito.when(jobRolesData.getJobRoles(conn)).thenReturn(expectedResult);
         List<JobRolesResponse> result = jobsService.getJobRoles();
 
         assertEquals(expectedResult, result);
@@ -43,11 +43,18 @@ public class JobsTest {
     @Test
     void getJobRoles_shouldThrowSQLException_whenJobsThrowsSQLException () throws SQLException, DatabaseConnectionException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobs.getJobRoles(conn)).thenThrow(SQLException.class);
+        Mockito.when(jobRolesData.getJobRoles(conn)).thenThrow(SQLException.class);
 
         assertThrows(SQLException.class,
                 () -> jobsService.getJobRoles());
     }
 
+    @Test
+    void getJobRoles_shouldThrowDatabaseConnectionException_whenJobsThrowsDatabaseConnectionException () throws SQLException, DatabaseConnectionException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRolesData.getJobRoles(conn)).thenThrow(DatabaseConnectionException.class);
 
+        assertThrows(DatabaseConnectionException.class,
+                () -> jobsService.getJobRoles());
+    }
 }
