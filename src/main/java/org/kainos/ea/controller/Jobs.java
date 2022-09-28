@@ -1,6 +1,6 @@
 package org.kainos.ea.controller;
 
-import org.kainos.ea.models.JobRoles;
+import org.kainos.ea.models.JobRolesResponse;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,25 +12,25 @@ import java.util.List;
 public class Jobs {
 
     //US001 - View Job Roles
-    public List<JobRoles> getJobRoles(Connection c) throws SQLException {
+    public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
                 "SELECT * "
                         + "FROM Role;");
 
-        List<JobRoles> jobRoles = new ArrayList<>();
+        List<JobRolesResponse> jobRoleNoForeignKeys = new ArrayList<>();
 
         while (rs.next()) {
-            JobRoles jobs = new JobRoles(
+            JobRolesResponse jobs = new JobRolesResponse(
+                    rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("description"),
-                    rs.getString("band_level"),
-                    rs.getString("capability")
+                    rs.getString("link")
             );
 
-            jobRoles.add(jobs);
+            jobRoleNoForeignKeys.add(jobs);
         }
-        return jobRoles;
+        return jobRoleNoForeignKeys;
     }
 }

@@ -3,7 +3,6 @@ package org.kainos.ea.resources;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.controller.Jobs;
 import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.models.JobRoles;
 import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
@@ -13,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/api")
 public class WebService {

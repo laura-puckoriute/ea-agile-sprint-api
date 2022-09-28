@@ -4,13 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.controller.Jobs;
 import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.models.JobRoles;
-import org.kainos.ea.resources.WebService;
+import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.util.DatabaseConnection;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.print.attribute.standard.MediaSize;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -30,14 +28,14 @@ public class JobsTest {
 
     @Test
     void getJobRoles_shouldReturnJobRoles_whenJobsReturnsJobRoles () throws SQLException, DatabaseConnectionException{
-        List<JobRoles> expectedResult = new ArrayList<>();
+        List<JobRolesResponse> expectedResult = new ArrayList<>();
 
-        JobRoles j = new JobRoles("Engineer", "Engineering", "Associate", "Engineering");
+        JobRolesResponse j = new JobRolesResponse(1, "Engineering", "Associate", "Engineering");
         expectedResult.add(j);
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobs.getJobRoles(conn)).thenReturn(expectedResult);
-        List<JobRoles> result = jobsService.getJobRoles();
+        List<JobRolesResponse> result = jobsService.getJobRoles();
 
         assertEquals(expectedResult, result);
     }
