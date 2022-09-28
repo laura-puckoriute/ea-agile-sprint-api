@@ -17,7 +17,7 @@ public class Jobs {
 
         ResultSet rs = st.executeQuery(
                 "SELECT * "
-                        + "FROM Roles;");
+                        + "FROM Role;");
 
         List<JobRoles> jobRoles = new ArrayList<>();
 
