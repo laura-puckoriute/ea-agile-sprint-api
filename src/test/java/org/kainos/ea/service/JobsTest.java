@@ -42,5 +42,14 @@ public class JobsTest {
         assertEquals(expectedResult, result);
     }
 
+    @Test
+    void getJobRoles_shouldThrowSQLException_whenJobsThrowsSQLException () throws SQLException, DatabaseConnectionException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobs.getJobRoles(conn)).thenThrow(SQLException.class);
+
+        assertThrows(SQLException.class,
+                () -> jobsService.getJobRoles());
+    }
+
 
 }
