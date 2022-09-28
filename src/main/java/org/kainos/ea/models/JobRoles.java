@@ -4,30 +4,30 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobRoles {
-    private String jobTitle;
+    private String title;
     private String description;
     private String band_level;
     private String capability;
 
     @JsonCreator
     public JobRoles(
-            @JsonProperty("jobtitle") String jobTitle,
+            @JsonProperty("title") String title,
             @JsonProperty("description") String description,
             @JsonProperty("band_level") String band_level,
             @JsonProperty("capability") String capability)
             {
-        this.setJobTitle(jobTitle);
+        this.setTitle(title);
         this.setDescription(description);
         this.setBand_level(band_level);
         this.setCapability(capability);
     }
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
