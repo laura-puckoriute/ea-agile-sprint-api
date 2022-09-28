@@ -1,27 +1,29 @@
 package org.kainos.ea.service;
 
-import org.kainos.ea.controller.Jobs;
-import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.models.JobRoles;
-import org.kainos.ea.models.JobSpecification;
-import org.kainos.ea.util.DatabaseConnection;
-
 import java.sql.SQLException;
+import org.kainos.ea.util.DatabaseConnection;
+import org.kainos.ea.exception.DatabaseConnectionException;
+
+import org.kainos.ea.data.JobRolesData;
+
+import org.kainos.ea.models.JobSpecificationResponse;
+import org.kainos.ea.models.JobRolesResponse;
+
 import java.util.List;
 
 public class JobsService {
-    public Jobs jobs;
+    public JobRolesData jobRolesData;
     public DatabaseConnection databaseConnection;
 
-    public JobsService(Jobs jobs, DatabaseConnection databaseConnection){
-        this.jobs = jobs;
+    public JobsService(JobRolesData jobRolesData, DatabaseConnection databaseConnection){
+        this.jobRolesData = jobRolesData;
         this.databaseConnection = databaseConnection;
     }
-    public List<JobRoles> getJobRoles() throws SQLException, DatabaseConnectionException {
-        return jobs.getJobRoles(databaseConnection.getConnection());
+    public List<JobRolesResponse> getJobRoles() throws SQLException, DatabaseConnectionException {
+        return jobRolesData.getJobRoles(databaseConnection.getConnection());
     }
 
-    public JobSpecification getJobSpecification( int id ) throws SQLException, DatabaseConnectionException {
-        return jobs.getJobSpecification( databaseConnection.getConnection(), id );
+    public JobSpecificationResponse getJobSpecification( int id ) throws SQLException, DatabaseConnectionException {
+        return jobRolesData.getJobSpecification( databaseConnection.getConnection(), id );
     }
 }

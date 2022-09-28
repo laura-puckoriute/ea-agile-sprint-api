@@ -1,38 +1,38 @@
-package org.kainos.ea.controller;
+package org.kainos.ea.data;
 
-import org.kainos.ea.models.JobRoles;
-import org.kainos.ea.models.JobSpecification;
+import org.kainos.ea.exception.DatabaseConnectionException;
+
+import org.kainos.ea.models.JobRolesResponse;
+import org.kainos.ea.models.JobSpecificationResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Jobs {
+public class JobRolesData {
 
     //US001 - View Job Roles
-    public List<JobRoles> getJobRoles(Connection c) throws SQLException {
+    public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException, DatabaseConnectionException {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
                 "SELECT * "
                         + "FROM Role;");
 
-        List<JobRoles> jobRoles = new ArrayList<>();
+        List<JobRolesResponse> jobRoleNoForeignKeys = new ArrayList<>();
 
         while (rs.next()) {
-            JobRoles jobs = new JobRoles(
-                    rs.getString("title"),
-                    rs.getString("description"),
-                    rs.getString("band_level"),
-                    rs.getString("capability")
+            JobRolesResponse jobs = new JobRolesResponse(
+                    rs.getInt("id"),
+                    rs.getString("title")
             );
 
-            jobRoles.add(jobs);
+            jobRoleNoForeignKeys.add(jobs);
         }
-        return jobRoles;
+        return jobRoleNoForeignKeys;
     }
 
-    public JobSpecification getJobSpecification( Connection c, int id ) throws SQLException {
+    public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException {
 
         String query = "SELECT title, description, link FROM Role WHERE id = ?;";
 
@@ -42,7 +42,7 @@ public class Jobs {
 
         ResultSet rs = st.executeQuery();
 
-        JobSpecification jobSpecification = new JobSpecification();
+        JobSpecificationResponse jobSpecification = new JobSpecificationResponse();
 
         while (rs.next()) {
 

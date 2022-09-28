@@ -3,16 +3,16 @@ package org.kainos.ea.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JobSpecification {
+public class JobSpecificationResponse {
 
     private String title;
     private String description;
     private String link;
 
-    public JobSpecification() {};
+    public JobSpecificationResponse() {};
 
     @JsonCreator
-    public JobSpecification(
+    public JobSpecificationResponse(
             @JsonProperty("title") String title,
             @JsonProperty("description") String description,
             @JsonProperty("link") String link)
