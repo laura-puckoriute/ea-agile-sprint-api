@@ -5,19 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobRoles {
     private String jobTitle;
-    private String jobFamily;
+    private String description;
     private String band;
     private String capability;
 
     @JsonCreator
     public JobRoles(
             @JsonProperty("jobtitle") String jobTitle,
-            @JsonProperty("jobfamily") String jobFamily,
+            @JsonProperty("description") String description,
             @JsonProperty("band") String band,
             @JsonProperty("capability") String capability)
             {
         this.setJobTitle(jobTitle);
-        this.setJobFamily(jobFamily);
+        this.setDescription(description);
         this.setBand(band);
         this.setCapability(capability);
     }
@@ -30,12 +30,12 @@ public class JobRoles {
         this.jobTitle = jobTitle;
     }
 
-    public String getJobFamily() {
-        return jobFamily;
+    public String getDescription() {
+        return description;
     }
 
-    public void setJobFamily(String jobFamily) {
-        this.jobFamily = jobFamily;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getBand() {
