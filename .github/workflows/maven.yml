@@ -22,5 +22,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    - name: Set Up Environment Variables
+      with:
+        USER: ${{ secrets.USER }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        HOST: ${{ secrets.HOST }}
+        DATABASE: ${{ secrets.DATABASE }}
+        
     - name: Build with Maven
       run: mvn clean test
