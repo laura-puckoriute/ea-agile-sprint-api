@@ -32,7 +32,7 @@ public class JobRolesData {
         return jobRoleNoForeignKeys;
     }
 
-    public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException {
+    public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException, DatabaseConnectionException {
 
         String query = "SELECT title, description, link FROM Role WHERE id = ?;";
 

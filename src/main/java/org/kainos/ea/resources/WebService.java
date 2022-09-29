@@ -3,6 +3,7 @@ package org.kainos.ea.resources;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.models.JobSpecificationResponse;
 import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
@@ -43,12 +44,17 @@ public class WebService {
     public Response getJobSpecification( @PathParam("id") int id ) throws SQLException, DatabaseConnectionException {
 
         try {
+            JobSpecificationResponse jobSpecification = jobsService.getJobSpecification(id);
+
+            if(jobSpecification.getTitle() == null) {
+                return Response.status(HttpStatus.NOT_FOUND_404).build();
+            }
 
             return Response.ok(jobsService.getJobSpecification( id )).build();
 
         } catch ( SQLException | DatabaseConnectionException e ) {
 
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
 
         }
     }
