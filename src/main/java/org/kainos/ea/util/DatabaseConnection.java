@@ -26,6 +26,9 @@ public class DatabaseConnection {
             password        = System.getenv("PASSWORD");
             host            = System.getenv("HOST");
             database        = System.getenv("DATABASE");
+            
+            java.util.logging.Logger logger =  java.util.logging.Logger.getLogger(this.getClass().getName());
+            logger.info("HOST: "+ host);
 
             if (user == null || password == null || host == null)
                 throw new IllegalArgumentException(
