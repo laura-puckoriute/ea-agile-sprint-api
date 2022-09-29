@@ -5,9 +5,11 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - '**' # matches every branch
   pull_request:
-    branches: [ "main" ]
+    branches: 
+      - '**' # matches every branch
 
 
 jobs:
@@ -23,11 +25,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-        
+    
     - name: Build with Maven
-      env:
-        USER: ${{ secrets.USER }}
-        PASSWORD: ${{ secrets.PASSWORD }}
-        HOST: ${{ secrets.HOST }}
-        DATABASE: ${{ secrets.DATABASE }}
       run: mvn clean test
