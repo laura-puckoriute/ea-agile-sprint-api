@@ -15,6 +15,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: venv
 
     steps:
     - uses: actions/checkout@v3
@@ -24,8 +25,11 @@ jobs:
         java-version: '18'
         distribution: 'temurin'
         cache: maven
-    
-    - name: Export environment variables
-      run: export USER=${{ secrets.USER }} PASSWORD=${{ secrets.PASSWORD }}  HOST=${{ secrets.HOST }} DATABASE=${{ secrets.DATABASE }}
-    - name: Build with Maven 
+     
+    - name: Build with Maven
+      env:
+          USER: ${{ secrets.USER }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          HOST: ${{ secrets.HOST }}
+          DATABASE: ${{ secrets.DATABASE }}
       run: mvn clean test
