@@ -55,9 +55,4 @@ public class JobSpecificationResponse {
         JobSpecificationResponse response = (JobSpecificationResponse) o;
         return title.equals(response.title) && description.equals(response.description) && link.equals(response.link);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, description, link);
-    }
 }

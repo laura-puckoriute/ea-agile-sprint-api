@@ -53,4 +53,13 @@ public class JobSpecTest {
         assertThrows(DatabaseConnectionException.class,
                 () -> jobsService.getJobSpecification(1));
     }
+
+    @Test
+    void getJobSpecification_shouldThrowNullPointerException_whenJobsRolesThrowsNullPointerException() throws DatabaseConnectionException, SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRolesData.getJobSpecification(conn, 1)).thenThrow(NullPointerException.class);
+
+        assertThrows(NullPointerException.class,
+                () -> jobsService.getJobSpecification(1));
+    }
 }
