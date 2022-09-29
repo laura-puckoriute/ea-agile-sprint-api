@@ -22,10 +22,10 @@ public class WebServiceIntegrationTest {
 
     @Test
     void getJobRoles_shouldReturnListOfJobRoles() {
-//         List<JobRolesResponse> response = APP.client().target("http://localhost:8080/api/job-roles")
-//                 .request()
-//                 .get(List.class);
+        List<JobRolesResponse> response = APP.client().target("http://localhost:8080/api/job-roles")
+                .request()
+                .get(List.class);
 
-//         Assertions.assertTrue(response.size() > 0);
+        Assertions.assertTrue(response.size() > 0);
     }
 }
