@@ -21,21 +21,15 @@ public class DatabaseConnection {
         }
 
         try {
-            FileInputStream propsStream =
-                    new FileInputStream("db.properties");
 
-            Properties props = new Properties();
-            props.load(propsStream);
-
-            user            = props.getProperty("user");
-            password        = props.getProperty("password");
-            host            = props.getProperty("host");
-            database        = props.getProperty("database");
+            user            = System.getenv("USER");
+            password        = System.getenv("PASSWORD");
+            host            = System.getenv("HOST");
+            database        = System.getenv("DATABASE");
 
             if (user == null || password == null || host == null)
                 throw new IllegalArgumentException(
-                        "Properties file must exist and must contain "
-                                + "user, password, database and host properties.");
+                        "Environment variables USER, PASSWORD, DATABASE and HOST must exist.");
             conn = DriverManager.getConnection("jdbc:mysql://"
                     + host + "/" + database + "?allowPublicKeyRetrieval=true&useSSL=false", user, password);
             return conn;
