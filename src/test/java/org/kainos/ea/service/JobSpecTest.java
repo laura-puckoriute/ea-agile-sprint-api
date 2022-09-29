@@ -2,6 +2,7 @@ package org.kainos.ea.service;
 
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.data.JobRolesData;
+import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.JobSpecificationResponse;
 import org.kainos.ea.util.DatabaseConnection;
@@ -23,7 +24,7 @@ public class JobSpecTest {
     Connection conn;
 
     @Test
-    void getJobSpecification_shouldReturnSpecification_whenJobsRolesReturnsSpecification() throws DatabaseConnectionException, SQLException {
+    void getJobSpecification_shouldReturnSpecification_whenJobsRolesReturnsSpecification() throws DatabaseConnectionException, SQLException, DataNotFoundException {
         JobSpecificationResponse expectedResult = new JobSpecificationResponse("Software Engineer",
                 "This is a description for Software Engineer",
                 "jobspec.com");
@@ -55,11 +56,11 @@ public class JobSpecTest {
     }
 
     @Test
-    void getJobSpecification_shouldThrowNullPointerException_whenJobsRolesThrowsNullPointerException() throws DatabaseConnectionException, SQLException {
+    void getJobSpecification_shouldThrowDataNotFoundException_whenJobsRolesThrowsDataNotFoundException() throws DatabaseConnectionException, SQLException, DataNotFoundException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRolesData.getJobSpecification(conn, 1)).thenThrow(NullPointerException.class);
+        Mockito.when(jobRolesData.getJobSpecification(conn, 1)).thenThrow(DataNotFoundException.class);
 
-        assertThrows(NullPointerException.class,
+        assertThrows(DataNotFoundException.class,
                 () -> jobsService.getJobSpecification(1));
     }
 }
