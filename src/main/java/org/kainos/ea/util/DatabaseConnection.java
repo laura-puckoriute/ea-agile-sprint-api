@@ -27,7 +27,6 @@ public class DatabaseConnection {
             host            = System.getenv("HOST");
             database        = System.getenv("DATABASE");
 
-
             if (user == null || password == null || host == null)
                 throw new IllegalArgumentException(
                         "Environment variables USER, PASSWORD, DATABASE and HOST must exist.");
