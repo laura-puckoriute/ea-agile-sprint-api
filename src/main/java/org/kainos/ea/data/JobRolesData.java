@@ -14,7 +14,7 @@ public class JobRolesData {
     //US001 - View Job Roles
     public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException, DatabaseConnectionException {
 
-        String query = "SELECT Role.id, Role.title, Capability.title AS capability FROM Role JOIN Capability ON Role.capabilityID = Capability.id;";
+        String query = "SELECT id, title, capabilityID FROM Role;";
 
         PreparedStatement st = c.prepareStatement(query);
 
