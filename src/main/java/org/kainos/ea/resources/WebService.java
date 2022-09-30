@@ -1,13 +1,16 @@
 package org.kainos.ea.resources;
 
 import org.eclipse.jetty.http.HttpStatus;
+import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.service.CompetencyService;
 import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,10 +20,12 @@ import java.sql.SQLException;
 public class WebService {
 
     private static JobsService jobsService;
+    private static CompetencyService competencyService;
 
     public WebService() {
         DatabaseConnection databaseConnector = new DatabaseConnection();
         jobsService = new JobsService(new JobRolesData(), databaseConnector);
+        competencyService = new CompetencyService(new CompetencyData(), databaseConnector);
     }
     @GET
     @Path("/job-roles")
@@ -28,6 +33,18 @@ public class WebService {
     public Response getJobRoles() throws SQLException, DatabaseConnectionException {
         try {
             return Response.ok(jobsService.getJobRoles()).build();
+        } catch (SQLException | DatabaseConnectionException e) {
+            System.out.println(e);
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+
+    @GET
+    @Path("/competencies/{band_level}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCompetenciesByBandLevel(@PathParam("band_level") int id) {
+        try {
+            return Response.ok(competencyService.getCompetenciesByBandLevel(id)).build();
         } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
