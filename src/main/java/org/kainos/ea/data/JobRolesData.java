@@ -5,6 +5,8 @@ import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.models.JobSpecificationResponse;
 
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.core.Response;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,16 +49,18 @@ public class JobRolesData {
 
         ResultSet rs = st.executeQuery();
 
-        JobSpecificationResponse jobSpecification = new JobSpecificationResponse();
 
-        while (rs.next()) {
+        if (rs.next()) {
 
-            jobSpecification.setTitle( rs.getString("title") );
-            jobSpecification.setDescription( rs.getString("description") );
-            jobSpecification.setLink( rs.getString("link") );
+            JobSpecificationResponse jobSpecification = new JobSpecificationResponse(
+                    rs.getString("title"),
+                    rs.getString("description"),
+                    rs.getString("link"));
+
+            return jobSpecification;
 
         }
 
-        return jobSpecification;
+        throw new BadRequestException();
     }
 }

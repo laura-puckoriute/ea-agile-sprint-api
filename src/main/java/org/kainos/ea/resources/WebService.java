@@ -7,10 +7,7 @@ import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
 import javax.print.attribute.standard.Media;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.crypto.Data;
@@ -45,6 +42,10 @@ public class WebService {
         try {
 
             return Response.ok(jobsService.getJobSpecification( id )).build();
+
+        } catch (BadRequestException e) {
+
+            return Response.status(Response.Status.BAD_REQUEST).build();
 
         } catch ( SQLException | DatabaseConnectionException e ) {
 
