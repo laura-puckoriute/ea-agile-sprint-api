@@ -14,7 +14,7 @@ public class JobRolesData {
     //US001 - View Job Roles
     public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException, DatabaseConnectionException {
 
-        String query = "SELECT id, title, capabilityID FROM Role;";
+        String query = ("SELECT Role.id, Role.title, Capability.title AS capability FROM Role JOIN Capability ON Role.capabilityID = Capability.id;");
 
         PreparedStatement st = c.prepareStatement(query);
 
@@ -24,37 +24,17 @@ public class JobRolesData {
         List<JobRolesResponse> jobRoleNoForeignKeys = new ArrayList<>();
 
         while (rs.next()) {
-            String capabilityTitle = getCapabilityTitle(c, rs.getInt("capabilityID"));
 
             JobRolesResponse jobs = new JobRolesResponse(
                     rs.getInt("id"),
                     rs.getString("title"),
-                    capabilityTitle
+                    rs.getString("capability")
             );
 
             jobRoleNoForeignKeys.add(jobs);
 
         }
         return jobRoleNoForeignKeys;
-    }
-
-    private String getCapabilityTitle(Connection c, int capabilityID) throws SQLException {
-
-        String queryCapability = "SELECT title FROM Capability WHERE id=?;";
-
-        PreparedStatement stCapability = c.prepareStatement(queryCapability);
-
-        stCapability.setInt(1, capabilityID);
-
-        ResultSet rsCapability = stCapability.executeQuery();
-
-        String capabilityTitle = null;
-
-        if (rsCapability.next()) {
-            capabilityTitle = rsCapability.getString("title");
-        }
-
-        return capabilityTitle;
     }
 
     public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException {
