@@ -1,6 +1,8 @@
 package org.kainos.ea.service;
 
 import java.sql.SQLException;
+
+import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.util.DatabaseConnection;
 import org.kainos.ea.exception.DatabaseConnectionException;
 
@@ -23,7 +25,11 @@ public class JobsService {
         return jobRolesData.getJobRoles(databaseConnection.getConnection());
     }
 
-    public JobSpecificationResponse getJobSpecification( int id ) throws SQLException, DatabaseConnectionException {
-        return jobRolesData.getJobSpecification( databaseConnection.getConnection(), id );
+    public JobSpecificationResponse getJobSpecification( int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
+        JobSpecificationResponse jobSpecification = jobRolesData.getJobSpecification( databaseConnection.getConnection(), id );
+        if (jobSpecification.getTitle() == null) {
+            throw new DataNotFoundException();
+        }
+        return jobSpecification;
     }
 }

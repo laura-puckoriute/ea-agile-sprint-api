@@ -49,18 +49,16 @@ public class JobRolesData {
 
         ResultSet rs = st.executeQuery();
 
+        JobSpecificationResponse jobSpecification = new JobSpecificationResponse();
 
-        if (rs.next()) {
+        while (rs.next()) {
 
-            JobSpecificationResponse jobSpecification = new JobSpecificationResponse(
-                    rs.getString("title"),
-                    rs.getString("description"),
-                    rs.getString("link"));
-
-            return jobSpecification;
+            jobSpecification.setTitle( rs.getString("title") );
+            jobSpecification.setDescription( rs.getString("description") );
+            jobSpecification.setLink( rs.getString("link") );
 
         }
 
-        throw new BadRequestException();
+        return jobSpecification;
     }
 }
