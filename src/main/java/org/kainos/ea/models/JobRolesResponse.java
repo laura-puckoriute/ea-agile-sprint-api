@@ -10,7 +10,7 @@ public class JobRolesResponse {
     private String capability;
 
 
-    private String bandLevelTitle;
+    private String bandLevel;
 
     @JsonCreator
     public JobRolesResponse(@JsonProperty("id") int id,
@@ -20,7 +20,7 @@ public class JobRolesResponse {
         this.setId(id);
         this.setTitle(title);
         this.setCapability(capability);
-        this.setBandLevelTitle(bandLevel);
+        this.setBandLevel(bandLevel);
     }
 
     public String getTitle() { return title; }
@@ -34,7 +34,7 @@ public class JobRolesResponse {
 
     public void setCapability(String capability) { this.capability = capability; }
 
-    public String getBandLevelTitle() { return bandLevelTitle; }
+    public String getBandLevel() { return bandLevel; }
 
-    public void setBandLevelTitle(String bandLevelTitle) { this.bandLevelTitle = bandLevelTitle; }
+    public void setBandLevel(String bandLevelTitle) { this.bandLevel = bandLevelTitle; }
 }
