@@ -52,8 +52,8 @@ public class JobSpecificationResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        JobSpecificationResponse that = (JobSpecificationResponse) o;
-        return title.equals(that.title) && description.equals(that.description) && link.equals(that.link);
+        JobSpecificationResponse response = (JobSpecificationResponse) o;
+        return title.equals(response.title) && description.equals(response.description) && link.equals(response.link);
     }
 
 }

@@ -5,8 +5,6 @@ import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.models.JobSpecificationResponse;
 
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.core.Response;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,8 @@ public class JobRolesData {
         return jobRoleNoForeignKeys;
     }
 
-    public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException {
+
+    public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException, DatabaseConnectionException {
 
         String query = "SELECT title, description, link FROM Role WHERE id = ?;";
 

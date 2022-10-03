@@ -4,11 +4,16 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.models.JobSpecificationResponse;
 import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
 import javax.print.attribute.standard.Media;
-import javax.ws.rs.*;
+import javax.validation.constraints.Null;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.crypto.Data;
@@ -44,9 +49,9 @@ public class WebService {
 
             return Response.ok(jobsService.getJobSpecification( id )).build();
 
-        }  catch ( SQLException | DatabaseConnectionException e ) {
+        } catch (SQLException | DatabaseConnectionException e ) {
 
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
 
         } catch (DataNotFoundException e) {
 
