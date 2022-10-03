@@ -51,9 +51,11 @@ public class WebService {
     public Response getCompetenciesByBandLevel(@PathParam("band_level") int id) {
         try {
             return Response.ok(competencyService.getCompetenciesByBandLevel(id)).build();
-        } catch (SQLException | DatabaseConnectionException | DataNotFoundException e) {
+        } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        } catch (DataNotFoundException e) {
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 
