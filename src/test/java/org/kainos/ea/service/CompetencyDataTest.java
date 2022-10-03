@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.data.JobRolesData;
+import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.Competency;
 import org.kainos.ea.models.JobRolesResponse;
@@ -64,6 +65,16 @@ public class CompetencyDataTest {
         Mockito.when(competencyData.getCompetenciesByBandLevel(id, conn)).thenThrow(DatabaseConnectionException.class);
 
         assertThrows(DatabaseConnectionException.class,
+                () -> competencyService.getCompetenciesByBandLevel(id));
+    }
+
+    @Test
+    void getCompetency_shouldThrowDataNotFoundException_whenCompetencyThrowsDataNotFoundException() throws DataNotFoundException, DatabaseConnectionException, SQLException {
+        int id = 6;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(competencyData.getCompetenciesByBandLevel(id, conn)).thenThrow(DataNotFoundException.class);
+
+        assertThrows(DataNotFoundException.class,
                 () -> competencyService.getCompetenciesByBandLevel(id));
     }
 }
