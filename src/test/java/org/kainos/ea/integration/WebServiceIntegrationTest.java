@@ -1,5 +1,8 @@
 package org.kainos.ea.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
@@ -24,12 +27,22 @@ public class WebServiceIntegrationTest {
     );
 
     @Test
-    void getJobRoles_shouldReturnListOfJobRoles() {
-        List<JobRolesResponse> response = APP.client().target("http://localhost:8080/api/job-roles")
+    void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() {
+
+        JsonNode response = APP.client().target("http://localhost:8080/api/job-roles")
                 .request()
-                .get(List.class);
+                .get(JsonNode.class);
 
         Assertions.assertTrue(response.size() > 0);
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
+
+        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
+        Assertions.assertEquals(1, jobList.get(0).getId());
+        Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
+
     }
 
     @Test
