@@ -30,7 +30,6 @@ public class CompetencyDataTest {
 
     Connection conn;
 
-    // passes but test isn't right?
     @Test
     void getCompetencyByBandLevel_shouldReturnCompetencyList_whenCompetencyReturnsCompetencies() throws DatabaseConnectionException, SQLException {
         List<Competency> expectedResult = new ArrayList<>();
