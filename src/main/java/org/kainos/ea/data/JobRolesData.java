@@ -13,24 +13,30 @@ public class JobRolesData {
 
     //US001 - View Job Roles
     public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException, DatabaseConnectionException {
-        Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery(
-                "SELECT * "
-                        + "FROM Role;");
+        String query = ("SELECT Role.id, Role.title, Capability.title AS capability FROM Role JOIN Capability ON Role.capabilityID = Capability.id;");
+
+        PreparedStatement st = c.prepareStatement(query);
+
+        ResultSet rs = st.executeQuery();
+
 
         List<JobRolesResponse> jobRoleNoForeignKeys = new ArrayList<>();
 
         while (rs.next()) {
+
             JobRolesResponse jobs = new JobRolesResponse(
                     rs.getInt("id"),
-                    rs.getString("title")
+                    rs.getString("title"),
+                    rs.getString("capability")
             );
 
             jobRoleNoForeignKeys.add(jobs);
+
         }
         return jobRoleNoForeignKeys;
     }
+
 
     public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException, DatabaseConnectionException {
 

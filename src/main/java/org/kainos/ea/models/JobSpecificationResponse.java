@@ -55,4 +55,5 @@ public class JobSpecificationResponse {
         JobSpecificationResponse response = (JobSpecificationResponse) o;
         return title.equals(response.title) && description.equals(response.description) && link.equals(response.link);
     }
+
 }

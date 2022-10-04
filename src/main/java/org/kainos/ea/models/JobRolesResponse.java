@@ -7,12 +7,15 @@ public class JobRolesResponse {
     private int id;
     private String title;
 
+    private String capability;
+
     @JsonCreator
-    public JobRolesResponse(@JsonProperty("id") int id,
-                            @JsonProperty("title") String title){
+    public JobRolesResponse( @JsonProperty("id") int id,
+                             @JsonProperty("title") String title,
+                             @JsonProperty("capability") String capability ) {
         this.setId(id);
         this.setTitle(title);
-
+        this.setCapability(capability);
     }
 
     public String getTitle() {
@@ -30,4 +33,7 @@ public class JobRolesResponse {
         this.id = id;
     }
 
+    public String getCapability() { return capability; }
+
+    public void setCapability(String capability) { this.capability = capability; }
 }
