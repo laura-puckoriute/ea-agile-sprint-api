@@ -18,10 +18,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.models.JobSpecificationResponse;
 
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
+    String hostURI = System.getenv("URI");
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
@@ -48,8 +51,11 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    void getCompetencyByBandLevel_shouldReturnListOfCompetencies() {
-        List<Competency> response = APP.client().target("http://localhost:8080/api/competencies/6")
+    void getCompetencyByBandLevel_shouldReturnListOfCompetencies() throws UnsupportedEncodingException {
+        String location = "/competencies/6";
+        String uri = hostURI + location;
+        URLEncoder.encode(uri, "UTF-8");
+        List<Competency> response = APP.client().target(uri)
                 .request()
                 .get(List.class);
 
