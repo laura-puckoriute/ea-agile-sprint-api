@@ -15,9 +15,9 @@ How to start the API application
 2. Start application with `java -jar target/ea-agile-sprint-api-1.0-SNAPSHOT.jar server config.yml`
 3. To check that your application is running enter url `http://localhost:8080`
 
-How to run unit and UI tests
+How to run unit and integration tests
 ---
-1. To run class unit/UI tests simply navigate to the test file you want to run and click on the green arrow beside the class name
+1. To run class unit/integration tests simply navigate to the test file you want to run and click on the green arrow beside the class name
 2. To run all the tests in the project, right-click on the java directory within the test directory and click 'Run all tests'
 
 Health Check
