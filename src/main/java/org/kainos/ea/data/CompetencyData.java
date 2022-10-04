@@ -31,7 +31,6 @@ public class CompetencyData {
                     rs.getString("description")
             );
 
-            competency.setTitle(rs.getString("title"));
             competencies.add(competency);
         }
         return competencies;
