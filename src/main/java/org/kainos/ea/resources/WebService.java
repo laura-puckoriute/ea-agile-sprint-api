@@ -1,26 +1,25 @@
 package org.kainos.ea.resources;
 
 import org.eclipse.jetty.http.HttpStatus;
+
 import org.kainos.ea.data.BandLevelData;
 import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.data.JobRolesData;
+
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.service.BandLevelService;
+
 import org.kainos.ea.service.CompetencyService;
-import org.kainos.ea.models.JobSpecificationResponse;
 import org.kainos.ea.service.JobsService;
+
 import org.kainos.ea.util.DatabaseConnection;
 
-import javax.print.attribute.standard.Media;
-import javax.validation.constraints.Null;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 
 @Path("/api")
@@ -29,13 +28,10 @@ public class WebService {
     private static JobsService jobsService;
     private static CompetencyService competencyService;
 
-    private static BandLevelService bandLevelService;
-
     public WebService() {
         DatabaseConnection databaseConnector = new DatabaseConnection();
         jobsService = new JobsService(new JobRolesData(), databaseConnector);
-        competencyService = new CompetencyService(new CompetencyData(), databaseConnector);
-        bandLevelService = new BandLevelService(new BandLevelData(), databaseConnector);
+        competencyService = new CompetencyService(new CompetencyData(), new BandLevelData(), databaseConnector);
     }
     
     @GET
@@ -54,12 +50,17 @@ public class WebService {
     @Path("/competencies/{band_level}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCompetenciesByBandLevel(@PathParam("band_level") int id) {
+
         try {
-            return Response.ok(competencyService.getCompetenciesByBandLevel(id)).build();
+
+            return Response.ok( competencyService.getCompetenciesByBandLevel( id ) ).build();
+
         } catch (SQLException | DatabaseConnectionException e) {
-            System.out.println(e);
+
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+
         } catch (DataNotFoundException e) {
+
             return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
@@ -71,25 +72,6 @@ public class WebService {
 
         try {
             return Response.ok(jobsService.getJobSpecification( id )).build();
-
-        } catch (SQLException | DatabaseConnectionException e ) {
-
-            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-
-        } catch (DataNotFoundException e) {
-
-            return Response.status(HttpStatus.NOT_FOUND_404).build();
-        }
-    }
-
-    @GET
-    @Path("/band-level-name/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getBandLevelName( @PathParam("id") int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
-
-        try {
-
-            return Response.ok( bandLevelService.getBandLevelName( id ) ).build();
 
         } catch (SQLException | DatabaseConnectionException e ) {
 
