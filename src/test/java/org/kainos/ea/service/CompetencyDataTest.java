@@ -32,6 +32,7 @@ public class CompetencyDataTest {
     CompetencyData competencyData = Mockito.mock(CompetencyData.class);
 
     BandLevelData bandLevelData = Mockito.mock(BandLevelData.class);
+
     DatabaseConnection databaseConnector = Mockito.mock(DatabaseConnection.class);
 
     CompetencyService competencyService = new CompetencyService(competencyData, bandLevelData, databaseConnector);
@@ -40,7 +41,6 @@ public class CompetencyDataTest {
 
     @Test
     void getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId() throws DatabaseConnectionException, SQLException {
-
 
         CompetenciesWithBandName expectedResult = new CompetenciesWithBandName();
 
