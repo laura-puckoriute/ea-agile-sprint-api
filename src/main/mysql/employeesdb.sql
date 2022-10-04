@@ -47,11 +47,68 @@ CREATE TABLE `Role` (
      FOREIGN KEY (`job_familyID`) REFERENCES `Job_Family`(`id`)
 );
 
+CREATE TABLE `User_Role` (
+	`id` smallint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `title` varchar(20)
+);
+
 CREATE TABLE `User` (
 	`id` smallint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `email` varchar(320) UNIQUE,
-    `enc_password` varchar(100)
+    `password` varchar(50),
+    `user_roleID` smallint,
+    FOREIGN KEY (`user_roleID`) REFERENCES `User_Role`(`id`)
 );
+
+CREATE TABLE `Token` (
+	`value` varchar(8000),
+    `userID` smallint,
+    FOREIGN KEY (`userID`) REFERENCES `User`(`id`)
+);
+
+INSERT INTO `User_Role` (`title`) VALUES ('Admin');
+INSERT INTO `User_Role` (`title`) VALUES ('Employee');
+
+/* 
+AES enc
+Password: examplepassword
+Initialization vector: Initializationve
+Encryption key: encryptionkey123
+Mode: CBC
+Key size(bits):128
+*/
+INSERT INTO `User` (`email`, `password`, `user_roleID`) VALUES ('joshroberts@gmail.com', 'Zzo//kPvKiz/HTMa4qNA8g==', 1);
+
+/* 
+AES enc
+Password: anotherpass
+Initialization vector: vectorinitializa
+Encryption key: anotherkeyaa1234
+Mode: CBC
+Key size(bits): 128
+*/
+INSERT INTO `User` (`email`, `password`, `user_roleID`) VALUES ('ethanmatthews@kainos.com', 'McenVgIbemCFyf5+XMKyDA==', 2);
+
+/*
+The unsigned JWT token in JSON:
+{
+    "iss": "Online JWT Builder",
+    "iat": 1664876162,
+    "exp": 1696412160,
+    "aud": "www.employees.com",
+    "sub": "joshroberts@gmail.com",
+    "GivenName": "Josh",
+    "Surname": "Roberts",
+    "Email": "joshroberts@gmail.com",
+    "Role": [
+        "Admin",
+        "Manager"
+    ]
+}
+*/
+
+INSERT INTO `Token` VALUES ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjQ4NzYxNjIsImV4cCI6MTY5NjQxMjE2MCwiYXVkIjoid3d3LmVtcGxveWVlcy5jb20iLCJzdWIiOiJqb3Nocm9iZXJ0c0BnbWFpbC5jb20iLCJHaXZlbk5hbWUiOiJKb3NoIiwiU3VybmFtZSI6IlJvYmVydHMiLCJFbWFpbCI6Impvc2hyb2JlcnRzQGdtYWlsLmNvbSIsIlJvbGUiOlsiQWRtaW4iLCJNYW5hZ2VyIl19.eteb2gTX1oIGMNr_E4INUSUMhlzom47ealGkqhwo3Iw',
+1);
 
 
 INSERT INTO `Job_Family` (`title`) VALUES ('Strategy and Planning');
