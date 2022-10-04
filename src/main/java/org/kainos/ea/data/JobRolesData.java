@@ -14,7 +14,8 @@ public class JobRolesData {
     //US001 - View Job Roles
     public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException, DatabaseConnectionException {
 
-        String query = ("SELECT Role.id, Role.title, Capability.title AS capability FROM Role JOIN Capability ON Role.capabilityID = Capability.id;");
+        String query = ("SELECT Role.id, Role.title, Capability.title AS capability, Band_Level.title AS band_level " +
+                "FROM Role JOIN Capability ON Role.capabilityID = Capability.id JOIN Band_Level ON Role.band_levelID = Band_Level.id;");
 
         PreparedStatement st = c.prepareStatement(query);
 
@@ -28,7 +29,8 @@ public class JobRolesData {
             JobRolesResponse jobs = new JobRolesResponse(
                     rs.getInt("id"),
                     rs.getString("title"),
-                    rs.getString("capability")
+                    rs.getString("capability"),
+                    rs.getString("band_level")
             );
 
             jobRoleNoForeignKeys.add(jobs);
@@ -36,7 +38,6 @@ public class JobRolesData {
         }
         return jobRoleNoForeignKeys;
     }
-
 
     public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException, DatabaseConnectionException {
 
