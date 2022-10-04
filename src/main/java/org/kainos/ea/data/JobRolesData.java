@@ -21,6 +21,7 @@ public class JobRolesData {
 
         ResultSet rs = st.executeQuery();
 
+
         List<JobRolesResponse> jobRoleNoForeignKeys = new ArrayList<>();
 
         while (rs.next()) {
@@ -37,7 +38,6 @@ public class JobRolesData {
         }
         return jobRoleNoForeignKeys;
     }
-
 
     public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException, DatabaseConnectionException {
 
