@@ -31,7 +31,7 @@ public class WebServiceIntegrationTest {
     @Test
     void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() {
 
-        JsonNode response = APP.client().target("http://localhost:8080/api/job-roles")
+        JsonNode response = APP.client().target( hostURI + "/job-roles" )
                 .request()
                 .get(JsonNode.class);
 
@@ -49,14 +49,11 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    void getCompetencyByBandLevel_shouldReturnListOfCompetencies() throws UnsupportedEncodingException {
-        String location = "/competencies/6";
-        String uri = hostURI + location;
-        URLEncoder.encode(uri, "UTF-8");
+    void getCompetencyByBandLevel_shouldReturnListOfCompetencies() {
 
         BandLevel bandLevel = new BandLevel( 6, "Trainee" );
 
-        CompetenciesWithBandLevel response = APP.client().target(uri)
+        CompetenciesWithBandLevel response = APP.client().target( hostURI + "/competencies/6" )
                 .request()
                 .get(CompetenciesWithBandLevel.class);
 
@@ -69,7 +66,7 @@ public class WebServiceIntegrationTest {
         JobSpecificationResponse expectedResult = new JobSpecificationResponse("Software Engineer", "As a Trainee Software Engineer with Kainos, you will work on projects where you can make a real difference to people’s lives – the lives of people you know. After taking part in our award-winning, seven-week Engineering Academy, you will then join one of our many project teams, to learn from our experienced developers, project managers and customer-facing staff. You’ll have great support and mentoring, balanced with the experience of being given real, meaningful work to do, to help you truly develop both technically and professionally.",
             "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20profile%20%2D%20Software%20Engineer%20%28Trainee%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1");
 
-        JobSpecificationResponse response = APP.client().target("http://localhost:8080/api/job-specification/1")
+        JobSpecificationResponse response = APP.client().target( hostURI + "/job-specification/1")
                 .request()
                 .get(JobSpecificationResponse.class);
 
@@ -80,7 +77,7 @@ public class WebServiceIntegrationTest {
     void getJobSpecification_shouldReturnErrorStatus404() {
         Response expectedResponse = Response.status(HttpStatus.NOT_FOUND_404).build();
 
-        Response response = APP.client().target("http://localhost:8080/api/job-specification/99999999999")
+        Response response = APP.client().target(hostURI + "/job-specification/99999999999")
                 .request()
                 .get(Response.class);
 
