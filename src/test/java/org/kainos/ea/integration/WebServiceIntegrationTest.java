@@ -17,6 +17,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.models.JobSpecificationResponse;
 
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -26,10 +30,16 @@ public class WebServiceIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
-    @Test
-    void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() {
+    public WebServiceIntegrationTest() throws UnsupportedEncodingException {
+    }
 
-        JsonNode response = APP.client().target("http://localhost:8080/api/job-roles")
+    final String url = URLEncoder.encode("http://localhost:8080/api", StandardCharsets.UTF_8.toString());
+
+
+    @Test
+    void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() throws UnsupportedEncodingException {
+
+        JsonNode response = APP.client().target(URLDecoder.decode(url, StandardCharsets.UTF_8.toString()) + "/job-roles")
                 .request()
                 .get(JsonNode.class);
 
@@ -43,7 +53,29 @@ public class WebServiceIntegrationTest {
         Assertions.assertEquals(1, jobList.get(0).getId());
         Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
         Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
+        Assertions.assertEquals(6, jobList.get(0).getBandLevelID());
+        Assertions.assertEquals(1, jobList.get(0).getCapabilityID());
+    }
 
+    @Test
+    void getJobRoles_shouldReturnCapabilityBandIDs_withCapabilityBandIDs() throws UnsupportedEncodingException {
+
+        JsonNode response = APP.client().target(URLDecoder.decode(url, StandardCharsets.UTF_8.toString()) + "/job-roles")
+                .request()
+                .get(JsonNode.class);
+
+        Assertions.assertTrue(response.size() > 0);
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
+
+        Assertions.assertEquals(null, jobList.get(3).getTitle());
+        Assertions.assertEquals(0, jobList.get(3).getId());
+        Assertions.assertEquals("Engineering", jobList.get(3).getCapability());
+        Assertions.assertEquals("Apprentice", jobList.get(3).getBandLevel());
+        Assertions.assertEquals(7, jobList.get(3).getBandLevelID());
+        Assertions.assertEquals(1, jobList.get(3).getCapabilityID());
     }
 
     @Test

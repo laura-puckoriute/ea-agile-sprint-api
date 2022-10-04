@@ -29,11 +29,10 @@ public class JobRolesResponse {
         this.setBandLevelID(bandLevelID);
     }
 
-    @JsonCreator
-    public JobRolesResponse(@JsonProperty("capabilityName") String capability,
-                            @JsonProperty("band_levelName") String bandLevel,
-                            @JsonProperty("capabilityID") int capabilityID,
-                            @JsonProperty("band_levelID") int bandLevelID) {
+    public JobRolesResponse(@JsonProperty("capability") String capability,
+                            @JsonProperty("band_level") String bandLevel,
+                            @JsonProperty("capability_id") int capabilityID,
+                            @JsonProperty("band_level_id") int bandLevelID) {
         this.setCapability(capability);
         this.setBandLevel(bandLevel);
         this.setCapabalityID(capabilityID);
