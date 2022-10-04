@@ -2,7 +2,6 @@ package org.kainos.ea.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class JobSpecificationResponse {
@@ -55,4 +54,5 @@ public class JobSpecificationResponse {
         JobSpecificationResponse response = (JobSpecificationResponse) o;
         return title.equals(response.title) && description.equals(response.description) && link.equals(response.link);
     }
+
 }

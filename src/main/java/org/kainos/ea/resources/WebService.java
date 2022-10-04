@@ -11,6 +11,7 @@ import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
 
 import javax.print.attribute.standard.Media;
+
 import javax.validation.constraints.Null;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -65,6 +66,7 @@ public class WebService {
     public Response getJobSpecification( @PathParam("id") int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
 
         try {
+
             return Response.ok(jobsService.getJobSpecification( id )).build();
 
         } catch (SQLException | DatabaseConnectionException e ) {
@@ -74,6 +76,7 @@ public class WebService {
         } catch (DataNotFoundException e) {
 
             return Response.status(HttpStatus.NOT_FOUND_404).build();
+
         }
     }
 }

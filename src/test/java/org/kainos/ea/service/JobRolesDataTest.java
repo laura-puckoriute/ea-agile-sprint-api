@@ -30,7 +30,7 @@ public class JobRolesDataTest {
     void getJobRoles_shouldReturnJobRoles_whenJobsReturnsJobRoles () throws SQLException, DatabaseConnectionException{
         List<JobRolesResponse> expectedResult = new ArrayList<>();
 
-        JobRolesResponse j = new JobRolesResponse(1, "Engineering");
+        JobRolesResponse j = new JobRolesResponse(1, "Software Engineer", "Engineering", "Trainee");
         expectedResult.add(j);
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);

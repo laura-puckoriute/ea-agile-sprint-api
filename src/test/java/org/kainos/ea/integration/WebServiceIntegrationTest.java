@@ -1,5 +1,8 @@
 package org.kainos.ea.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
@@ -25,12 +28,23 @@ public class WebServiceIntegrationTest {
     );
 
     @Test
-    void getJobRoles_shouldReturnListOfJobRoles() {
-        List<JobRolesResponse> response = APP.client().target("http://localhost:8080/api/job-roles")
+    void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() {
+
+        JsonNode response = APP.client().target("http://localhost:8080/api/job-roles")
                 .request()
-                .get(List.class);
+                .get(JsonNode.class);
 
         Assertions.assertTrue(response.size() > 0);
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
+
+        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
+        Assertions.assertEquals(1, jobList.get(0).getId());
+        Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
+        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
+
     }
 
     @Test
@@ -45,7 +59,7 @@ public class WebServiceIntegrationTest {
     @Test
     void getJobSpecification_shouldReturnJobSpecification_whenJobServiceReturnsJobSpecification() {
         JobSpecificationResponse expectedResult = new JobSpecificationResponse("Software Engineer", "As a Trainee Software Engineer with Kainos, you will work on projects where you can make a real difference to people’s lives – the lives of people you know. After taking part in our award-winning, seven-week Engineering Academy, you will then join one of our many project teams, to learn from our experienced developers, project managers and customer-facing staff. You’ll have great support and mentoring, balanced with the experience of being given real, meaningful work to do, to help you truly develop both technically and professionally.",
-        "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20profile%20%2D%20Software%20Engineer%20%28Trainee%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1");
+            "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20profile%20%2D%20Software%20Engineer%20%28Trainee%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1");
 
         JobSpecificationResponse response = APP.client().target("http://localhost:8080/api/job-specification/1")
                 .request()
