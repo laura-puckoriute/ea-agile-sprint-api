@@ -24,7 +24,7 @@ import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
-    String hostURI = System.getenv("URI");
+    String hostURI = System.getenv("API_URL");
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
