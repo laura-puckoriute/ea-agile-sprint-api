@@ -30,4 +30,12 @@ public class BandLevel {
     public String getBandName() { return bandName; }
 
     public void setBandName(String bandName) { this.bandName = bandName; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BandLevel bandLevel = (BandLevel) o;
+        return id == bandLevel.id && bandName.equals(bandLevel.bandName);
+    }
 }
