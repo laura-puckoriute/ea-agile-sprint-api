@@ -7,26 +7,10 @@ public class Competency {
 
     @JsonCreator
     public Competency(
-            @JsonProperty("title") String title) {
-        this.setTitle(title);
-    }
-
-    @JsonCreator
-    public Competency(
-            @JsonProperty("title") String title,
-            @JsonProperty("responsibility_name") String responsibilityName,
-            @JsonProperty("description") String responsibilityDescription) {
-        this.setTitle(title);
-        this.setResponsibilityName(responsibilityName);
-        this.setResponsibilityDescription(responsibilityDescription);
-    }
-
-    @JsonCreator
-    public Competency(
             @JsonProperty("id") int id,
             @JsonProperty("title") String title,
             @JsonProperty("responsibility_name") String responsibilityName,
-            @JsonProperty("description") String responsibilityDescription) {
+            @JsonProperty("responsibility_description") String responsibilityDescription) {
         this.setId(id);
         this.setTitle(title);
         this.setResponsibilityName(responsibilityName);

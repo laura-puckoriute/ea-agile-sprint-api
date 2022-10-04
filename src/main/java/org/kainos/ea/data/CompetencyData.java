@@ -16,7 +16,7 @@ public class CompetencyData {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
-                "SELECT Competency.title, Responsibility.responsibility_name, Responsibility.description " +
+                "SELECT Competency.id as id, Competency.title as title, Responsibility.responsibility_name as responsibility_name, Responsibility.description as responsibility_description " +
                         "FROM Competency " +
                         "JOIN Responsibility ON Competency.id = Responsibility.CompetencyID " +
                         "JOIN Band_Level ON Responsibility.band_levelID = Band_Level.id " +
@@ -26,9 +26,10 @@ public class CompetencyData {
 
         while (rs.next()) {
             Competency competency = new Competency(
+                    rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("responsibility_name"),
-                    rs.getString("description")
+                    rs.getString("responsibility_description")
             );
 
             competencies.add(competency);

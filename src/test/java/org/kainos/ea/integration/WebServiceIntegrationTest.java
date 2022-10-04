@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.http.HttpStatus;
-import org.eclipse.jetty.util.ajax.JSON;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
 import org.kainos.ea.models.*;
@@ -54,22 +53,15 @@ public class WebServiceIntegrationTest {
         String location = "/competencies/6";
         String uri = hostURI + location;
         URLEncoder.encode(uri, "UTF-8");
-        List<Competency> response = APP.client().target(uri)
+
+        BandLevel bandLevel = new BandLevel( 6, "Trainee" );
+
+        CompetenciesWithBandLevel response = APP.client().target(uri)
                 .request()
-                .get(List.class);
+                .get(CompetenciesWithBandLevel.class);
 
-//        BandLevel bandLevel = new BandLevel( 6, "Trainee" );
-//
-//        Competency response = APP.client().target("http://localhost:8080/api/competencies/6")
-//                .request()
-//                .get(Competency.class);
-
-        System.out.println(response);
-//        System.out.println(bandLevel.getBandName());
-
-
-
-//        Assertions.assertTrue( response.size() > 0 );
+        Assertions.assertTrue( response.getBandLevel().equals( bandLevel ) );
+        Assertions.assertTrue( response.getCompetencies().size() > 0 );
     }
 
     @Test

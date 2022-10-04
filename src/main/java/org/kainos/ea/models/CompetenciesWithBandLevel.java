@@ -11,10 +11,12 @@ public class CompetenciesWithBandLevel {
 
     private List<Competency> competencies;
 
+    @JsonCreator
     public CompetenciesWithBandLevel() { }
 
-    public CompetenciesWithBandLevel( List<Competency> competencies,
-                                      BandLevel bandLevel) {
+    @JsonCreator
+    public CompetenciesWithBandLevel( @JsonProperty("competencies") List<Competency> competencies,
+                                      @JsonProperty("band_level") BandLevel bandLevel) {
         this.setCompetencies(competencies);
         this.setBandLevel(bandLevel);
     }
