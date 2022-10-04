@@ -7,35 +7,35 @@ public class BandLevel {
 
     private int id;
 
-    private String bandName;
+    private String title;
 
     @JsonCreator
-    public BandLevel(@JsonProperty("band_name") String bandName) {
+    public BandLevel( @JsonProperty("band_title") String title ) {
 
-        this.setBandName( bandName );
+        this.setBandName( title );
     }
 
     @JsonCreator
-    public BandLevel(@JsonProperty("id") int id,
-                     @JsonProperty("band_name") String bandName) {
+    public BandLevel( @JsonProperty("band_id") int id,
+                      @JsonProperty("band_title") String title ) {
 
         this.setId( id );
-        this.setBandName( bandName );
+        this.setBandName( title );
     }
 
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
 
-    public String getBandName() { return bandName; }
+    public String getBandName() { return title; }
 
-    public void setBandName(String bandName) { this.bandName = bandName; }
+    public void setBandName(String bandName) { this.title = bandName; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BandLevel bandLevel = (BandLevel) o;
-        return id == bandLevel.id && bandName.equals(bandLevel.bandName);
+        return id == bandLevel.id && title.equals(bandLevel.title);
     }
 }
