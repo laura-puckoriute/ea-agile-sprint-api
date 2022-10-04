@@ -71,6 +71,7 @@ public class WebService {
     public Response getJobSpecification( @PathParam("id") int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
 
         try {
+
             return Response.ok(jobsService.getJobSpecification( id )).build();
 
         } catch (SQLException | DatabaseConnectionException e ) {
@@ -80,6 +81,7 @@ public class WebService {
         } catch (DataNotFoundException e) {
 
             return Response.status(HttpStatus.NOT_FOUND_404).build();
+
         }
     }
 

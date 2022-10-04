@@ -36,6 +36,6 @@ public class CompetencyService {
         if ( response != null ) {
             return response;
         }
-        return null; //throw error instead
+        throw new DataNotFoundException();
     }
 }
