@@ -1,10 +1,10 @@
 package org.kainos.ea.integration;
 
 import org.eclipse.jetty.http.HttpStatus;
+import org.eclipse.jetty.util.ajax.JSON;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
-import org.kainos.ea.models.Competency;
-import org.kainos.ea.models.JobRolesResponse;
+import org.kainos.ea.models.*;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
@@ -12,7 +12,6 @@ import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kainos.ea.models.JobSpecificationResponse;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -35,11 +34,19 @@ public class WebServiceIntegrationTest {
 
     @Test
     void getCompetencyByBandLevel_shouldReturnListOfCompetencies() {
-        List<Competency> response = APP.client().target("http://localhost:8080/api/competencies/6")
-                .request()
-                .get(List.class);
 
-        Assertions.assertTrue(response.size() > 0);
+        BandLevel bandLevel = new BandLevel( 6, "Trainee" );
+
+        Competency response = APP.client().target("http://localhost:8080/api/competencies/6")
+                .request()
+                .get(Competency.class);
+
+        System.out.println(response);
+//        System.out.println(bandLevel.getBandName());
+
+
+
+//        Assertions.assertTrue( response.size() > 0 );
     }
 
     @Test

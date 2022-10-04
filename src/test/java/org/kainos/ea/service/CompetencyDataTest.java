@@ -9,7 +9,7 @@ import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.models.BandLevel;
-import org.kainos.ea.models.CompetenciesWithBandName;
+import org.kainos.ea.models.CompetenciesWithBandLevel;
 import org.kainos.ea.models.Competency;
 import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.util.DatabaseConnection;
@@ -42,7 +42,7 @@ public class CompetencyDataTest {
     @Test
     void getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId() throws DatabaseConnectionException, SQLException {
 
-        CompetenciesWithBandName expectedResult = new CompetenciesWithBandName();
+        CompetenciesWithBandLevel expectedResult = new CompetenciesWithBandLevel();
 
         int id = 1;
 
@@ -54,16 +54,16 @@ public class CompetencyDataTest {
                 "Understands others strengths and areas for development. Recognisingdiversity and its value within self andteam.Proactively uses wellbeing tools to support self-regulation."));
 
         expectedResult.setCompetencies( competencyList );
-        expectedResult.setBandName( new BandLevel(6, "Trainee") );
+        expectedResult.setBandLevel( new BandLevel(6, "Trainee") );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( competencyData.getCompetenciesByBandLevel( id, conn ) ).thenReturn( competencyList );
         Mockito.when( bandLevelData.getBandLevelName( conn, id ) ).thenReturn( bandLevel );
 
-        CompetenciesWithBandName result = competencyService.getCompetenciesByBandLevel( id );
+        CompetenciesWithBandLevel result = competencyService.getCompetenciesByBandLevel( id );
 
         assertEquals(expectedResult.getCompetencies(), result.getCompetencies());
-        Assertions.assertTrue( expectedResult.getBandName().equals( result.getBandName() ) );
+        Assertions.assertTrue( expectedResult.getBandLevel().equals( result.getBandLevel() ) );
     }
 
     @Test

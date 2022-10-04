@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e819e242-60f3-4bf9-85c2-73afcefcd7fa" name="Changes" comment="" />
+    <list default="true" id="e819e242-60f3-4bf9-85c2-73afcefcd7fa" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/BandLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/BandLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/CompetenciesWithBandName.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/CompetenciesWithBandLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/Competency.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/Competency.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/service/CompetencyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/service/CompetencyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/WebServiceIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/WebServiceIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/CompetencyDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/CompetencyDataTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
   </component>
   <component name="ProjectId" id="2FLPFKEeUYtQnTgFnEUY15gUQSk" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -19,9 +45,121 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/chen/Academy/sprint/ea-agile-sprint-api"
   }
 }]]></component>
+  <component name="RunManager" selected="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetencies">
+    <configuration name="CompetencyDataTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ea-agile-sprint-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.service" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.service.CompetencyDataTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CompetencyDataTest.getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ea-agile-sprint-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.service" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.service.CompetencyDataTest" />
+      <option name="METHOD_NAME" value="getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebServiceIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ea-agile-sprint-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.integration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.WebServiceIntegrationTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="DATABASE" value="ea_agile_sprint_MeiC" />
+        <env name="HOST" value="academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com " />
+        <env name="URI" value="http://localhost:8080/api" />
+        <env name="PASSWORD" value="SQLACADEMYP@SS" />
+        <env name="USER" value="MeiC" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetencies" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ea-agile-sprint-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.integration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.WebServiceIntegrationTest" />
+      <option name="METHOD_NAME" value="getCompetencyByBandLevel_shouldReturnListOfCompetencies" />
+      <option name="TEST_OBJECT" value="method" />
+      <envs>
+        <env name="DATABASE" value="ea_agile_sprint_MeiC" />
+        <env name="HOST" value="academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com " />
+        <env name="URI" value="http://localhost:8080/api" />
+        <env name="PASSWORD" value="SQLACADEMYP@SS" />
+        <env name="USER" value="MeiC" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetenciesWithBandLevelName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ea-agile-sprint-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.integration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.WebServiceIntegrationTest" />
+      <option name="METHOD_NAME" value="getCompetencyByBandLevel_shouldReturnListOfCompetenciesWithBandLevelName" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetencies" />
+      <item itemvalue="JUnit.CompetencyDataTest.getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId" />
+      <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetenciesWithBandLevelName" />
+      <item itemvalue="JUnit.CompetencyDataTest" />
+      <item itemvalue="JUnit.WebServiceIntegrationTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetencies" />
+        <item itemvalue="JUnit.WebServiceIntegrationTest" />
+        <item itemvalue="JUnit.CompetencyDataTest" />
+        <item itemvalue="JUnit.CompetencyDataTest.getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId" />
+        <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetenciesWithBandLevelName" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

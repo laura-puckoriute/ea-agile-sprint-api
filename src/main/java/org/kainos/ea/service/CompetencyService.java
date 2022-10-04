@@ -4,7 +4,7 @@ import org.kainos.ea.data.BandLevelData;
 import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.models.CompetenciesWithBandName;
+import org.kainos.ea.models.CompetenciesWithBandLevel;
 import org.kainos.ea.models.Competency;
 import org.kainos.ea.models.Competency;
 import org.kainos.ea.util.DatabaseConnection;
@@ -26,11 +26,12 @@ public class CompetencyService {
         this.databaseConnector = databaseConnector;
     }
 
-    public CompetenciesWithBandName getCompetenciesByBandLevel(int id) throws DatabaseConnectionException, SQLException, DataNotFoundException {
-        CompetenciesWithBandName response = new CompetenciesWithBandName();
+    public CompetenciesWithBandLevel getCompetenciesByBandLevel(int id) throws DatabaseConnectionException, SQLException, DataNotFoundException {
+
+        CompetenciesWithBandLevel response = new CompetenciesWithBandLevel();
 
         response.setCompetencies( competenciesData.getCompetenciesByBandLevel(id, databaseConnector.getConnection()) );
-        response.setBandName( bandLevelData.getBandLevelName( databaseConnector.getConnection(), id ) );
+        response.setBandLevel( bandLevelData.getBandLevelName( databaseConnector.getConnection(), id ) );
 
         if ( response != null ) {
             return response;

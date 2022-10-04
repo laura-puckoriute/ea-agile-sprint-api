@@ -5,27 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class CompetenciesWithBandName {
+public class CompetenciesWithBandLevel {
 
     private BandLevel bandLevel;
 
     private List<Competency> competencies;
 
-    @JsonCreator
-    public CompetenciesWithBandName() { }
+    public CompetenciesWithBandLevel() { }
 
-    @JsonCreator
-    public CompetenciesWithBandName(@JsonProperty("competencies") List<Competency> competencies,
-                                    @JsonProperty("band_level") BandLevel bandLevel) {
+    public CompetenciesWithBandLevel( List<Competency> competencies,
+                                      BandLevel bandLevel) {
         this.setCompetencies(competencies);
-        this.setBandName(bandLevel);
+        this.setBandLevel(bandLevel);
     }
 
-    public BandLevel getBandName() { return bandLevel; }
+    public BandLevel getBandLevel() { return bandLevel; }
 
-    public void setBandName(BandLevel bandLevel) { this.bandLevel = bandLevel; }
+    public void setBandLevel( BandLevel bandLevel ) { this.bandLevel = bandLevel; }
 
     public List<Competency> getCompetencies() { return competencies; }
 
-    public void setCompetencies(List<Competency> competencies) { this.competencies = competencies; }
+    public void setCompetencies( List<Competency> competencies ) { this.competencies = competencies; }
 }
