@@ -61,24 +61,33 @@ public class WebServiceIntegrationTest {
 
         Assertions.assertTrue(response.size() > 0);
     }
-
+    
     @Test
-    void getJobSpecification_shouldReturnJobSpecification_whenJobServiceReturnsJobSpecification() {
-        JobSpecificationResponse expectedResult = new JobSpecificationResponse("Software Engineer", "As a Trainee Software Engineer with Kainos, you will work on projects where you can make a real difference to people’s lives – the lives of people you know. After taking part in our award-winning, seven-week Engineering Academy, you will then join one of our many project teams, to learn from our experienced developers, project managers and customer-facing staff. You’ll have great support and mentoring, balanced with the experience of being given real, meaningful work to do, to help you truly develop both technically and professionally.",
-            "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20profile%20%2D%20Software%20Engineer%20%28Trainee%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1");
+    void getJobSpecification_shouldReturnJobSpecification_whenJobServiceReturnsJobSpecification() throws UnsupportedEncodingException {
+        String location = "/job-specification/1";
+        String uri = hostURI + location;
+        URLEncoder.encode(uri, "UTF-8");
+        JobSpecificationResponse expectedResult = new JobSpecificationResponse(
+                "Software Engineer",
+                "•Completed or are currently studying a relevant third level IT qualification\n•Familiar with some programming languages and implementation environments.\n•Some understanding of the software development lifecycle from your studies or relevant work experience, and the relevance of different tools at different stages of the development lifecycle\n•Able to make effective decisions with the support of team members, within fast-moving delivery environment.\n•Have an open attitude to sharing knowledge and information.\n•Ideally have some experience of working in a collaborative team environment\n•Good communication skills with the ability to communicate issues to other technical people and, sometimes, non-technical people\n•Good problem solving and analytical skills.\n•We all work in teams here in Kainos – a proven ability of strong team skills, including taking direction from others, is crucial.\n•Ability to carry out responsibilities in accordance with company policies, procedures and processes.•Ability to deliver tasks within a given timeframe. ",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20profile%20%2D%20Software%20Engineer%20%28Trainee%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                "As a Trainee Software Engineer with Kainos, you will work on projects where you can make a real difference to people’s lives – the lives of people you know. After taking part in our award-winning, seven-week Engineering Academy, you will then join one of our many project teams, to learn from our experienced developers, project managers and customer-facing staff. You’ll have great support and mentoring, balanced with the experience of being given real, meaningful work to do, to help you truly develop both technically and professionally.");
 
-        JobSpecificationResponse response = APP.client().target("http://localhost:8080/api/job-specification/1")
+        JobSpecificationResponse response = APP.client().target(uri)
                 .request()
                 .get(JobSpecificationResponse.class);
 
-        Assertions.assertTrue(expectedResult.equals(response));
+        Assertions.assertEquals(expectedResult, response);
     }
 
     @Test
-    void getJobSpecification_shouldReturnErrorStatus404() {
+    void getJobSpecification_shouldReturnErrorStatus404() throws UnsupportedEncodingException {
+        String location = "/job-specification/99999999999";
+        String uri = hostURI + location;
+        URLEncoder.encode(uri, "UTF-8");
         Response expectedResponse = Response.status(HttpStatus.NOT_FOUND_404).build();
 
-        Response response = APP.client().target("http://localhost:8080/api/job-specification/99999999999")
+        Response response = APP.client().target(uri)
                 .request()
                 .get(Response.class);
 
