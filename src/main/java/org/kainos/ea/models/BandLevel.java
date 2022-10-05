@@ -12,14 +12,8 @@ public class BandLevel {
     public BandLevel() {}
 
     @JsonCreator
-    public BandLevel( @JsonProperty("band_title") String title ) {
-
-        this.setBandName( title );
-    }
-
-    @JsonCreator
-    public BandLevel( @JsonProperty("band_id") int id,
-                      @JsonProperty("band_title") String title ) {
+    public BandLevel( @JsonProperty("id") int id,
+                      @JsonProperty("title") String title ) {
 
         this.setId( id );
         this.setBandName( title );
