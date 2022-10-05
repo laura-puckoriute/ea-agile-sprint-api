@@ -17,9 +17,13 @@ public class BandLevelData {
 
         ResultSet rs = st.executeQuery();
 
-        rs.next();
+        BandLevel bandLevel = new BandLevel();
 
-        BandLevel bandLevel = new BandLevel( id, rs.getString( "title" ) );
+        if ( rs.next() ) {
+
+            bandLevel.setId( id );
+            bandLevel.setBandName( rs.getString( "title" ) );
+        }
 
         return bandLevel;
     }
