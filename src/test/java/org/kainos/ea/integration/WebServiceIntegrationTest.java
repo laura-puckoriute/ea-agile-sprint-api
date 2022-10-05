@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
+import org.kainos.ea.models.Competency;
 import org.kainos.ea.models.JobRolesResponse;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
@@ -49,6 +50,18 @@ public class WebServiceIntegrationTest {
 
     }
 
+    @Test
+    void getCompetencyByBandLevel_shouldReturnListOfCompetencies() throws UnsupportedEncodingException {
+        String location = "/competencies/6";
+        String uri = hostURI + location;
+        URLEncoder.encode(uri, "UTF-8");
+        List<Competency> response = APP.client().target(uri)
+                .request()
+                .get(List.class);
+
+        Assertions.assertTrue(response.size() > 0);
+    }
+    
     @Test
     void getJobSpecification_shouldReturnJobSpecification_whenJobServiceReturnsJobSpecification() throws UnsupportedEncodingException {
         String location = "/job-specification/1";

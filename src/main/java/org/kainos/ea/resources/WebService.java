@@ -1,9 +1,11 @@
 package org.kainos.ea.resources;
 
 import org.eclipse.jetty.http.HttpStatus;
+import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.service.CompetencyService;
 import org.kainos.ea.models.JobSpecificationResponse;
 import org.kainos.ea.service.JobsService;
 import org.kainos.ea.util.DatabaseConnection;
@@ -24,11 +26,14 @@ import java.sql.SQLException;
 public class WebService {
 
     private static JobsService jobsService;
+    private static CompetencyService competencyService;
 
     public WebService() {
         DatabaseConnection databaseConnector = new DatabaseConnection();
         jobsService = new JobsService(new JobRolesData(), databaseConnector);
+        competencyService = new CompetencyService(new CompetencyData(), databaseConnector);
     }
+    
     @GET
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,6 +43,20 @@ public class WebService {
         } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+
+    @GET
+    @Path("/competencies/{band_level}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCompetenciesByBandLevel(@PathParam("band_level") int id) {
+        try {
+            return Response.ok(competencyService.getCompetenciesByBandLevel(id)).build();
+        } catch (SQLException | DatabaseConnectionException e) {
+            System.out.println(e);
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        } catch (DataNotFoundException e) {
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 
