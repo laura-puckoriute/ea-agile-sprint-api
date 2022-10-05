@@ -40,7 +40,7 @@ public class JobRolesData {
 
         }
 
-        String query2 = "SELECT b.id AS 'Band ID', c.id AS 'Capability ID', b.title AS 'Band Title', c.title AS 'Capability Title' FROM Band_Level b, Capability c order by b.id DESC;";
+        String query2 = "SELECT b.id AS 'Band ID', c.id AS 'Capability ID', b.title AS 'Band Title', c.title AS 'Capability Title' FROM Band_Level b, Capability c GROUP BY b.id, c.id order by b.id;";
         PreparedStatement st2 = c.prepareStatement(query2);
         ResultSet rs2 = st2.executeQuery();
 

@@ -72,8 +72,8 @@ public class WebServiceIntegrationTest {
         Assertions.assertEquals(null, jobList.get(3).getTitle());
         Assertions.assertEquals(0, jobList.get(3).getId());
         Assertions.assertEquals("Engineering", jobList.get(3).getCapability());
-        Assertions.assertEquals("Apprentice", jobList.get(3).getBandLevel());
-        Assertions.assertEquals(7, jobList.get(3).getBandLevelID());
+        Assertions.assertEquals("Principal", jobList.get(3).getBandLevel());
+        Assertions.assertEquals(1, jobList.get(3).getBandLevelID());
         Assertions.assertEquals(1, jobList.get(3).getCapabilityID());
     }
 
