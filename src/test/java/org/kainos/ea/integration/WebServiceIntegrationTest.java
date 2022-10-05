@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
+import org.kainos.ea.models.Competency;
 import org.kainos.ea.models.JobRolesResponse;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
@@ -17,10 +18,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.models.JobSpecificationResponse;
 
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
+    String hostURI = System.getenv("API_URL");
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
@@ -44,6 +48,18 @@ public class WebServiceIntegrationTest {
         Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
         Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
 
+    }
+
+    @Test
+    void getCompetencyByBandLevel_shouldReturnListOfCompetencies() throws UnsupportedEncodingException {
+        String location = "/competencies/6";
+        String uri = hostURI + location;
+        URLEncoder.encode(uri, "UTF-8");
+        List<Competency> response = APP.client().target(uri)
+                .request()
+                .get(List.class);
+
+        Assertions.assertTrue(response.size() > 0);
     }
 
     @Test
