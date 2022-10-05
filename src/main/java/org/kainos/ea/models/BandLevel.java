@@ -9,6 +9,8 @@ public class BandLevel {
 
     private String title;
 
+    public BandLevel() {}
+
     @JsonCreator
     public BandLevel( @JsonProperty("band_title") String title ) {
 
