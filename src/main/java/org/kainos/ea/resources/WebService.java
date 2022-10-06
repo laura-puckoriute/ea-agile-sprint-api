@@ -31,7 +31,7 @@ public class WebService {
     public WebService() {
         DatabaseConnection databaseConnector = new DatabaseConnection();
         jobsService = new JobsService(new JobRolesData(), databaseConnector);
-        competencyService = new CompetencyService(new CompetencyData(), new BandLevelData(), databaseConnector);
+        competencyService = new CompetencyService(new CompetencyData(), databaseConnector);
     }
     
     @GET
