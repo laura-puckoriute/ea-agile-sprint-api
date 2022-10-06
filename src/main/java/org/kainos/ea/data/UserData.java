@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class UserData {
 
-    public boolean checkCredentials( Connection conn, String email, String password ) throws SQLException, DatabaseConnectionException {
+    public int checkCredentials( Connection conn, String email, String password ) throws SQLException, DatabaseConnectionException {
 
         String query = "SELECT id FROM `User` WHERE email = ? AND password = ?;";
 
@@ -22,9 +22,44 @@ public class UserData {
 
         if ( rs.next() ) {
 
+            return rs.getInt( "id" );
+        }
+
+        return -1;
+    }
+
+    public boolean insertToken( Connection conn, int userId, String token ) throws SQLException {
+
+        String query = "INSERT INTO `Token` (`userID`, `value`) VALUES (?, ?);";
+
+        PreparedStatement st = conn.prepareStatement( query );
+
+        st.setInt( 1, userId );
+        st.setString( 2, token );
+
+        if ( st.executeUpdate() > 0 ) {
+
             return true;
         }
 
         return false;
+
+    }
+
+    public boolean removeToken( Connection conn, String token ) throws SQLException {
+
+        String query = "DELETE FROM `Token` WHERE value = ?;";
+
+        PreparedStatement st = conn.prepareStatement( query );
+
+        st.setString( 1, token );
+
+        if ( st.executeUpdate() > 0 ) {
+
+            return true;
+        }
+
+        return false;
+
     }
 }
