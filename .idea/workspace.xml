@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e819e242-60f3-4bf9-85c2-73afcefcd7fa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/data/CompetencyData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/data/CompetencyData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/CompetenciesWithBandLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/CompetenciesWithBandLevel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/Competency.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/Competency.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/WebServiceIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/WebServiceIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/BandLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/BandLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/WebService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/WebService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/service/CompetencyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/service/CompetencyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/CompetencyDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/CompetencyDataTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,13 +39,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/chen/Academy/sprint/ea-agile-sprint-api"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/chen/Academy/sprint/ea-agile-sprint-api&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="JUnit.WebServiceIntegrationTest">
     <configuration name="CompetencyDataTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ea-agile-sprint-api" />
@@ -57,7 +57,15 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.kainos.ea.service" />
       <option name="MAIN_CLASS_NAME" value="org.kainos.ea.service.CompetencyDataTest" />
+      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="DATABASE" value="ea_agile_sprint_MeiC" />
+        <env name="HOST" value="academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com " />
+        <env name="API_URL" value="http://localhost:8080/api" />
+        <env name="PASSWORD" value="SQLACADEMYP@SS" />
+        <env name="USER" value="MeiC" />
+      </envs>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -150,8 +158,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.WebServiceIntegrationTest" />
-        <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetencies" />
         <item itemvalue="JUnit.CompetencyDataTest" />
+        <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetencies" />
         <item itemvalue="JUnit.CompetencyDataTest.getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId" />
         <item itemvalue="JUnit.WebServiceIntegrationTest.getCompetencyByBandLevel_shouldReturnListOfCompetenciesWithBandLevelName" />
       </list>
