@@ -15,26 +15,22 @@ public class CompetencyService {
 
     public CompetencyData competenciesData;
 
-    public BandLevelData bandLevelData;
-
     public DatabaseConnection databaseConnector;
 
-    public CompetencyService(CompetencyData competenciesData, BandLevelData bandLevelData, DatabaseConnection databaseConnector) {
+    public CompetencyService(CompetencyData competenciesData, DatabaseConnection databaseConnector) {
         this.competenciesData = competenciesData;
-        this.bandLevelData = bandLevelData;
         this.databaseConnector = databaseConnector;
     }
 
     public CompetenciesWithBandLevel getCompetenciesByBandLevel(int id) throws DatabaseConnectionException, SQLException, DataNotFoundException {
 
-        CompetenciesWithBandLevel response = new CompetenciesWithBandLevel();
-
-        response.setCompetencies( competenciesData.getCompetenciesByBandLevel(id, databaseConnector.getConnection()) );
-        response.setBandLevel( bandLevelData.getBandLevelName( databaseConnector.getConnection(), id ) );
+        CompetenciesWithBandLevel response = competenciesData.getCompetenciesByBandLevel( id, databaseConnector.getConnection() );
 
         if ( response.getCompetencies() == null || response.getBandLevel() == null ) {
+
             throw new DataNotFoundException();
         }
+
         return response;
     }
 }
