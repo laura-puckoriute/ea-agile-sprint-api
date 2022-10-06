@@ -9,6 +9,7 @@ public class JobSpecificationResponse {
     private String title;
     private String description;
     private String link;
+    private String responsibilities;
 
     public JobSpecificationResponse() {};
 
@@ -16,11 +17,13 @@ public class JobSpecificationResponse {
     public JobSpecificationResponse(
             @JsonProperty("title") String title,
             @JsonProperty("description") String description,
-            @JsonProperty("link") String link)
+            @JsonProperty("link") String link,
+            @JsonProperty("responsibilities") String responsibilities)
     {
         this.setTitle(title);
         this.setDescription(description);
         this.setLink(link);
+        this.setResponsibilities(responsibilities);
     }
 
     public String getTitle() {
@@ -45,6 +48,14 @@ public class JobSpecificationResponse {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getResponsibilities() {
+        return responsibilities;
+    }
+
+    public void setResponsibilities(String responsibilities) {
+        this.responsibilities = responsibilities;
     }
 
     @Override
