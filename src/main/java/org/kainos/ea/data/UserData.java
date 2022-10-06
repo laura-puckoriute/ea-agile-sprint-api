@@ -46,13 +46,16 @@ public class UserData {
 
     }
 
-    public boolean removeToken( Connection conn, String token ) throws SQLException {
+    public boolean removeToken( Connection conn, String email, String token ) throws SQLException {
 
-        String query = "DELETE FROM `Token` WHERE value = ?;";
+        String query = "DELETE Token FROM Token " +
+                "JOIN User ON User.id = Token.userID " +
+                "WHERE User.email = ? AND Token.value = ?;";
 
         PreparedStatement st = conn.prepareStatement( query );
 
-        st.setString( 1, token );
+        st.setString( 1, email );
+        st.setString( 2, token );
 
         if ( st.executeUpdate() > 0 ) {
 
