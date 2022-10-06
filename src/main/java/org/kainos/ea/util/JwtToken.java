@@ -23,7 +23,7 @@ public class JwtToken {
         return jws;
     }
 
-    public static boolean verifyToken( String token ) throws InvalidClaimException {
+    public static String verifyToken( String token ) throws InvalidClaimException {
 
         Jws<Claims> jws;
 
@@ -34,11 +34,11 @@ public class JwtToken {
                     .build()
                     .parseClaimsJws( token );
 
-            return true;
+            return jws.getBody().getSubject();
 
         } catch ( InvalidClaimException e ) {
 
-            return false;
+            return "invalid token";
         }
     }
 }
