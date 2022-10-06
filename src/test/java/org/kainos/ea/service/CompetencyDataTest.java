@@ -1,18 +1,18 @@
 package org.kainos.ea.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.data.CompetencyData;
-import org.kainos.ea.data.JobRolesData;
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.models.BandLevel;
+import org.kainos.ea.models.CompetenciesWithBandLevel;
 import org.kainos.ea.models.Competency;
-import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.util.DatabaseConnection;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CompetencyDataTest {
 
     CompetencyData competencyData = Mockito.mock(CompetencyData.class);
+
     DatabaseConnection databaseConnector = Mockito.mock(DatabaseConnection.class);
 
     CompetencyService competencyService = new CompetencyService(competencyData, databaseConnector);
@@ -32,20 +33,29 @@ public class CompetencyDataTest {
     Connection conn;
 
     @Test
-    void getCompetencyByBandLevel_shouldReturnCompetencyList_whenCompetencyReturnsCompetencies() throws DatabaseConnectionException, SQLException {
-        List<Competency> expectedResult = new ArrayList<>();
+    void getCompetencyByBandLevel_shouldReturnCompetenciesAndBandLevelName_whenGivenValidBandLevelId() throws DatabaseConnectionException, SQLException {
+
+        CompetenciesWithBandLevel expectedResult = new CompetenciesWithBandLevel();
+
         int id = 1;
 
-        Competency j = new Competency(1, "Personal Performance", "Developing self-awareness",
-                "Understands others strengths and areas for development. Recognisingdiversity and its value within self andteam.Proactively uses wellbeing tools to support self-regulation.");
-        expectedResult.add(j);
+        List<Competency> competencyList = new ArrayList<>();
 
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(competencyData.getCompetenciesByBandLevel(id, conn)).thenReturn(expectedResult);
-        List<Competency> result = competencyService.getCompetenciesByBandLevel(id);
+        BandLevel bandLevel = new BandLevel( 6, "Trainee" );
 
-        System.out.println(result);
-        assertEquals(expectedResult, result);
+        competencyList.add( new Competency(1, "Personal Performance", "Developing self-awareness",
+                "Understands others strengths and areas for development. Recognisingdiversity and its value within self andteam.Proactively uses wellbeing tools to support self-regulation."));
+
+        expectedResult.setCompetencies( competencyList );
+        expectedResult.setBandLevel( new BandLevel(6, "Trainee") );
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( competencyData.getCompetenciesByBandLevel( id, conn ) ).thenReturn( expectedResult );
+
+        CompetenciesWithBandLevel result = competencyService.getCompetenciesByBandLevel( id );
+
+        assertEquals(expectedResult.getCompetencies(), result.getCompetencies());
+        Assertions.assertTrue( expectedResult.getBandLevel().equals( result.getBandLevel() ) );
     }
 
     @Test

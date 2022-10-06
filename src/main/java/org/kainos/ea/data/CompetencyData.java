@@ -1,39 +1,60 @@
 package org.kainos.ea.data;
 
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.models.BandLevel;
+import org.kainos.ea.models.CompetenciesWithBandLevel;
 import org.kainos.ea.models.Competency;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompetencyData {
 
-    public List<Competency> getCompetenciesByBandLevel(int id, Connection c) throws SQLException, DatabaseConnectionException {
-        Statement st = c.createStatement();
+    public CompetenciesWithBandLevel getCompetenciesByBandLevel( int id, Connection c ) throws SQLException, DatabaseConnectionException {
 
-        ResultSet rs = st.executeQuery(
-                "SELECT Competency.title, Responsibility.responsibility_name, Responsibility.description " +
-                        "FROM Competency " +
-                        "JOIN Responsibility ON Competency.id = Responsibility.CompetencyID " +
-                        "JOIN Band_Level ON Responsibility.band_levelID = Band_Level.id " +
-                        "WHERE Band_Level.id = " + id + ";");
+        String query =
+                "SELECT " +
+                        "COMP.id AS competency_id, " +
+                        "    COMP.title AS competency_title, " +
+                        "    RES.responsibility_name, " +
+                        "    RES.description AS responsibility_description, " +
+                        "    BAND.id AS band_id, " +
+                        "    BAND.title AS band_title " +
+
+                        "FROM `Competency` AS COMP " +
+                        "JOIN `Responsibility` AS RES " +
+                        "ON COMP.id = RES.competencyID " +
+                        "JOIN `Band_Level` as BAND " +
+                        "ON BAND.id = RES.band_levelID " +
+                        "WHERE BAND.id = ?;";
+
+        PreparedStatement st = c.prepareStatement( query );
+
+        st.setInt( 1, id );
+
+        ResultSet rs = st.executeQuery();
 
         List<Competency> competencies = new ArrayList<>();
+        BandLevel bandLevel = new BandLevel();
 
-        while (rs.next()) {
-            Competency competency = new Competency(
-                    rs.getString("title"),
+        while ( rs.next() ) {
+
+            Competency competency = new Competency (
+
+                    rs.getInt("competency_id"),
+                    rs.getString("competency_title"),
                     rs.getString("responsibility_name"),
-                    rs.getString("description")
+                    rs.getString("responsibility_description")
             );
+
+            bandLevel.setId( rs.getInt("band_id") );
+            bandLevel.setBandName( rs.getString("band_title") );
 
             competencies.add(competency);
         }
-        return competencies;
+
+        return new CompetenciesWithBandLevel( competencies, bandLevel );
     }
 }
 
