@@ -35,7 +35,7 @@ public class CompetencyDataTest {
 
     DatabaseConnection databaseConnector = Mockito.mock(DatabaseConnection.class);
 
-    CompetencyService competencyService = new CompetencyService(competencyData, bandLevelData, databaseConnector);
+    CompetencyService competencyService = new CompetencyService(competencyData, databaseConnector);
 
     Connection conn;
 
@@ -50,15 +50,14 @@ public class CompetencyDataTest {
 
         BandLevel bandLevel = new BandLevel( 6, "Trainee" );
 
-        competencyList.add(new Competency(1, "Personal Performance", "Developing self-awareness",
+        competencyList.add( new Competency(1, "Personal Performance", "Developing self-awareness",
                 "Understands others strengths and areas for development. Recognisingdiversity and its value within self andteam.Proactively uses wellbeing tools to support self-regulation."));
 
         expectedResult.setCompetencies( competencyList );
         expectedResult.setBandLevel( new BandLevel(6, "Trainee") );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( competencyData.getCompetenciesByBandLevel( id, conn ) ).thenReturn( competencyList );
-        Mockito.when( bandLevelData.getBandLevelName( conn, id ) ).thenReturn( bandLevel );
+        Mockito.when( competencyData.getCompetenciesByBandLevel( id, conn ) ).thenReturn( expectedResult );
 
         CompetenciesWithBandLevel result = competencyService.getCompetenciesByBandLevel( id );
 
