@@ -2,18 +2,17 @@ package org.kainos.ea.service;
 
 
 import com.google.common.hash.Hashing;
+import io.jsonwebtoken.InvalidClaimException;
 import org.kainos.ea.data.UserData;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.InvalidUserCredentialsException;
 import org.kainos.ea.util.DatabaseConnection;
-import org.kainos.ea.util.JwtTokenGenerator;
+import org.kainos.ea.util.JwtToken;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class UserService {
-
-    private String SECRET = System.getenv("SECRET");
 
     public UserData userData;
 
@@ -25,28 +24,43 @@ public class UserService {
         this.databaseConnection = databaseConnection;
     }
 
-    public String authenticateUser( String email, String encryptedPassword ) throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
+    public String authenticateUser( String email, String password ) throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
 
-        if ( checkCredentials( email, decrypt( encryptedPassword ) ) ) {
+        int id = checkCredentials( email, password );
 
-            return JwtTokenGenerator.generateToken( "SECRET", email );
+        if ( id > 0 ) {
+
+            String token = JwtToken.generateToken( email );
+
+            if ( token != null ) {
+
+                userData.insertToken( databaseConnection.getConnection(), id, token );
+
+                return token;
+            }
         }
 
         throw new InvalidUserCredentialsException("email or password is incorrect");
     }
 
-    public boolean checkCredentials( String email, String password ) throws DatabaseConnectionException, SQLException {
+    public String removeUserToken( String token ) throws DatabaseConnectionException, SQLException, InvalidClaimException {
+
+        String email = JwtToken.verifyToken( token );
+
+        if ( userData.removeToken( databaseConnection.getConnection(), email, token ) ) {
+
+            return "logout successful";
+        }
+
+        return "invalid token";
+    }
+
+    private int checkCredentials( String email, String password ) throws DatabaseConnectionException, SQLException {
 
         return userData.checkCredentials( databaseConnection.getConnection(), email, generateHash( password ) );
     }
 
-    public String decrypt( String password ) {
-
-        // some decryption logic here using private key
-
-        return password;
-    }
-    public String generateHash( String password ) {
+    private String generateHash( String password ) {
 
         String hash = Hashing.sha256()
                 .hashString( password, StandardCharsets.UTF_8 )
