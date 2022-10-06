@@ -41,7 +41,7 @@ public class JobRolesData {
 
     public JobSpecificationResponse getJobSpecification(Connection c, int id ) throws SQLException, DatabaseConnectionException {
 
-        String query = "SELECT title, description, link FROM Role WHERE id = ?;";
+        String query = "SELECT title, description, link, responsibilities FROM Role WHERE id = ?;";
 
         PreparedStatement st = c.prepareStatement(query);
 
@@ -56,6 +56,7 @@ public class JobRolesData {
             jobSpecification.setTitle( rs.getString("title") );
             jobSpecification.setDescription( rs.getString("description") );
             jobSpecification.setLink( rs.getString("link") );
+            jobSpecification.setResponsibilities( rs.getString("responsibilities"));
 
         }
 
