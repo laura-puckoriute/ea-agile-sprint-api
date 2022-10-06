@@ -9,7 +9,7 @@ public class BandLevelData {
 
     public BandLevel getBandLevelName ( Connection c, int id ) throws SQLException, DatabaseConnectionException {
 
-        String query = "SELECT title from Band_Level WHERE id = ?;";
+        String query = "SELECT id AS band_id, title AS band_title from Band_Level WHERE id = ?;";
 
         PreparedStatement st = c.prepareStatement( query );
 
@@ -21,8 +21,8 @@ public class BandLevelData {
 
         if ( rs.next() ) {
 
-            bandLevel.setId( id );
-            bandLevel.setBandName( rs.getString( "title" ) );
+            bandLevel.setId( rs.getInt( "band_id" ) );
+            bandLevel.setBandName( rs.getString( "band_title" ) );
         }
 
         return bandLevel;
