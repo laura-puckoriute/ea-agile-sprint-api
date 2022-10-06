@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e819e242-60f3-4bf9-85c2-73afcefcd7fa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/BandLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/models/BandLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/data/BandLevelData.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/WebService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/WebService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/service/CompetencyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/service/CompetencyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/CompetencyDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/CompetencyDataTest.java" afterDir="false" />

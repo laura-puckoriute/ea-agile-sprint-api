@@ -2,7 +2,6 @@ package org.kainos.ea.service;
 
 import org.kainos.ea.util.DatabaseConnection;
 
-import org.kainos.ea.data.BandLevelData;
 import org.kainos.ea.data.CompetencyData;
 
 import org.kainos.ea.models.CompetenciesWithBandLevel;

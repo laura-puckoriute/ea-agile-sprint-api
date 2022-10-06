@@ -2,7 +2,6 @@ package org.kainos.ea.resources;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-import org.kainos.ea.data.BandLevelData;
 import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.data.JobRolesData;
 
