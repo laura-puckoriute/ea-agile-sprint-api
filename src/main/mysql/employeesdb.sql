@@ -1,9 +1,9 @@
-DROP DATABASE IF EXISTS ea_agile_sprint_FlorianB;
+DROP DATABASE IF EXISTS ea_agile_sprint_AoifeMcD;
 
 #Change username to yours.
-CREATE DATABASE ea_agile_sprint_FlorianB;
+CREATE DATABASE ea_agile_sprint_AoifeMcD;
 
-USE ea_agile_sprint_FlorianB;
+USE ea_agile_sprint_AoifeMcD;
 
 CREATE TABLE `Capability` (
 	`id` smallint NOT NULL PRIMARY KEY AUTO_INCREMENT,
