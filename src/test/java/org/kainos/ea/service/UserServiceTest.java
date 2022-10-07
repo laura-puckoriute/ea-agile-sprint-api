@@ -1,5 +1,7 @@
 package org.kainos.ea.service;
 
+import io.jsonwebtoken.InvalidClaimException;
+import io.jsonwebtoken.security.SignatureException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -89,5 +91,55 @@ public class UserServiceTest {
 
         Assertions.assertThrows( InvalidUserCredentialsException.class,
                 () -> userService.authenticateUser( user.getEmail(), "wrongpassword" ));
+    }
+
+    @Test
+    public void removeUserToken_shouldReturnLogoutSuccessful_whenTokenValid() throws DatabaseConnectionException, SQLException {
+
+        String email = "testemail@email.com";
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
+                ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0qRvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( true );
+
+        String response = userService.removeUserToken( token );
+
+        Assertions.assertEquals( "logout successful", response );
+
+    }
+
+    @Test
+    public void removeUserToken_shouldReturnInvalidToken_whenTokenNotFound() throws DatabaseConnectionException, SQLException {
+
+        String email = "testemail@email.com";
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
+                ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0qRvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( false );
+
+        String response = userService.removeUserToken( token );
+
+        Assertions.assertEquals( "invalid token", response );
+
+    }
+
+    @Test
+    public void removeUserToken_shouldThrowSignatureException_whenTokenNotValid() throws DatabaseConnectionException, SQLException {
+
+        String email = "testemail@email.com";
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
+                ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0RvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( false );
+
+        Assertions.assertThrows( SignatureException.class,
+                () -> userService.removeUserToken( token ));
+
     }
 }
