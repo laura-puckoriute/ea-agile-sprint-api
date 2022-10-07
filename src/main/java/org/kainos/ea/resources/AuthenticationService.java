@@ -1,11 +1,14 @@
 package org.kainos.ea.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jsonwebtoken.InvalidClaimException;
+import io.jsonwebtoken.JwtException;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.data.UserData;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.InvalidUserCredentialsException;
 import org.kainos.ea.models.User;
+import org.kainos.ea.models.UserResponse;
 import org.kainos.ea.service.UserService;
 import org.kainos.ea.util.DatabaseConnection;
 import org.kainos.ea.util.JwtToken;
@@ -32,9 +35,11 @@ public class AuthenticationService {
     public Response generateToken( String email ) {
 
         try {
+
             return Response.ok(JwtToken.generateToken( email )).build();
-        } catch ( Exception e ) {
-            System.out.println( e );
+
+        } catch ( JwtException e ) {
+
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
@@ -51,19 +56,19 @@ public class AuthenticationService {
 
         } catch ( Exception e ) {
 
-            System.out.println( e );
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
+
     @POST
     @Path("/signin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response authenticateUser( User user ) {
+    public Response authenticateUser( UserResponse user ) {
 
         try {
 
-            return Response.ok( userService.authenticateUser( user.getEmail(), user.getPasswordHash() ) ).build();
+            return Response.ok( userService.authenticateUser( user.getEmail(), user.getPassword() ) ).build();
 
         } catch ( SQLException | DatabaseConnectionException e ) {
 
@@ -88,6 +93,10 @@ public class AuthenticationService {
         } catch ( SQLException | DatabaseConnectionException e ) {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+        } catch ( InvalidClaimException | InvalidUserCredentialsException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
 
         }
     }
