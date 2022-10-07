@@ -9,14 +9,14 @@ import java.sql.SQLException;
 
 public class UserData {
 
-    public int checkCredentials( Connection conn, String email, String password ) throws SQLException, DatabaseConnectionException {
+    public int checkCredentials( Connection conn, String email, String passwordHash ) throws DatabaseConnectionException, SQLException {
 
         String query = "SELECT id FROM `User` WHERE email = ? AND password = ?;";
 
         PreparedStatement st = conn.prepareStatement( query );
 
         st.setString( 1, email );
-        st.setString( 2, password );
+        st.setString( 2, passwordHash );
 
         ResultSet rs = st.executeQuery();
 
@@ -28,7 +28,7 @@ public class UserData {
         return -1;
     }
 
-    public boolean insertToken( Connection conn, int userId, String token ) throws SQLException {
+    public int insertToken( Connection conn, int userId, String token ) throws DatabaseConnectionException, SQLException {
 
         String query = "INSERT INTO `Token` (`userID`, `value`) VALUES (?, ?);";
 
@@ -39,14 +39,14 @@ public class UserData {
 
         if ( st.executeUpdate() > 0 ) {
 
-            return true;
+            return 1;
         }
 
-        return false;
+        return -1;
 
     }
 
-    public boolean removeToken( Connection conn, String email, String token ) throws SQLException {
+    public boolean removeToken( Connection conn, String email, String token ) throws DatabaseConnectionException, SQLException {
 
         String query = "DELETE Token FROM Token " +
                 "JOIN User ON User.id = Token.userID " +

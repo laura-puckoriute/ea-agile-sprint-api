@@ -34,9 +34,10 @@ public class UserService {
 
             if ( token != null ) {
 
-                userData.insertToken( databaseConnection.getConnection(), id, token );
+                if ( insertToken( id, token ) > 0 ) {
 
-                return token;
+                    return token;
+                }
             }
         }
 
@@ -55,12 +56,17 @@ public class UserService {
         return "invalid token";
     }
 
-    private int checkCredentials( String email, String password ) throws DatabaseConnectionException, SQLException {
+    public int checkCredentials( String email, String password ) throws DatabaseConnectionException, SQLException {
 
         return userData.checkCredentials( databaseConnection.getConnection(), email, generateHash( password ) );
     }
 
-    private String generateHash( String password ) {
+    public int insertToken( int id, String token ) throws DatabaseConnectionException, SQLException {
+
+        return userData.insertToken( databaseConnection.getConnection(), id, token );
+    }
+
+    public String generateHash( String password ) {
 
         String hash = Hashing.sha256()
                 .hashString( password, StandardCharsets.UTF_8 )
