@@ -23,7 +23,7 @@ public class JwtToken {
         return jws;
     }
 
-    public static String verifyToken( String token ) throws InvalidClaimException {
+    public static String verifyToken( String token ) {
 
         Jws<Claims> jws;
 
@@ -36,7 +36,7 @@ public class JwtToken {
 
             return jws.getBody().getSubject();
 
-        } catch ( InvalidClaimException e ) {
+        } catch ( JwtException e ) {
 
             return "invalid token";
         }

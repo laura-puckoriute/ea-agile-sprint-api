@@ -1,5 +1,6 @@
 package org.kainos.ea.service;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -240,14 +241,14 @@ public class UserServiceTest {
     }
 
     @Test
-    public void removeUserToken_shouldThrowSignatureException_whenTokenNotValid() throws DatabaseConnectionException, SQLException {
+    public void removeUserToken_shouldThrowInvalidUserCredentialsException_whenTokenNotValid() throws DatabaseConnectionException, SQLException {
 
         String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
                 ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0RvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
 
-        Assertions.assertThrows( SignatureException.class,
+        Assertions.assertThrows( InvalidUserCredentialsException.class,
                 () -> userService.removeUserToken( token ));
 
     }
