@@ -85,7 +85,7 @@ public class AuthenticationServiceIntegrationTest {
     }
 
     @Test
-    void postRemoveUserToken_shouldReturn400Error_whenTokenFromatInvalid() {
+    void postRemoveUserToken_shouldReturn400Error_whenTokenFormatInvalid() {
 
         int response = APP.client().target( API_URL + SIGNOUT_ENDPOINT )
                 .request()
