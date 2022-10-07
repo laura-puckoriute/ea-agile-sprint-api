@@ -84,11 +84,8 @@ public class UserServiceTest {
 
         String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
 
-        String expectedResult = "eyJhbGciOiJIUzUxMiJ9";
-
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenReturn( id );
-        Mockito.when( userData.insertToken( conn, id, expectedResult )).thenReturn( true );
 
         Assertions.assertThrows( InvalidUserCredentialsException.class,
                 () -> userService.authenticateUser( user.getEmail(), "wrongpassword" ));
