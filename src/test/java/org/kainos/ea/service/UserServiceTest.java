@@ -130,13 +130,10 @@ public class UserServiceTest {
     @Test
     public void removeUserToken_shouldThrowSignatureException_whenTokenNotValid() throws DatabaseConnectionException, SQLException {
 
-        String email = "testemail@email.com";
-
         String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
                 ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0RvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( false );
 
         Assertions.assertThrows( SignatureException.class,
                 () -> userService.removeUserToken( token ));
