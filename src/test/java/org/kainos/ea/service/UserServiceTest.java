@@ -9,7 +9,7 @@ import org.kainos.ea.exception.InvalidUserCredentialsException;
 import org.kainos.ea.models.User;
 import org.kainos.ea.util.DatabaseConnection;
 import org.kainos.ea.util.JwtToken;
-import org.mockito.Mock;
+
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -22,8 +22,6 @@ public class UserServiceTest {
     UserData userData = Mockito.mock(UserData.class);
 
     DatabaseConnection databaseConnector = Mockito.mock(DatabaseConnection.class);
-
-    JwtToken jwtToken = Mockito.mock(JwtToken.class);
 
     UserService userService = new UserService( userData, databaseConnector );
 
@@ -40,12 +38,59 @@ public class UserServiceTest {
 
         String expectedResult = "eyJhbGciOiJIUzUxMiJ9";
 
-        Mockito.when( databaseConnector.getConnection() ).thenReturn(conn);
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenReturn( id );
         Mockito.when( userData.insertToken( conn, id, expectedResult )).thenReturn( true );
 
         String result = userService.authenticateUser( user.getEmail(), user.getPasswordHash() );
 
         Assertions.assertTrue( expectedResult.equals( result.split("\\.")[0] ));
+    }
+
+    @Test
+    public void authenticateUser_shouldThrowSQLException_whenAuthenticateUserThrowsSQLException() throws DatabaseConnectionException, SQLException {
+
+        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
+
+        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenThrow( SQLException.class );
+
+        Assertions.assertThrows( SQLException.class,
+                () -> userService.authenticateUser( user.getEmail(), user.getPasswordHash() ));
+    }
+
+    @Test
+    public void authenticateUser_shouldThrowDatabaseConnectionException_whenAuthenticateUserThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
+
+        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
+
+        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenThrow( DatabaseConnectionException.class );
+
+        Assertions.assertThrows( DatabaseConnectionException.class,
+                () -> userService.authenticateUser( user.getEmail(), user.getPasswordHash() ));
+    }
+
+    @Test
+    public void authenticateUser_shouldThrowInvalidUserCredentialsException_whenAuthenticateUserThrowsInvalidUserCredentialsException() throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
+
+        int id = 3;
+
+        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
+
+        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+
+        String expectedResult = "eyJhbGciOiJIUzUxMiJ9";
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenReturn( id );
+        Mockito.when( userData.insertToken( conn, id, expectedResult )).thenReturn( true );
+
+        Assertions.assertThrows( InvalidUserCredentialsException.class,
+                () -> userService.authenticateUser( user.getEmail(), "wrongpassword" ));
     }
 }
