@@ -44,7 +44,7 @@ public class UserService {
         throw new InvalidUserCredentialsException("email or password is incorrect");
     }
 
-    public String removeUserToken( String token ) throws DatabaseConnectionException, SQLException, InvalidClaimException {
+    public String removeUserToken( String token ) throws DatabaseConnectionException, SQLException, InvalidClaimException, InvalidUserCredentialsException {
 
         String email = JwtToken.verifyToken( token );
 
@@ -53,7 +53,7 @@ public class UserService {
             return "logout successful";
         }
 
-        return "invalid token";
+        throw new InvalidUserCredentialsException("invalid token");
     }
 
     public int checkCredentials( String email, String password ) throws DatabaseConnectionException, SQLException {
