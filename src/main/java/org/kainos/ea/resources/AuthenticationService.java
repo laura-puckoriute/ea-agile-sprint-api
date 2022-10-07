@@ -3,6 +3,7 @@ package org.kainos.ea.resources;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jsonwebtoken.InvalidClaimException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.data.UserData;
 import org.kainos.ea.exception.DatabaseConnectionException;
@@ -26,38 +27,6 @@ public class AuthenticationService {
     public AuthenticationService() {
 
         userService = new UserService( new UserData(), new DatabaseConnection() );
-    }
-
-
-    @GET
-    @Path("/gen")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response generateToken( String email ) {
-
-        try {
-
-            return Response.ok(JwtToken.generateToken( email )).build();
-
-        } catch ( JwtException e ) {
-
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-        }
-    }
-
-    @POST
-    @Path("/verify")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response verifyToken( String token ) {
-
-        try {
-
-            return Response.ok( JwtToken.verifyToken( token ) ).build();
-
-        } catch ( Exception e ) {
-
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-        }
     }
 
     @POST
@@ -94,7 +63,7 @@ public class AuthenticationService {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
 
-        } catch ( InvalidClaimException | InvalidUserCredentialsException e ) {
+        } catch ( JwtException | InvalidUserCredentialsException e ) {
 
             return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
 
