@@ -1,6 +1,5 @@
 package org.kainos.ea.service;
 
-import io.jsonwebtoken.InvalidClaimException;
 import io.jsonwebtoken.security.SignatureException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,69 +31,183 @@ public class UserServiceTest {
     @Test
     public void authenticateUser_shouldReturnToken_whenCredentialsAreValid() throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
 
-        int id = 3;
+        String password = "randompassword";
 
-        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
 
-        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+        String expectedResult = JwtToken.generateToken( user.getEmail() );
 
-        String expectedResult = "eyJhbGciOiJIUzUxMiJ9";
+        Mockito.when( databaseConnector.getConnection() ).thenReturn(conn);
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn(user.getId() );
+        Mockito.when( userData.insertToken( conn, user.getId(), expectedResult )).thenReturn( 1 );
 
-        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenReturn( id );
-        Mockito.when( userData.insertToken( conn, id, expectedResult )).thenReturn( true );
+        String result = userService.authenticateUser( user.getEmail(), password );
 
-        String result = userService.authenticateUser( user.getEmail(), user.getPasswordHash() );
-
-        Assertions.assertTrue( expectedResult.equals( result.split("\\.")[0] ));
+        Assertions.assertTrue( expectedResult.split("\\.")[0].equals( result.split("\\.")[0] ));
     }
 
     @Test
-    public void authenticateUser_shouldThrowSQLException_whenAuthenticateUserThrowsSQLException() throws DatabaseConnectionException, SQLException {
+    public void authenticateUser_shouldThrowSQLException_whenCheckCredentialsThrowsSQLException() throws DatabaseConnectionException, SQLException {
 
-        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
+        String password = "randompassword";
 
-        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenThrow( SQLException.class );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenThrow( SQLException.class );
 
         Assertions.assertThrows( SQLException.class,
-                () -> userService.authenticateUser( user.getEmail(), user.getPasswordHash() ));
+                () -> userService.authenticateUser( user.getEmail(), password ));
     }
 
     @Test
-    public void authenticateUser_shouldThrowDatabaseConnectionException_whenAuthenticateUserThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
+    public void authenticateUser_shouldThrowSQLException_whenInsertTokenThrowsSQLException() throws DatabaseConnectionException, SQLException {
 
-        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
+        String password = "randompassword";
 
-        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenThrow( DatabaseConnectionException.class );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+        Mockito.when( userData.insertToken( conn, user.getId(), JwtToken.generateToken( user.getEmail() ) ) ).thenThrow( SQLException.class );
+
+        Assertions.assertThrows( SQLException.class,
+                () -> userService.authenticateUser( user.getEmail(), password ));
+    }
+
+    @Test
+    public void authenticateUser_shouldThrowDatabaseConnectionException_whenCheckCredentialsThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
+
+        String password = "randompassword";
+
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenThrow( DatabaseConnectionException.class );
 
         Assertions.assertThrows( DatabaseConnectionException.class,
-                () -> userService.authenticateUser( user.getEmail(), user.getPasswordHash() ));
+                () -> userService.authenticateUser( user.getEmail(), password ));
     }
 
     @Test
-    public void authenticateUser_shouldThrowInvalidUserCredentialsException_whenAuthenticateUserThrowsInvalidUserCredentialsException() throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
+    public void authenticateUser_shouldThrowDatabaseConnectionException_whenInsertTokenThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
 
-        int id = 3;
+        String password = "randompassword";
 
-        User user = new User( "testemail@email.com", "THISIS@PASSWORD!");
-
-        String hash = "3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6";
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), hash ) ).thenReturn( id );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+        Mockito.when( userData.insertToken( conn, user.getId(), JwtToken.generateToken( user.getEmail() ) ) ).thenThrow( DatabaseConnectionException.class );
 
-        Assertions.assertThrows( InvalidUserCredentialsException.class,
-                () -> userService.authenticateUser( user.getEmail(), "wrongpassword" ));
+        Assertions.assertThrows( DatabaseConnectionException.class,
+                () -> userService.authenticateUser( user.getEmail(), password ));
     }
 
     @Test
-    public void removeUserToken_shouldReturnLogoutSuccessful_whenTokenValid() throws DatabaseConnectionException, SQLException {
+    public void authenticateUser_shouldThrowInvalidUserCredentialsException_whenAuthenticateUserThrowsInvalidUserCredentialsException() throws DatabaseConnectionException, SQLException {
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+
+        Assertions.assertThrows( InvalidUserCredentialsException.class,
+                () -> userService.authenticateUser( "email@email.com", "wrongpassword" ));
+    }
+
+    @Test
+    public void checkCredentials_shouldReturnUserId_whenCredentialsAreValid() throws DatabaseConnectionException, SQLException {
+
+        String password = "randompassword";
+
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+
+        int response = userService.checkCredentials( user.getEmail(), password );
+
+        Assertions.assertEquals( response, user.getId() );
+    }
+
+    @Test
+    public void checkCredentials_shouldNotReturnId_whenCredentialsAreInvalid() throws DatabaseConnectionException, SQLException {
+
+        String password = "randompassword";
+
+        User user = new User( 1,
+                "email@email.com",
+                userService.generateHash(password) );
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+
+        int invalidPassword     = userService.checkCredentials( user.getEmail(), "password" );
+        int invalidEmail        = userService.checkCredentials( "email", password );
+        int invalidCredentials  = userService.checkCredentials( "email", "password" );
+
+        Assertions.assertNotEquals( user.getId(), invalidPassword );
+        Assertions.assertNotEquals( user.getId(), invalidEmail );
+        Assertions.assertNotEquals( user.getId(), invalidCredentials );
+    }
+
+    @Test
+    public void insertToken_shouldReturnOne_whenInsertSuccessful() throws DatabaseConnectionException, SQLException {
+
+        int id = 1;
+
+        String token = JwtToken.generateToken( "email@email.com" );
+
+        int expectedResult = 1;
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.insertToken( conn, id, token ) ).thenReturn( expectedResult );
+
+        int result = userService.insertToken( id, token );
+
+        Assertions.assertEquals( expectedResult, result );
+    }
+
+    @Test
+    public void insertToken_shouldThrowSQLException_whenInsertThrowsSQLException() throws DatabaseConnectionException, SQLException {
+
+        int id = 1;
+
+        String token = JwtToken.generateToken( "email@email.com" );
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.insertToken( conn, id, token ) ).thenThrow( SQLException.class );
+
+        Assertions.assertThrows( SQLException.class,
+                () -> userService.insertToken( id, token ) );
+    }
+
+    @Test
+    public void insertToken_shouldThrowDatabaseConnectionException_whenInsertThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
+
+        int id = 1;
+
+        String token = JwtToken.generateToken( "email@email.com" );
+
+        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
+        Mockito.when( userData.insertToken( conn, id, token ) ).thenThrow( DatabaseConnectionException.class );
+
+        Assertions.assertThrows( DatabaseConnectionException.class,
+                () -> userService.insertToken( id, token ) );
+    }
+
+    @Test
+    public void removeUserToken_shouldReturnLogoutSuccessful_whenTokenValid() throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
 
         String email = "testemail@email.com";
 
@@ -111,7 +224,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void removeUserToken_shouldReturnInvalidToken_whenTokenNotFound() throws DatabaseConnectionException, SQLException {
+    public void removeUserToken_shouldThrowInvalidUserCredentialsException_whenTokenNotFound() throws DatabaseConnectionException, SQLException {
 
         String email = "testemail@email.com";
 
@@ -121,9 +234,8 @@ public class UserServiceTest {
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( false );
 
-        String response = userService.removeUserToken( token );
-
-        Assertions.assertEquals( "invalid token", response );
+        Assertions.assertThrows( InvalidUserCredentialsException.class,
+                () -> userService.removeUserToken( token ));
 
     }
 
@@ -138,5 +250,23 @@ public class UserServiceTest {
         Assertions.assertThrows( SignatureException.class,
                 () -> userService.removeUserToken( token ));
 
+    }
+
+    @Test
+    public void generateHash_shouldReturnIdenticalHash_whenGivenSameInput() {
+
+        String first    = "IDENTICALSTRING";
+        String second   = "IDENTICALSTRING";
+
+        Assertions.assertEquals( userService.generateHash( first ), userService.generateHash( second ) );
+    }
+
+    @Test
+    public void generateHash_shouldNotReturnIdenticalHash_whenGivenDifferentInput() {
+
+        String first    = "IDENTICALSTRING";
+        String second   = "NOTIDENTICALSTRING";
+
+        Assertions.assertNotEquals( userService.generateHash( first ), userService.generateHash( second ) );
     }
 }
