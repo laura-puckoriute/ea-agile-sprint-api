@@ -212,8 +212,7 @@ public class UserServiceTest {
 
         String email = "testemail@email.com";
 
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MzkxNTEwfQ" +
-                ".CKWtG8n_6Pib9VM41GM60FzZTwaAXSNiMJEjEiI2RY2SuEj2X-arMjEV2usN7X22r7EAWuvxqVTeBXUSINA5UA";
+        String token = JwtToken.generateToken( email );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( true );
@@ -221,22 +220,6 @@ public class UserServiceTest {
         String response = userService.removeUserToken( token );
 
         Assertions.assertEquals( "logout successful", response );
-
-    }
-
-    @Test
-    public void removeUserToken_shouldThrowInvalidUserCredentialsException_whenTokenNotFound() throws DatabaseConnectionException, SQLException {
-
-        String email = "testemail@email.com";
-
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
-                ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0qRvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
-
-        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( false );
-
-        Assertions.assertThrows( InvalidUserCredentialsException.class,
-                () -> userService.removeUserToken( token ));
 
     }
 
