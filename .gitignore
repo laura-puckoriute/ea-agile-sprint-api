@@ -39,6 +39,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### DATABASE CREDENTIALS ###
 db.properties
 
 ### RSA KEYS
