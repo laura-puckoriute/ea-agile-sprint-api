@@ -46,6 +46,21 @@ public class WebService {
     }
 
     @GET
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobRole( @PathParam("id") int id ) throws SQLException, DatabaseConnectionException {
+
+        try {
+
+            return Response.ok( jobsService.getJobRole( id ) ).build();
+
+        } catch ( SQLException | DatabaseConnectionException e ) {
+
+            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+        }
+    }
+
+    @GET
     @Path("/competencies/{band_level}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCompetenciesByBandLevel(@PathParam("band_level") int id) {
