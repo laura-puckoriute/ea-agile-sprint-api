@@ -9,6 +9,7 @@ import org.kainos.ea.models.User;
 import org.kainos.ea.service.UserService;
 import org.kainos.ea.util.DatabaseConnection;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,9 +47,8 @@ public class AuthenticationService {
 
     @POST
     @Path("/signout")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removeUserToken( String token ) {
+    public Response removeUserToken( @HeaderParam("Authorization") String token ) {
 
         try {
 
