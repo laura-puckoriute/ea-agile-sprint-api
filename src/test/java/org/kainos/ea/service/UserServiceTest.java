@@ -31,7 +31,7 @@ public class UserServiceTest {
 
     Connection conn;
 
-    UserRequest userRequest = new UserRequest("matthew.knox@email.com", "Testpassword", 1);
+    UserRequest userRequest = new UserRequest("matthew.knox@email.com", "Testpassword!", 1);
 
     @Test
     public void authenticateUser_shouldReturnToken_whenCredentialsAreValid() throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
