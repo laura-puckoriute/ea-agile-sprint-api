@@ -11,6 +11,35 @@ import java.util.List;
 
 public class JobRolesData {
 
+    public JobRolesResponse getJobRole( Connection conn, int id ) throws SQLException {
+
+        String query =
+                "SELECT Role.id, Role.title, Capability.title AS capability, Band_Level.title AS band_level " +
+                "FROM Role JOIN Capability ON Role.capabilityID = Capability.id " +
+                "JOIN Band_Level ON Role.band_levelID = Band_Level.id " +
+                "WHERE Role.id = ?;";
+
+        PreparedStatement st = conn.prepareStatement( query );
+
+        st.setInt( 1, id );
+
+        ResultSet rs = st.executeQuery();
+
+        JobRolesResponse jobRolesResponse = new JobRolesResponse();
+
+        if ( rs.next() ) {
+
+            jobRolesResponse = new JobRolesResponse(
+                    rs.getInt( "id" ),
+                    rs.getString( "title" ),
+                    rs.getString( "capability" ),
+                    rs.getString( "band_level" )
+            );
+        }
+
+        return jobRolesResponse;
+    }
+
     //US001 - View Job Roles
     public List<JobRolesResponse> getJobRoles(Connection c) throws SQLException, DatabaseConnectionException {
 
@@ -20,7 +49,6 @@ public class JobRolesData {
         PreparedStatement st = c.prepareStatement(query);
 
         ResultSet rs = st.executeQuery();
-
 
         List<JobRolesResponse> jobRoleNoForeignKeys = new ArrayList<>();
 
