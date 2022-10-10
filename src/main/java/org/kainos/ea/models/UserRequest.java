@@ -6,15 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserRequest {
     private String email;
     private String password;
-    private String passwordHash;
     private int userRoleID;
 
     @JsonCreator
     public UserRequest(@JsonProperty("email") String email,
-                       @JsonProperty("passwordHash") String passwordHash,
+                       @JsonProperty("password") String password,
                        @JsonProperty("user_roleID") int userRoleID) {
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.userRoleID = userRoleID;
     }
 
@@ -32,14 +31,6 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public int getUserRoleID() {
