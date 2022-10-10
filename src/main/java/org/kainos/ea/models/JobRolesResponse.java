@@ -4,13 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobRolesResponse {
+
     private int id;
+
     private String title;
 
     private String capability;
 
-
     private String bandLevel;
+
+    public JobRolesResponse() {}
 
     @JsonCreator
     public JobRolesResponse(@JsonProperty("id") int id,
