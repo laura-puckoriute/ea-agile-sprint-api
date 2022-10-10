@@ -56,7 +56,7 @@ CREATE TABLE `User_Role` (
 CREATE TABLE `User` (
 	`id` smallint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `email` varchar(320) UNIQUE,
-    `password` varchar(50),
+    `password` varchar(64),
     `user_roleID` smallint,
     FOREIGN KEY (`user_roleID`) REFERENCES `User_Role`(`id`)
 );
