@@ -212,8 +212,8 @@ public class UserServiceTest {
 
         String email = "testemail@email.com";
 
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTMzMjM3fQ" +
-                ".CVEwuYNfJcdhcKtoylIeLnmwJSh_uJsoTgo4BiyLzHeeqM0qRvxikubF11NQcrGGszQQBHyMf4yq02TqwTfB4w";
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MzkxNTEwfQ" +
+                ".CKWtG8n_6Pib9VM41GM60FzZTwaAXSNiMJEjEiI2RY2SuEj2X-arMjEV2usN7X22r7EAWuvxqVTeBXUSINA5UA";
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( userData.removeToken( conn, email, token ) ).thenReturn( true );

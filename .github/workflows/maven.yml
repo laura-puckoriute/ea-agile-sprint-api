@@ -34,4 +34,5 @@ jobs:
         HOST: ${{ secrets.HOST }}
         DATABASE: ${{ secrets.DATABASE }}
         API_URL: ${{ secrets.API_URL }}
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
       run: mvn clean test
