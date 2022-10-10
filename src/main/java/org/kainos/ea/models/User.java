@@ -9,28 +9,20 @@ public class User {
 
     private String email;
 
+    private String password;
+
     private String passwordHash;
 
     private UserRole userRole;
 
     @JsonCreator
-    public User( @JsonProperty("email") String email,
-                 @JsonProperty("password") String passwordHash) {
-
-        setEmail( email );
-        setPasswordHash( passwordHash );
-    }
-
-    @JsonCreator
     public User( @JsonProperty("id") int id,
                  @JsonProperty("email") String email,
-                 @JsonProperty("password") String passwordHash,
-                 @JsonProperty("user_role") UserRole userRole ) {
+                 @JsonProperty("passwordHash") String passwordHash) {
 
         setId( id );
         setEmail( email );
         setPasswordHash( passwordHash );
-        setUserRole( userRole );
     }
 
     public int getId() { return id; }
@@ -40,6 +32,10 @@ public class User {
     public String getEmail() { return email; }
 
     public void setEmail( String email ) { this.email = email; }
+
+    public String getPassword() { return password; }
+
+    public void setPassword( String password ) { this.password = password; }
 
     public String getPasswordHash() { return passwordHash; }
 

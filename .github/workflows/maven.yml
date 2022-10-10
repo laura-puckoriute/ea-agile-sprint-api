@@ -8,7 +8,7 @@ on:
     branches:
       - '**' # matches every branch
   pull_request:
-    branches: 
+    branches:
       - '**' # matches every branch
 
 jobs:
@@ -33,4 +33,5 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
         HOST: ${{ secrets.HOST }}
         DATABASE: ${{ secrets.DATABASE }}
+        API_URL: ${{ secrets.API_URL }}
       run: mvn clean test
