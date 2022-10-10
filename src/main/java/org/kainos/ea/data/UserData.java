@@ -1,11 +1,9 @@
 package org.kainos.ea.data;
 
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.models.UserRequest;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserData {
 
@@ -64,5 +62,30 @@ public class UserData {
 
         return false;
 
+    }
+
+    public int registerUser(UserRequest user, Connection c) throws SQLException {
+        String query = "INSERT INTO `User`(email, password, user_roleID) VALUES (?, ?, ?);";
+
+        PreparedStatement st = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        st.setString(1, user.getEmail());
+        st.setString(2, user.getPassword());
+        st.setInt(3, user.getUserRoleID());
+
+        int affectedRows = st.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Creating user failed, no rows affected.");
+        }
+
+        int userNo = 0;
+
+        try (ResultSet rs = st.getGeneratedKeys()) {
+            if (rs.next()) {
+                userNo = rs.getInt(1);
+            }
+
+            return userNo;
+        }
     }
 }
