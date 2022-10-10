@@ -12,7 +12,9 @@ import org.kainos.ea.APIConfiguration;
 import org.kainos.ea.models.User;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class AuthenticationServiceIntegrationTest {
@@ -68,8 +70,8 @@ public class AuthenticationServiceIntegrationTest {
 
         String response = APP.client().target( API_URL + SIGNOUT_ENDPOINT )
                 .request()
-                .post( Entity.entity( token, MediaType.APPLICATION_JSON_TYPE ) )
-                .readEntity( String.class );
+                .header( HttpHeaders.AUTHORIZATION, token )
+                .post( null, String.class );
 
         Assertions.assertEquals( "logout successful", response );
     }
@@ -79,8 +81,8 @@ public class AuthenticationServiceIntegrationTest {
 
         int response = APP.client().target( API_URL + SIGNOUT_ENDPOINT )
                 .request()
-                .post( Entity.entity( "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTQxMDg2fQ.oF2qiJc_brncM8Cex_XvTTVwIdcqVqWPCF93s0wq7NqhHNwS7UiUDOLd2CybYFupcbwEbC0X_oAJv3Aqqv8O3w", MediaType.APPLICATION_JSON_TYPE ) )
-                .getStatus();
+                .header( HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNjY1MTQxMDg2fQ.oF2qiJc_brncM8Cex_XvTTVwIdcqVqWPCF93s0wq7NqhHNwS7UiUDOLd2CybYFupcbwEbC0X_oAJv3Aqqv8O3w" )
+                .post( null, Response.class ).getStatus();
 
         Assertions.assertEquals( 400, response );
     }
@@ -90,8 +92,8 @@ public class AuthenticationServiceIntegrationTest {
 
         int response = APP.client().target( API_URL + SIGNOUT_ENDPOINT )
                 .request()
-                .post( Entity.entity( "random string as token", MediaType.APPLICATION_JSON_TYPE ) )
-                .getStatus();
+                .header( HttpHeaders.AUTHORIZATION, "random string as token")
+                .post( null, Response.class ).getStatus();
 
         Assertions.assertEquals( 400, response );
     }
