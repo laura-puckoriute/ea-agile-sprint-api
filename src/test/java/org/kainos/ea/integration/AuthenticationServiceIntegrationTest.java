@@ -39,9 +39,9 @@ public class AuthenticationServiceIntegrationTest {
                 .post( Entity.entity( user, MediaType.APPLICATION_JSON_TYPE ) )
                 .readEntity( String.class );
 
-        // eyJhbGciOiJIUzUxMiJ9 is the subject email encoded in base64
+        // eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIn0 is the subject email encoded in base64
 
-        Assertions.assertEquals( response.split("\\.")[2], "eyJzdWIiOiJlbWFpbCJ9");
+        Assertions.assertEquals( response.split("\\.")[1], "eyJzdWIiOiJ0ZXN0ZW1haWxAZW1haWwuY29tIn0");
     }
 
     @Test
