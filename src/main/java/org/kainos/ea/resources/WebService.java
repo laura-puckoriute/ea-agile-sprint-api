@@ -1,5 +1,6 @@
 package org.kainos.ea.resources;
 
+import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 
 import org.kainos.ea.data.CompetencyData;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 
+@Api("Kainos Job Portal API")
 @Path("/api")
 public class WebService {
 
