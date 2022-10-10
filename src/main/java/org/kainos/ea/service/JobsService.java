@@ -21,6 +21,12 @@ public class JobsService {
         this.jobRolesData = jobRolesData;
         this.databaseConnection = databaseConnection;
     }
+
+    public JobRolesResponse getJobRole( int id ) throws DatabaseConnectionException, SQLException {
+
+        return jobRolesData.getJobRole( databaseConnection.getConnection(), id );
+    }
+
     public List<JobRolesResponse> getJobRoles() throws SQLException, DatabaseConnectionException {
         return jobRolesData.getJobRoles(databaseConnection.getConnection());
     }
