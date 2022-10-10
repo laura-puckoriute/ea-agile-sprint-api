@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
 import org.kainos.ea.models.User;
-import org.kainos.ea.models.UserResponse;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -32,7 +31,7 @@ public class AuthenticationServiceIntegrationTest {
     @Test
     void postAuthenticateUser_shouldReturnToken() {
 
-        UserResponse user = new UserResponse( "testemail@email.com", "THISIS@PASSWORD!" );
+        User user = new User( "testemail@email.com", "THISIS@PASSWORD!" );
 
         String response = APP.client().target(API_URL + SIGNIN_ENDPOINT )
                 .request()
@@ -47,7 +46,7 @@ public class AuthenticationServiceIntegrationTest {
     @Test
     void postAuthenticateUser_withInvalidCredentials_shouldReturn401Error() {
 
-        UserResponse user = new UserResponse( "testemail@email.com", "THISISNOTTHEPASSWORD");
+        User user = new User( "testemail@email.com", "THISISNOTTHEPASSWORD");
 
         int response = APP.client().target(API_URL + SIGNIN_ENDPOINT )
                 .request()
@@ -60,7 +59,7 @@ public class AuthenticationServiceIntegrationTest {
     @Test
     void postRemoveUserToken_shouldReturnLogoutSucccessful_whenTokenValidAndExists() {
 
-        UserResponse user = new UserResponse( "testemail@email.com", "THISIS@PASSWORD!" );
+        User user = new User( "testemail@email.com", "THISIS@PASSWORD!" );
 
         String token = APP.client().target(API_URL + SIGNIN_ENDPOINT )
                 .request()

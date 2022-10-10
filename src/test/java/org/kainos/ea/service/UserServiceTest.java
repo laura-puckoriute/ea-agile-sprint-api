@@ -1,7 +1,5 @@
 package org.kainos.ea.service;
 
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.security.SignatureException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +39,7 @@ public class UserServiceTest {
         String expectedResult = JwtToken.generateToken( user.getEmail() );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn(conn);
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn(user.getId() );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenReturn(user.getId() );
         Mockito.when( userData.insertToken( conn, user.getId(), expectedResult )).thenReturn( 1 );
 
         String result = userService.authenticateUser( user.getEmail(), password );
@@ -59,7 +57,7 @@ public class UserServiceTest {
                 userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenThrow( SQLException.class );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenThrow( SQLException.class );
 
         Assertions.assertThrows( SQLException.class,
                 () -> userService.authenticateUser( user.getEmail(), password ));
@@ -75,7 +73,7 @@ public class UserServiceTest {
                 userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenReturn( user.getId() );
         Mockito.when( userData.insertToken( conn, user.getId(), JwtToken.generateToken( user.getEmail() ) ) ).thenThrow( SQLException.class );
 
         Assertions.assertThrows( SQLException.class,
@@ -92,7 +90,7 @@ public class UserServiceTest {
                 userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenThrow( DatabaseConnectionException.class );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenThrow( DatabaseConnectionException.class );
 
         Assertions.assertThrows( DatabaseConnectionException.class,
                 () -> userService.authenticateUser( user.getEmail(), password ));
@@ -108,7 +106,7 @@ public class UserServiceTest {
                 userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenReturn( user.getId() );
         Mockito.when( userData.insertToken( conn, user.getId(), JwtToken.generateToken( user.getEmail() ) ) ).thenThrow( DatabaseConnectionException.class );
 
         Assertions.assertThrows( DatabaseConnectionException.class,
@@ -134,7 +132,7 @@ public class UserServiceTest {
                 userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenReturn( user.getId() );
 
         int response = userService.checkCredentials( user.getEmail(), password );
 
@@ -151,7 +149,7 @@ public class UserServiceTest {
                 userService.generateHash(password) );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPasswordHash() ) ).thenReturn( user.getId() );
+        Mockito.when( userData.checkCredentials( conn, user.getEmail(), user.getPassword() ) ).thenReturn( user.getId() );
 
         int invalidPassword     = userService.checkCredentials( user.getEmail(), "password" );
         int invalidEmail        = userService.checkCredentials( "email", password );

@@ -1,18 +1,13 @@
 package org.kainos.ea.resources;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.jsonwebtoken.InvalidClaimException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.data.UserData;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.InvalidUserCredentialsException;
 import org.kainos.ea.models.User;
-import org.kainos.ea.models.UserResponse;
 import org.kainos.ea.service.UserService;
 import org.kainos.ea.util.DatabaseConnection;
-import org.kainos.ea.util.JwtToken;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -33,7 +28,7 @@ public class AuthenticationService {
     @Path("/signin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response authenticateUser( UserResponse user ) {
+    public Response authenticateUser( User user ) {
 
         try {
 
