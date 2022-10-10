@@ -98,7 +98,7 @@ public class WebService {
             try {
                 int id = userService.registerUser(user);
                 return Response.status(HttpStatus.CREATED_201).entity(id).build();
-            } catch (Exception | DatabaseConnectionException e) {
+            } catch (DatabaseConnectionException | SQLException e) {
                 System.out.println(e);
                 return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
             }
