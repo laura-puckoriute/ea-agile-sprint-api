@@ -16,7 +16,7 @@ public class JwtToken {
 
         String jws = Jwts.builder()
                 .setSubject( email )
-                .setIssuedAt( new Date() )
+//                .setIssuedAt( new Date() )
                 .signWith( key )
                 .compact();
 
