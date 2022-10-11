@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
     String hostURI = System.getenv("API_URL");
-    String registerEndpoint = System.getenv("REGISTER_ENDPOINT");
+    String registerEndpoint = "/register";
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
