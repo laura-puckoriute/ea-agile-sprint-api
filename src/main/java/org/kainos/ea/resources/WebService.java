@@ -20,10 +20,7 @@ import org.kainos.ea.service.JobsService;
 
 import org.kainos.ea.util.DatabaseConnection;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
@@ -91,6 +88,26 @@ public class WebService {
         try {
 
             return Response.ok( jobsService.getJobRole( id ) ).build();
+
+        } catch ( SQLException | DatabaseConnectionException e ) {
+
+            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+        }
+    }
+
+    @PUT
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateJobRole( @ApiParam(   value = "The job role's id to be updated.",
+                                                required = true )
+                                   @PathParam("id") int id,
+                                   @ApiParam(   value = "The object containing updated fields.",
+                                                required = true )
+                                   JobRoleRequest jobRoleRequest ) {
+
+        try {
+
+            return Response.ok( jobsService.updateJobRole( id, jobRoleRequest ) ).build();
 
         } catch ( SQLException | DatabaseConnectionException e ) {
 
