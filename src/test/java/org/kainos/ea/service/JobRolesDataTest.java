@@ -41,20 +41,6 @@ public class JobRolesDataTest {
     }
 
     @Test
-    void getJobRoles_shouldReturnBandAndCapability_whenJobsReturnsBandAndCapability () throws SQLException, DatabaseConnectionException{
-        List<JobRolesResponse> expectedResult = new ArrayList<>();
-
-        JobRolesResponse j = new JobRolesResponse("Engineering", "Trainee", 1, 1);
-        expectedResult.add(j);
-
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRolesData.getJobRoles(conn)).thenReturn(expectedResult);
-        List<JobRolesResponse> result = jobsService.getJobRoles();
-
-        assertEquals(expectedResult, result);
-    }
-
-    @Test
     void getJobRoles_shouldThrowSQLException_whenJobsThrowsSQLException () throws SQLException, DatabaseConnectionException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRolesData.getJobRoles(conn)).thenThrow(SQLException.class);

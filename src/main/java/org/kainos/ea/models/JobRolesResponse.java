@@ -29,16 +29,6 @@ public class JobRolesResponse {
         this.setBandLevelID(bandLevelID);
     }
 
-    public JobRolesResponse(@JsonProperty("capability") String capability,
-                            @JsonProperty("band_level") String bandLevel,
-                            @JsonProperty("capability_id") int capabilityID,
-                            @JsonProperty("band_level_id") int bandLevelID) {
-        this.setCapability(capability);
-        this.setBandLevel(bandLevel);
-        this.setCapabalityID(capabilityID);
-        this.setBandLevelID(bandLevelID);
-    }
-
     public String getTitle() { return title; }
 
     public void setTitle(String title) { this.title = title; }

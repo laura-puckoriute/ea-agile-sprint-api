@@ -39,21 +39,6 @@ public class JobRolesData {
             jobRole.add(jobs);
 
         }
-
-        String query2 = "SELECT b.id AS 'Band ID', c.id AS 'Capability ID', b.title AS 'Band Title', c.title AS 'Capability Title' FROM Band_Level b, Capability c GROUP BY b.id, c.id order by b.id;";
-        PreparedStatement st2 = c.prepareStatement(query2);
-        ResultSet rs2 = st2.executeQuery();
-
-        while(rs2.next()) {
-            JobRolesResponse bands = new JobRolesResponse(
-                    rs2.getString("Capability Title"),
-                    rs2.getString("Band Title"),
-                    rs2.getInt("Capability ID"),
-                    rs2.getInt("Band ID")
-            );
-
-            jobRole.add(bands);
-        }
         return jobRole;
     }
 

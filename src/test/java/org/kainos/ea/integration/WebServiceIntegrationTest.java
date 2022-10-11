@@ -30,9 +30,6 @@ public class WebServiceIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
-    public WebServiceIntegrationTest() throws UnsupportedEncodingException {
-    }
-
     String url = System.getenv("API_URL");
 
 
@@ -48,33 +45,12 @@ public class WebServiceIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
 
-        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
-        Assertions.assertEquals(1, jobList.get(0).getId());
+        Assertions.assertEquals("Principal Architect", jobList.get(0).getTitle());
+        Assertions.assertEquals(10, jobList.get(0).getId());
         Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
-        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
-        Assertions.assertEquals(6, jobList.get(0).getBandLevelID());
+        Assertions.assertEquals("Principal", jobList.get(0).getBandLevel());
+        Assertions.assertEquals(1, jobList.get(0).getBandLevelID());
         Assertions.assertEquals(1, jobList.get(0).getCapabilityID());
-    }
-
-    @Test
-    void getJobRoles_shouldReturnCapabilityBandIDs_withCapabilityBandIDs() throws UnsupportedEncodingException {
-
-        JsonNode response = APP.client().target(url + "/job-roles")
-                .request()
-                .get(JsonNode.class);
-
-        Assertions.assertTrue(response.size() > 0);
-
-
-        ObjectMapper mapper = new ObjectMapper();
-        List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
-
-        Assertions.assertEquals(null, jobList.get(3).getTitle());
-        Assertions.assertEquals(0, jobList.get(3).getId());
-        Assertions.assertEquals("Engineering", jobList.get(3).getCapability());
-        Assertions.assertEquals("Principal", jobList.get(3).getBandLevel());
-        Assertions.assertEquals(1, jobList.get(3).getBandLevelID());
-        Assertions.assertEquals(1, jobList.get(3).getCapabilityID());
     }
 
     @Test
