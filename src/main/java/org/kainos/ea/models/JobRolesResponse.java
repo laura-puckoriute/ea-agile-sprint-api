@@ -17,16 +17,22 @@ public class JobRolesResponse {
 
     @ApiModelProperty( value = "the job role's band level")
     private String bandLevel;
+    private int capabilityID;
+    private int bandLevelID;
 
     @JsonCreator
     public JobRolesResponse(@JsonProperty("id") int id,
                             @JsonProperty("title") String title,
                             @JsonProperty("capability") String capability,
-                            @JsonProperty("band_level") String bandLevel) {
+                            @JsonProperty("band_level") String bandLevel,
+                            @JsonProperty("capability_id") int capabilityID,
+                            @JsonProperty("band_level_id") int bandLevelID) {
         this.setId(id);
         this.setTitle(title);
         this.setCapability(capability);
         this.setBandLevel(bandLevel);
+        this.setCapabalityID(capabilityID);
+        this.setBandLevelID(bandLevelID);
     }
 
     public String getTitle() { return title; }
@@ -43,4 +49,20 @@ public class JobRolesResponse {
     public String getBandLevel() { return bandLevel; }
 
     public void setBandLevel(String bandLevelTitle) { this.bandLevel = bandLevelTitle; }
+
+    public int getCapabilityID() {
+        return capabilityID;
+    }
+
+    public void setCapabalityID(int capabilityID) {
+        this.capabilityID = capabilityID;
+    }
+
+    public int getBandLevelID() {
+        return bandLevelID;
+    }
+
+    public void setBandLevelID(int bandLevelID) {
+        this.bandLevelID = bandLevelID;
+    }
 }
