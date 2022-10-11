@@ -2,8 +2,21 @@ package org.kainos.ea.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 public class Competency {
+
+    @ApiModelProperty( value = "the competency id" )
+    private int id;
+
+    @ApiModelProperty( value = "the competency name" )
+    private String title;
+
+    @ApiModelProperty( value = "the competency's element name" )
+    private String responsibilityName;
+
+    @ApiModelProperty( value = "the competency's element description" )
+    private String responsibilityDescription;
 
     @JsonCreator
     public Competency(
@@ -16,11 +29,6 @@ public class Competency {
         this.setResponsibilityName(responsibilityName);
         this.setResponsibilityDescription(responsibilityDescription);
     }
-
-    private int id;
-    private String title;
-    private String responsibilityName;
-    private String responsibilityDescription;
 
     public int getId() {
         return id;
