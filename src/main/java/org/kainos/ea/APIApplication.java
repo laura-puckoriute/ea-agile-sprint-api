@@ -3,8 +3,12 @@ package org.kainos.ea;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+
+import org.kainos.ea.resources.AuthenticationService;
+
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+
 import org.kainos.ea.resources.WebService;
 import org.kainos.ea.util.DatabaseConnection;
 
@@ -32,7 +36,8 @@ public class APIApplication extends Application<APIConfiguration> {
     @Override
     public void run(final APIConfiguration configuration,
                     final Environment environment) {
-        environment.jersey().register(new WebService());
+        environment.jersey().register( new WebService() );
+        environment.jersey().register( new AuthenticationService() );
     }
 
 }

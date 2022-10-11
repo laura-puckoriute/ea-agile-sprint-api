@@ -42,3 +42,7 @@ build/
 
 ### DATABASE CREDENTIALS ###
 db.properties
+
+### RSA KEYS
+secret-key
+secret-key.pub

@@ -48,6 +48,37 @@ CREATE TABLE `Role` (
      FOREIGN KEY (`job_familyID`) REFERENCES `Job_Family`(`id`)
 );
 
+CREATE TABLE `User_Role` (
+	`id` smallint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `title` varchar(20)
+);
+
+CREATE TABLE `User` (
+	`id` smallint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `email` varchar(320) UNIQUE,
+    `password` varchar(64),
+    `user_roleID` smallint,
+    FOREIGN KEY (`user_roleID`) REFERENCES `User_Role`(`id`)
+);
+
+CREATE TABLE `Token` (
+	`value` varchar(8000),
+    `userID` smallint,
+    FOREIGN KEY (`userID`) REFERENCES `User`(`id`)
+);
+
+INSERT INTO `User_Role` (`title`) VALUES ('Admin');
+INSERT INTO `User_Role` (`title`) VALUES ('Employee');
+
+INSERT INTO `User` (`email`, `password`, `user_roleID`) VALUES ('joshroberts@gmail.com', 'Zzo//kPvKiz/HTMa4qNA8g==', 1);
+INSERT INTO `User` (`email`, `password`, `user_roleID`) VALUES ('ethanmatthews@kainos.com', 'McenVgIbemCFyf5+XMKyDA==', 2);
+INSERT INTO `User` (`email`, `password`, `user_roleID`)
+VALUES ('testemail@email.com', '3864354c74e2eb4ce6a4c1a4b12bdb998651f626c47bc418558bbcc0b56ee6d6', 1);
+
+INSERT INTO `Token` VALUES ('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjQ4NzYxNjIsImV4cCI6MTY5NjQxMjE2MCwiYXVkIjoid3d3LmVtcGxveWVlcy5jb20iLCJzdWIiOiJqb3Nocm9iZXJ0c0BnbWFpbC5jb20iLCJHaXZlbk5hbWUiOiJKb3NoIiwiU3VybmFtZSI6IlJvYmVydHMiLCJFbWFpbCI6Impvc2hyb2JlcnRzQGdtYWlsLmNvbSIsIlJvbGUiOlsiQWRtaW4iLCJNYW5hZ2VyIl19.eteb2gTX1oIGMNr_E4INUSUMhlzom47ealGkqhwo3Iw',
+1);
+
+
 INSERT INTO `Job_Family` (`title`) VALUES ('Strategy and Planning');
 INSERT INTO `Job_Family` (`title`) VALUES ('Engineering');
 INSERT INTO `Job_Family` (`title`) VALUES ('HCM');
