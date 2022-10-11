@@ -2,13 +2,22 @@ package org.kainos.ea.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Objects;
 
 public class JobSpecificationResponse {
 
+    @ApiModelProperty( value = "the job role's name")
     private String title;
+
+    @ApiModelProperty( value = "the job role's description, which can contain requirements")
     private String description;
+
+    @ApiModelProperty( value = "the sharepoint link to a detailed page of the job's specification")
     private String link;
+
+    @ApiModelProperty( value = "the responsibilities required of the job role")
     private String responsibilities;
 
     public JobSpecificationResponse() {};
