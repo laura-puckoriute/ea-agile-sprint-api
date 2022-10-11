@@ -21,17 +21,17 @@ public class JobRolesResponse {
     @ApiModelProperty( value = "the sharepoint link to a detailed page of the job's specification")
     private String link;
 
-    @ApiModelProperty( value = "the capability role belongs in" )
-    private String capability;
-
-    @ApiModelProperty( value = "the unique id for the capability the role belongs to" )
-    private int capabilityID;
-
     @ApiModelProperty( value = "the job role's band level")
     private String bandLevel;
 
     @ApiModelProperty( value = "the unique id for the band level the role belongs to" )
     private int bandLevelID;
+
+    @ApiModelProperty( value = "the capability role belongs in" )
+    private String capability;
+
+    @ApiModelProperty( value = "the unique id for the capability the role belongs to" )
+    private int capabilityID;
 
     @ApiModelProperty( value = "the job family the role belongs to" )
     private String jobFamily;
@@ -58,16 +58,20 @@ public class JobRolesResponse {
                              String description,
                              String responsibilities,
                              String link,
-                             String capability,
                              String bandLevel,
+                             int bandLevelID,
+                             String capability,
+                             int capabilityID,
                              String jobFamily) {
         setId( id );
         setTitle( title );
         setDescription( description );
         setResponsibilities( responsibilities );
         setLink( link );
-        setCapability( capability );
         setBandLevel( bandLevel );
+        setBandLevelID( bandLevelID );
+        setCapability( capability );
+        setCapabalityID( capabilityID );
         setJobFamily( jobFamily );
     }
 
