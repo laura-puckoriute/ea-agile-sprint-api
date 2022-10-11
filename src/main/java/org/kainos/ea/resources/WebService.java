@@ -2,12 +2,16 @@ package org.kainos.ea.resources;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import org.kainos.ea.data.BandLevelData;
+import org.kainos.ea.data.CapabilityData;
 import org.kainos.ea.data.CompetencyData;
 import org.kainos.ea.data.JobRolesData;
 
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
 
+import org.kainos.ea.service.BandLevelService;
+import org.kainos.ea.service.CapabilityService;
 import org.kainos.ea.service.CompetencyService;
 import org.kainos.ea.service.JobsService;
 
@@ -25,11 +29,18 @@ import java.sql.SQLException;
 public class WebService {
 
     private static JobsService jobsService;
+
+    private static BandLevelService bandLevelService;
+
+    private static CapabilityService capabilityService;
+
     private static CompetencyService competencyService;
 
     public WebService() {
         DatabaseConnection databaseConnector = new DatabaseConnection();
         jobsService = new JobsService(new JobRolesData(), databaseConnector);
+        bandLevelService = new BandLevelService( new BandLevelData(), databaseConnector );
+        capabilityService = new CapabilityService( new CapabilityData(), databaseConnector );
         competencyService = new CompetencyService(new CompetencyData(), databaseConnector);
     }
     
@@ -57,6 +68,44 @@ public class WebService {
         } catch ( SQLException | DatabaseConnectionException e ) {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+        }
+    }
+
+    @GET
+    @Path("/band-levels")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBandLevels() {
+
+        try {
+
+            return Response.ok( bandLevelService.getBandLevels() ).build();
+
+        } catch ( SQLException | DatabaseConnectionException e ) {
+
+            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+        } catch ( DataNotFoundException e ) {
+
+            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+        }
+    }
+
+    @GET
+    @Path("/capabilities")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCapabilities() {
+
+        try {
+
+            return Response.ok( capabilityService.getCapabilities() ).build();
+
+        } catch ( SQLException | DatabaseConnectionException e ) {
+
+            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+        } catch ( DataNotFoundException e ) {
+
+            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
         }
     }
 
