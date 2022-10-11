@@ -1,5 +1,6 @@
 package org.kainos.ea.service;
 
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,8 @@ import org.kainos.ea.util.JwtToken;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -265,6 +268,18 @@ public class UserServiceTest {
 
         int actualResult = userService.registerUser(userRequest);
 
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void registerUser_shouldThrow400Error_whenUserCredentialsAreInvalid() throws DatabaseConnectionException, SQLException {
+        int expectedResult = HttpStatus.BAD_REQUEST_400;
+        UserRequest invalidUser = new UserRequest("a", "a", 1);
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(userData.registerUser(invalidUser, conn)).thenReturn(expectedResult);
+
+        int actualResult = userService.registerUser(invalidUser);
         assertEquals(expectedResult, actualResult);
     }
 
