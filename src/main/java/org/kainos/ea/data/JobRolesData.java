@@ -2,6 +2,7 @@ package org.kainos.ea.data;
 
 import org.kainos.ea.exception.DatabaseConnectionException;
 
+import org.kainos.ea.models.JobRoleRequest;
 import org.kainos.ea.models.JobRolesResponse;
 import org.kainos.ea.models.JobSpecificationResponse;
 
@@ -17,7 +18,9 @@ public class JobRolesData {
         String query =
                 "SELECT " +
                         "Role.id, Role.title, Role.description, Role.responsibilities, Role.link, " +
-                        "Capability.title AS capability, Band_Level.title AS band_level, Family.title AS job_family " +
+                        "Capability.title AS capability, Capability.id AS capabilityID, " +
+                        "Band_Level.title AS band_level, Band_Level.id AS band_levelID, " +
+                        "Family.title AS job_family " +
                 "FROM Role JOIN Capability ON Role.capabilityID = Capability.id " +
                 "JOIN Job_Family AS Family ON Role.job_familyID = Family.id " +
                 "JOIN Band_Level ON Role.band_levelID = Band_Level.id " +
@@ -40,13 +43,40 @@ public class JobRolesData {
                     rs.getString( "description" ),
                     rs.getString( "responsibilities" ),
                     rs.getString( "link" ),
-                    rs.getString( "capability" ),
                     rs.getString( "band_level" ),
+                    rs.getInt   ( "band_levelID"),
+                    rs.getString( "capability" ),
+                    rs.getInt   ( "capabilityID"),
                     rs.getString( "job_family" )
             );
         }
 
         return jobRolesResponse;
+    }
+
+    public boolean updateJobRole( Connection conn, int id, JobRoleRequest jobRoleRequest ) throws SQLException {
+
+        String query =
+                "UPDATE `Role` " +
+                "SET `title` = ?, `description` = ?, `responsibilities` = ?, `link` = ?, `capabilityID` = ?, `band_levelID` = ? " +
+                "WHERE `id` = ?;";
+
+        PreparedStatement st = conn.prepareStatement( query );
+
+        st.setString( 1, jobRoleRequest.getTitle() );
+        st.setString( 2, jobRoleRequest.getRequirements() );
+        st.setString( 3, jobRoleRequest.getResponsibilities() );
+        st.setString( 4, jobRoleRequest.getLink() );
+        st.setInt   ( 5, jobRoleRequest.getCapabilityID() );
+        st.setInt   ( 6, jobRoleRequest.getBandLevelID() );
+        st.setInt   ( 7, id );
+
+        if ( st.executeUpdate() > 0 ) {
+
+            return true;
+        }
+
+        return false;
     }
 
     //US001 - View Job Roles
