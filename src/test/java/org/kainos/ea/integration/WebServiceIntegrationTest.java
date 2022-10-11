@@ -15,14 +15,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
     String hostURI = System.getenv("API_URL");
+    String registerEndpoint = System.getenv("REGISTER_ENDPOINT");
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
@@ -41,10 +46,10 @@ public class WebServiceIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
 
-        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
-        Assertions.assertEquals(1, jobList.get(0).getId());
-        Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
-        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
+        assertEquals("Software Engineer", jobList.get(0).getTitle());
+        assertEquals(1, jobList.get(0).getId());
+        assertEquals("Engineering", jobList.get(0).getCapability());
+        assertEquals("Trainee", jobList.get(0).getBandLevel());
 
     }
 
@@ -68,7 +73,7 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get(Response.class);
 
-        Assertions.assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
+        assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
     }
     
     @Test
@@ -85,7 +90,7 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get(JobSpecificationResponse.class);
 
-        Assertions.assertEquals(expectedResult, response);
+        assertEquals(expectedResult, response);
     }
 
     @Test
@@ -98,6 +103,42 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get(Response.class);
 
-        Assertions.assertEquals(expectedResponse.getStatus(), response.getStatus());
+        assertEquals(expectedResponse.getStatus(), response.getStatus());
+    }
+
+    @Test
+    void registerUser_shouldReturnID_whenUserIsRegistered() {
+        int expectedResult = HttpStatus.CREATED_201;
+        UserRequest user = new UserRequest("testtest@email.com", "Testpassword!", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
+    }
+
+    @Test
+    void registerUser_shouldThrow400Error_whenUserCredentialsAreInvalid() {
+        int expectedResult = HttpStatus.BAD_REQUEST_400;
+        UserRequest user = new UserRequest("a", "a", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
+    }
+
+    @Test
+    void registerUser_shouldThrow404Error_whenDataNotFoundExceptionThrown() {
+
+        Response response = APP.client().target( hostURI + registerEndpoint + "/test" )
+                .request()
+                .get(Response.class);
+
+        assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
     }
 }

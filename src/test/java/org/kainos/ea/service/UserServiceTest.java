@@ -17,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -161,9 +160,9 @@ public class UserServiceTest {
         int invalidEmail        = userService.checkCredentials( "email", password );
         int invalidCredentials  = userService.checkCredentials( "email", "password" );
 
-        Assertions.assertNotEquals( user.getId(), invalidPassword );
-        Assertions.assertNotEquals( user.getId(), invalidEmail );
-        Assertions.assertNotEquals( user.getId(), invalidCredentials );
+        assertNotEquals( user.getId(), invalidPassword );
+        assertNotEquals( user.getId(), invalidEmail );
+        assertNotEquals( user.getId(), invalidCredentials );
     }
 
     @Test
@@ -255,7 +254,7 @@ public class UserServiceTest {
         String first    = "IDENTICALSTRING";
         String second   = "NOTIDENTICALSTRING";
 
-        Assertions.assertNotEquals( userService.generateHash( first ), userService.generateHash( second ) );
+        assertNotEquals( userService.generateHash( first ), userService.generateHash( second ) );
     }
 
     @Test
