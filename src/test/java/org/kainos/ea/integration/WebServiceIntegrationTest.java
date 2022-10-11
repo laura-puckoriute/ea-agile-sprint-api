@@ -45,11 +45,11 @@ public class WebServiceIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
 
-        Assertions.assertEquals("Principal Architect", jobList.get(0).getTitle());
-        Assertions.assertEquals(10, jobList.get(0).getId());
+        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
+        Assertions.assertEquals(1, jobList.get(0).getId());
         Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
-        Assertions.assertEquals("Principal", jobList.get(0).getBandLevel());
-        Assertions.assertEquals(1, jobList.get(0).getBandLevelID());
+        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
+        Assertions.assertEquals(6, jobList.get(0).getBandLevelID());
         Assertions.assertEquals(1, jobList.get(0).getCapabilityID());
     }
 
