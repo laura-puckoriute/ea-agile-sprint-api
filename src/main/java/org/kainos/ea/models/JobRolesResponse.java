@@ -9,9 +9,17 @@ public class JobRolesResponse {
 
     private String title;
 
+    private String description;
+
+    private String responsibilities;
+
+    private String link;
+
     private String capability;
 
     private String bandLevel;
+
+    private String jobFamily;
 
     public JobRolesResponse() {}
 
@@ -26,12 +34,43 @@ public class JobRolesResponse {
         this.setBandLevel(bandLevel);
     }
 
-    public String getTitle() { return title; }
+    public JobRolesResponse( int id,
+                             String title,
+                             String description,
+                             String responsibilities,
+                             String link,
+                             String capability,
+                             String bandLevel,
+                             String jobFamily) {
+        setId( id );
+        setTitle( title );
+        setDescription( description );
+        setResponsibilities( responsibilities );
+        setLink( link );
+        setCapability( capability );
+        setBandLevel( bandLevel );
+        setJobFamily( jobFamily );
+    }
 
-    public void setTitle(String title) { this.title = title; }
     public int getId() {return id; }
 
     public void setId(int id) { this.id = id; }
+
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public String getResponsibilities() { return responsibilities; }
+
+    public void setResponsibilities(String responsibilities) { this.responsibilities = responsibilities; }
+
+    public String getLink() { return link; }
+
+    public void setLink(String link) { this.link = link; }
 
     public String getCapability() { return capability; }
 
@@ -40,4 +79,8 @@ public class JobRolesResponse {
     public String getBandLevel() { return bandLevel; }
 
     public void setBandLevel(String bandLevelTitle) { this.bandLevel = bandLevelTitle; }
+
+    public String getJobFamily() { return jobFamily; }
+
+    public void setJobFamily(String jobFamily) { this.jobFamily = jobFamily; }
 }

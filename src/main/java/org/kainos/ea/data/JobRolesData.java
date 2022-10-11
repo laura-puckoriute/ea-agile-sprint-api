@@ -14,8 +14,11 @@ public class JobRolesData {
     public JobRolesResponse getJobRole( Connection conn, int id ) throws SQLException {
 
         String query =
-                "SELECT Role.id, Role.title, Capability.title AS capability, Band_Level.title AS band_level " +
+                "SELECT " +
+                        "Role.id, Role.title, Role.description, Role.responsibilities, Role.link, " +
+                        "Capability.title AS capability, Band_Level.title AS band_level, Family.title AS job_family " +
                 "FROM Role JOIN Capability ON Role.capabilityID = Capability.id " +
+                "JOIN Job_Family AS Family ON Role.job_familyID = Family.id " +
                 "JOIN Band_Level ON Role.band_levelID = Band_Level.id " +
                 "WHERE Role.id = ?;";
 
@@ -30,10 +33,15 @@ public class JobRolesData {
         if ( rs.next() ) {
 
             jobRolesResponse = new JobRolesResponse(
-                    rs.getInt( "id" ),
+
+                    rs.getInt   ( "id" ),
                     rs.getString( "title" ),
+                    rs.getString( "description" ),
+                    rs.getString( "responsibilities" ),
+                    rs.getString( "link" ),
                     rs.getString( "capability" ),
-                    rs.getString( "band_level" )
+                    rs.getString( "band_level" ),
+                    rs.getString( "job_family" )
             );
         }
 
