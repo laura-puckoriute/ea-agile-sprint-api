@@ -21,6 +21,11 @@ How to run unit and integration tests from command line
 2. To run all the tests in a class, run `mvn clean test -Dtest=your.package.TestClassName`
 3. To run a particular unit/integration test, run `mvn clean test -Dtest=your.package.TestClassName#particularMethod`
 
+Swagger documentation
+---
+This application has implemented Swagger documentation, which can be viewed at `http://localhost:8080/swagger/`
+
+
 Health Check
 ---
 

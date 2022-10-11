@@ -2,14 +2,20 @@ package org.kainos.ea.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 public class JobRolesResponse {
+
+    @ApiModelProperty( value = "the job role's id value")
     private int id;
+
+    @ApiModelProperty( value = "the job role name" )
     private String title;
 
+    @ApiModelProperty( value = "the capability role belongs in" )
     private String capability;
 
-
+    @ApiModelProperty( value = "the job role's band level")
     private String bandLevel;
 
     @JsonCreator
