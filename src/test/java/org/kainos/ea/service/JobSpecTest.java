@@ -27,7 +27,8 @@ public class JobSpecTest {
     void getJobSpecification_shouldReturnSpecification_whenJobsRolesReturnsSpecification() throws DatabaseConnectionException, SQLException, DataNotFoundException {
         JobSpecificationResponse expectedResult = new JobSpecificationResponse("Software Engineer",
                 "This is a description for Software Engineer",
-                "jobspec.com");
+                "jobspec.com",
+                "As a Software Engineer (Associate) in Kainos, you’ll be responsible for developing high quality solutions which delight our customers and impact the lives of users worldwide. You’ll do this whilst learning about new technologies and approaches, with talented colleagues that will help you to learn, develop and grow.");
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRolesData.getJobSpecification(conn, 1)).thenReturn(expectedResult);
