@@ -22,9 +22,13 @@ public class JobsService {
         this.databaseConnection = databaseConnection;
     }
 
-    public JobRolesResponse getJobRole( int id ) throws DatabaseConnectionException, SQLException {
+    public JobRolesResponse getJobRole( int id ) throws DatabaseConnectionException, SQLException, DataNotFoundException {
 
-        return jobRolesData.getJobRole( databaseConnection.getConnection(), id );
+        JobRolesResponse jobRolesResponse = jobRolesData.getJobRole( databaseConnection.getConnection(), id );
+
+        if ( jobRolesResponse.getTitle() == null ) throw new DataNotFoundException();
+
+        return jobRolesResponse;
     }
 
     public List<JobRolesResponse> getJobRoles() throws SQLException, DatabaseConnectionException {
