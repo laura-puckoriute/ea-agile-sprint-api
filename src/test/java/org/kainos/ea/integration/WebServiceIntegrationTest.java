@@ -3,6 +3,7 @@ package org.kainos.ea.integration;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
@@ -106,19 +107,19 @@ public class WebServiceIntegrationTest {
         assertEquals(expectedResponse.getStatus(), response.getStatus());
     }
 
-    // Will complain about duplicate entry for email after it's been run more than once
-//    @Test
-//    void registerUser_shouldReturnID_whenUserIsRegistered() {
-//        int expectedResult = HttpStatus.CREATED_201;
-//        UserRequest user = new UserRequest("testtest@email.com", "Testpassword!", 1);
-//
-//        int response = APP.client().target(hostURI + registerEndpoint)
-//                .request()
-//                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
-//                .getStatus();
-//
-//        assertEquals(expectedResult, response);
-//    }
+    @Test
+    void registerUser_shouldReturnID_whenUserIsRegistered() {
+        String generatedString = RandomStringUtils.randomAlphanumeric(10);
+        int expectedResult = HttpStatus.CREATED_201;
+        UserRequest user = new UserRequest(generatedString + "@email.com", "Testpassword!", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
+    }
 
     @Test
     void registerUser_shouldThrow400Error_whenUserCredentialsAreInvalid() {
