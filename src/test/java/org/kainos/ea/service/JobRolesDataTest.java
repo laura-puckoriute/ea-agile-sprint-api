@@ -127,7 +127,8 @@ public class JobRolesDataTest {
                 "As a Software Engineer (Associate) in Kainos, you’ll be responsible for developing high quality solutions which delight our customers and impact the lives of users worldwide. You’ll do this whilst learning about new technologies and approaches, with talented colleagues that will help you to learn, develop and grow.",
                 "jobspec.com",
                 6,
-                1 );
+                1,
+                2 );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( jobRolesData.updateJobRole( conn, 1, jobRoleRequest )).thenReturn( true );
@@ -146,7 +147,8 @@ public class JobRolesDataTest {
                 "As a Software Engineer (Associate) in Kainos, you’ll be responsible for developing high quality solutions which delight our customers and impact the lives of users worldwide. You’ll do this whilst learning about new technologies and approaches, with talented colleagues that will help you to learn, develop and grow.",
                 "jobspec.com",
                 6,
-                1 );
+                1,
+                2 );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( jobRolesData.updateJobRole( conn, 1, jobRoleRequest )).thenThrow( SQLException.class );
@@ -164,7 +166,8 @@ public class JobRolesDataTest {
                 "As a Software Engineer (Associate) in Kainos, you’ll be responsible for developing high quality solutions which delight our customers and impact the lives of users worldwide. You’ll do this whilst learning about new technologies and approaches, with talented colleagues that will help you to learn, develop and grow.",
                 "jobspec.com",
                 6,
-                1 );
+                1,
+                2 );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( jobRolesData.updateJobRole( conn, 1, jobRoleRequest )).thenThrow( DatabaseConnectionException.class );
@@ -182,7 +185,8 @@ public class JobRolesDataTest {
                 "As a Software Engineer (Associate) in Kainos, you’ll be responsible for developing high quality solutions which delight our customers and impact the lives of users worldwide. You’ll do this whilst learning about new technologies and approaches, with talented colleagues that will help you to learn, develop and grow.",
                 "jobspec.com",
                 6,
-                1 );
+                1,
+                2 );
 
         Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
         Mockito.when( jobRolesData.updateJobRole( conn, 1, jobRoleRequest )).thenReturn( false );

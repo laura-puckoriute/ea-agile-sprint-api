@@ -17,19 +17,23 @@ public class JobRoleRequest {
 
     private int capabilityID;
 
+    private int jobFamilyID;
+
     @JsonCreator
     public JobRoleRequest( @JsonProperty("title") String title,
                            @JsonProperty("requirements") String requirements,
                            @JsonProperty("responsibilities") String responsibilities,
                            @JsonProperty("link") String link,
                            @JsonProperty("band") int bandLevelID,
-                           @JsonProperty("capability") int capabilityID ) {
+                           @JsonProperty("capability") int capabilityID,
+                           @JsonProperty("jobFamily") int jobFamilyID ) {
         setTitle( title );
         setRequirements( requirements );
         setResponsibilities( responsibilities );
         setLink( link );
         setBandLevelID(bandLevelID);
         setCapabilityID( capabilityID );
+        setJobFamilyID( jobFamilyID );
     }
 
     public String getTitle() { return title; }
@@ -55,4 +59,8 @@ public class JobRoleRequest {
     public int getCapabilityID() { return capabilityID; }
 
     public void setCapabilityID( int capabilityID ) { this.capabilityID = capabilityID; }
+
+    public int getJobFamilyID() { return jobFamilyID; }
+
+    public void setJobFamilyID( int jobFamilyID ) { this.jobFamilyID = jobFamilyID; }
 }

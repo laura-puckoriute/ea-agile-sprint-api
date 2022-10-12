@@ -57,7 +57,7 @@ public class JobRolesData {
 
         String query =
                 "UPDATE `Role` " +
-                "SET `title` = ?, `description` = ?, `responsibilities` = ?, `link` = ?, `capabilityID` = ?, `band_levelID` = ? " +
+                "SET `title` = ?, `description` = ?, `responsibilities` = ?, `link` = ?, `capabilityID` = ?, `band_levelID` = ?, `job_familyID` = ? " +
                 "WHERE `id` = ?;";
 
         PreparedStatement st = conn.prepareStatement( query );
@@ -68,7 +68,8 @@ public class JobRolesData {
         st.setString( 4, jobRoleRequest.getLink() );
         st.setInt   ( 5, jobRoleRequest.getCapabilityID() );
         st.setInt   ( 6, jobRoleRequest.getBandLevelID() );
-        st.setInt   ( 7, id );
+        st.setInt   ( 7, jobRoleRequest.getJobFamilyID() );
+        st.setInt   ( 8, id );
 
         if ( st.executeUpdate() > 0 ) {
 
