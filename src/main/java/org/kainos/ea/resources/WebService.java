@@ -24,7 +24,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/api")
 @Api("Kainos Job Portal API")
@@ -54,7 +53,7 @@ public class WebService {
     @ApiOperation(
 
             value = "Returns a list of all the current job roles.",
-            response = JobRolesResponse.class,
+            response = JobRoleResponse.class,
             responseContainer = "List"
     )
     public Response getJobRoles() throws SQLException, DatabaseConnectionException {
@@ -75,7 +74,7 @@ public class WebService {
     @ApiOperation(
 
             value = "Returns information on one specific role.",
-            response = JobRolesResponse.class
+            response = JobRoleResponse.class
     )
     @ApiResponses( value = {
 
@@ -92,12 +91,25 @@ public class WebService {
         } catch ( SQLException | DatabaseConnectionException e ) {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+        } catch ( DataNotFoundException e ) {
+
+            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
         }
     }
 
     @PUT
     @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+
+            value = "Updates job role information."
+    )
+    @ApiResponses( value = {
+
+            @ApiResponse( code = 200, message = "successful operation"),
+            @ApiResponse( code = 404, message = "The job you're trying to update doesn't exist.")
+    })
     public Response updateJobRole( @ApiParam(   value = "The job role's id to be updated.",
                                                 required = true )
                                    @PathParam("id") int id,
@@ -112,6 +124,10 @@ public class WebService {
         } catch ( SQLException | DatabaseConnectionException e ) {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+        } catch ( DataNotFoundException e ) {
+
+            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
         }
     }
 
@@ -134,9 +150,6 @@ public class WebService {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
 
-        } catch ( DataNotFoundException e ) {
-
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
         }
     }
 
@@ -159,9 +172,6 @@ public class WebService {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
 
-        } catch ( DataNotFoundException e ) {
-
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
         }
     }
 
