@@ -31,7 +31,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
           DATABASE: ${{ secrets.DATABASE }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ea-agile-sprint
+          ECR_REPOSITORY: employee_demo
           IMAGE_TAG: team4-api
         run: |
           docker build --build-arg PASSWORD=${PASSWORD} --build-arg USER=${USER} --build-arg HOST=${HOST} --build-arg DATABASE=${DATABASE} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
