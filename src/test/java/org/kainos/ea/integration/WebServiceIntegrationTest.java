@@ -184,4 +184,23 @@ public class WebServiceIntegrationTest {
         Assertions.assertEquals( 15, capabilities.get(14).getId() );
         Assertions.assertEquals("Business Services Support", capabilities.get(14).getTitle());
     }
+
+    @Test
+    void getJobFamilies_shouldReturnJobFamiliesList() {
+
+        List<JobFamily> response = APP.client().target( hostURI + "/job-families" )
+                .request()
+                .get( List.class );
+
+        Assertions.assertTrue( response.size() > 0 );
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<JobFamily> jobFamilies = mapper.convertValue( response, new TypeReference<List<JobFamily>>(){});
+
+        Assertions.assertEquals( 1, jobFamilies.get(0).getId() );
+        Assertions.assertEquals("Strategy and Planning", jobFamilies.get(0).getTitle());
+        Assertions.assertEquals( 12, jobFamilies.get(11).getId() );
+        Assertions.assertEquals("Spend Management", jobFamilies.get(11).getTitle());
+    }
 }
