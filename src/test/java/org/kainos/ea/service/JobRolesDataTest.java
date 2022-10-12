@@ -75,21 +75,6 @@ public class JobRolesDataTest {
     }
 
     @Test
-    void addNewJobRole_shouldThrow500Error_whenJobRoleAlreadyExists() throws DatabaseConnectionException, SQLException {
-        JobRoleRequest duplicateRole = new JobRoleRequest("test", "test", "test", "est",
-                1, 1, 1);
-
-        int expectedResult = 1;
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRolesData.addRole(role, conn)).thenReturn(expectedResult);
-        Mockito.when(jobRolesData.addRole(duplicateRole, conn)).thenReturn(expectedResult);
-
-        int actualResult = jobsService.addRole(duplicateRole);
-
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
     public void addNewJobRole_shouldThrowSQLException_whenSQLExceptionIsThrown() throws DatabaseConnectionException, SQLException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRolesData.addRole(role, conn)).thenThrow(SQLException.class);

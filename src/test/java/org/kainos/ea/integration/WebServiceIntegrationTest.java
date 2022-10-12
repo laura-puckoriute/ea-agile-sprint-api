@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -105,7 +107,20 @@ public class WebServiceIntegrationTest {
     }
 
     @Test
-    void registerUser_shouldThrow404Error_whenDataNotFoundExceptionThrown() {
+    void addRole_shouldReturn201Response_whenUserIsRegistered() {
+        int expectedResult = HttpStatus.CREATED_201;
+        JobRoleRequest role = new JobRoleRequest("test", "test", "test", "est",
+                1, 1, 1);
+
+        int response = APP.client().target(hostURI + addRoleEndpoint)
+                .request()
+                .post(Entity.entity(role, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
+    }
+    @Test
+    void addRole_shouldThrow404Error_whenDataNotFoundExceptionThrown() {
         int expectedResult = HttpStatus.NOT_FOUND_404;
         Response response = APP.client().target( hostURI + addRoleEndpoint + "/test" )
                 .request()
