@@ -102,6 +102,11 @@ public class WebService {
                 System.out.println(e);
                 return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
             }
+            catch (DataNotFoundException e) {
+
+                return Response.status(HttpStatus.NOT_FOUND_404).build();
+
+            }
         } else {
             return Response.status(HttpStatus.BAD_REQUEST_400).build();
         }
