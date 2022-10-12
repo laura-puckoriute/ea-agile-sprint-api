@@ -3,20 +3,14 @@ package org.kainos.ea.resources;
 import io.swagger.annotations.*;
 import org.eclipse.jetty.http.HttpStatus;
 
-import org.kainos.ea.data.BandLevelData;
-import org.kainos.ea.data.CapabilityData;
-import org.kainos.ea.data.CompetencyData;
-import org.kainos.ea.data.JobRolesData;
+import org.kainos.ea.data.*;
 
 import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
 
 
 import org.kainos.ea.models.*;
-import org.kainos.ea.service.BandLevelService;
-import org.kainos.ea.service.CapabilityService;
-import org.kainos.ea.service.CompetencyService;
-import org.kainos.ea.service.JobsService;
+import org.kainos.ea.service.*;
 
 import org.kainos.ea.util.DatabaseConnection;
 
@@ -35,6 +29,8 @@ public class WebService {
 
     private static CapabilityService capabilityService;
 
+    private static JobFamilyService jobFamilyService;
+
     private static CompetencyService competencyService;
 
     public WebService() {
@@ -44,6 +40,7 @@ public class WebService {
         jobsService = new JobsService( new JobRolesData(), databaseConnector );
         bandLevelService = new BandLevelService( new BandLevelData(), databaseConnector );
         capabilityService = new CapabilityService( new CapabilityData(), databaseConnector );
+        jobFamilyService = new JobFamilyService( new JobFamilyData(), databaseConnector );
         competencyService = new CompetencyService( new CompetencyData(), databaseConnector );
     }
     
@@ -172,6 +169,27 @@ public class WebService {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
 
+        }
+    }
+
+    @GET
+    @Path("/job-families")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+
+            value = "Returns a list of all the current job families.",
+            response = JobFamily.class,
+            responseContainer = "List"
+    )
+    public Response getJobFamilies() {
+
+        try {
+
+            return Response.ok( jobFamilyService.getJobFamilies() ).build();
+
+        } catch ( SQLException | DatabaseConnectionException e ) {
+
+            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
         }
     }
 
