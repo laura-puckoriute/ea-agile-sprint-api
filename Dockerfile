@@ -15,7 +15,7 @@ ENV USER ${USER}
 ENV HOST ${HOST}
 ENV DATABASE ${DATABASE}
 
-RUN mvn clean install package -DskipTests=true
+RUN mvn clean install -DskipTests=true
 
 EXPOSE 8080
 
