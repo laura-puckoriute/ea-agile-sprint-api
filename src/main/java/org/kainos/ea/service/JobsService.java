@@ -18,7 +18,7 @@ public class JobsService {
     public JobRolesData jobRolesData;
     public DatabaseConnection databaseConnection;
 
-    public JobsService(JobRolesData jobRolesData, DatabaseConnection databaseConnection){
+    public JobsService( JobRolesData jobRolesData, DatabaseConnection databaseConnection ){
         this.jobRolesData = jobRolesData;
         this.databaseConnection = databaseConnection;
     }
@@ -43,14 +43,6 @@ public class JobsService {
 
     public List<JobRolesResponse> getJobRoles() throws SQLException, DatabaseConnectionException {
         return jobRolesData.getJobRoles(databaseConnection.getConnection());
-    }
-
-    public JobSpecificationResponse getJobSpecification( int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
-        JobSpecificationResponse jobSpecification = jobRolesData.getJobSpecification( databaseConnection.getConnection(), id );
-        if (jobSpecification.getTitle() == null) {
-            throw new DataNotFoundException();
-        }
-        return jobSpecification;
     }
 
 }

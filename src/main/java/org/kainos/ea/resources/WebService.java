@@ -196,36 +196,4 @@ public class WebService {
         }
     }
 
-    @GET
-    @Path("/job-specification/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(
-
-            value = "Returns the job specification of the job role.",
-            response = JobSpecificationResponse.class
-    )
-    @ApiResponses( value = {
-
-            @ApiResponse( code = 404, message = "The corresponding job role id could not be found.")
-    })
-    public Response getJobSpecification(
-            @ApiParam( value = "The job role's id that you wish to view the specification of.",
-                    required = true )
-            @PathParam("id") int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
-
-        try {
-
-            return Response.ok( jobsService.getJobSpecification( id ) ).build();
-
-        } catch (SQLException | DatabaseConnectionException e ) {
-
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
-
-        } catch (DataNotFoundException e) {
-
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
-
-        }
-    }
-
 }
