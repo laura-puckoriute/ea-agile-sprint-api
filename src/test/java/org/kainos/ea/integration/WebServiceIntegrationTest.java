@@ -22,9 +22,12 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
     String hostURI = System.getenv("API_URL");
+    String addRoleEndpoint = "/add-role";
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
@@ -43,12 +46,12 @@ public class WebServiceIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
         List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
 
-        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
-        Assertions.assertEquals(1, jobList.get(0).getId());
-        Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
-        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
-        Assertions.assertEquals(6, jobList.get(0).getBandLevelID());
-        Assertions.assertEquals(1, jobList.get(0).getCapabilityID());
+        assertEquals("Software Engineer", jobList.get(0).getTitle());
+        assertEquals(1, jobList.get(0).getId());
+        assertEquals("Engineering", jobList.get(0).getCapability());
+        assertEquals("Trainee", jobList.get(0).getBandLevel());
+        assertEquals(6, jobList.get(0).getBandLevelID());
+        assertEquals(1, jobList.get(0).getCapabilityID());
     }
 
     @Test
@@ -71,7 +74,7 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get(Response.class);
 
-        Assertions.assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
+        assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
     }
     
     @Test
@@ -87,7 +90,7 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get(JobSpecificationResponse.class);
 
-        Assertions.assertEquals(expectedResult, response);
+        assertEquals(expectedResult, response);
     }
 
     @Test
@@ -98,6 +101,16 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get(Response.class);
 
-        Assertions.assertEquals(expectedResponse.getStatus(), response.getStatus());
+        assertEquals(expectedResponse.getStatus(), response.getStatus());
+    }
+
+    @Test
+    void registerUser_shouldThrow404Error_whenDataNotFoundExceptionThrown() {
+        int expectedResult = HttpStatus.NOT_FOUND_404;
+        Response response = APP.client().target( hostURI + addRoleEndpoint + "/test" )
+                .request()
+                .get(Response.class);
+
+        assertEquals(expectedResult, response.getStatus());
     }
 }

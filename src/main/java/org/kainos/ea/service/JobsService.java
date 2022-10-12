@@ -3,6 +3,7 @@ package org.kainos.ea.service;
 import java.sql.SQLException;
 
 import org.kainos.ea.exception.DataNotFoundException;
+import org.kainos.ea.models.JobRoleRequest;
 import org.kainos.ea.util.DatabaseConnection;
 import org.kainos.ea.exception.DatabaseConnectionException;
 
@@ -31,6 +32,10 @@ public class JobsService {
             throw new DataNotFoundException();
         }
         return jobSpecification;
+    }
+
+    public int addRole(JobRoleRequest role) throws DatabaseConnectionException, SQLException {
+        return jobRolesData.addRole(role, databaseConnection.getConnection());
     }
 
 }

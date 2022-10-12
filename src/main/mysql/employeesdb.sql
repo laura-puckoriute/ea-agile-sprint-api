@@ -45,7 +45,8 @@ CREATE TABLE `Role` (
     `job_familyID` smallint,
      FOREIGN KEY (`capabilityID`) REFERENCES `Capability`(`id`),
      FOREIGN KEY (`band_levelID`) REFERENCES `Band_Level`(`id`),
-     FOREIGN KEY (`job_familyID`) REFERENCES `Job_Family`(`id`)
+     FOREIGN KEY (`job_familyID`) REFERENCES `Job_Family`(`id`),
+     UNIQUE `unique_index` (`capabilityID`, `band_levelID`, `job_familyID`)
 );
 
 CREATE TABLE `User_Role` (
