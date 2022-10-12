@@ -53,7 +53,7 @@ public class WebService {
     @ApiOperation(
 
             value = "Returns a list of all the current job roles.",
-            response = JobRoleResponse.class,
+            response = JobRolesResponse.class,
             responseContainer = "List"
     )
     public Response getJobRoles() throws SQLException, DatabaseConnectionException {
