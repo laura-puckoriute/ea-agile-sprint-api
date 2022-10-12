@@ -1,12 +1,17 @@
 package org.kainos.ea.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class JobFamily {
 
     private int id;
 
     private String title;
 
-    public JobFamily( int id, String title ) {
+    @JsonCreator
+    public JobFamily( @JsonProperty("id") int id,
+                      @JsonProperty("title") String title ) {
 
         setId( id );
         setTitle( title );
