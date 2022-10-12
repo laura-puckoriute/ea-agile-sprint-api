@@ -3,6 +3,7 @@ package org.kainos.ea.data;
 import org.kainos.ea.exception.DatabaseConnectionException;
 
 import org.kainos.ea.models.JobRoleRequest;
+import org.kainos.ea.models.JobRoleResponse;
 import org.kainos.ea.models.JobRolesResponse;
 
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class JobRolesData {
 
-    public JobRolesResponse getJobRole( Connection conn, int id ) throws SQLException, DatabaseConnectionException {
+    public JobRoleResponse getJobRole(Connection conn, int id ) throws SQLException, DatabaseConnectionException {
 
         String query =
                 "SELECT " +
@@ -30,11 +31,11 @@ public class JobRolesData {
 
         ResultSet rs = st.executeQuery();
 
-        JobRolesResponse jobRolesResponse = new JobRolesResponse();
+        JobRoleResponse jobRoleResponse = new JobRoleResponse();
 
         if ( rs.next() ) {
 
-            jobRolesResponse = new JobRolesResponse(
+            jobRoleResponse = new JobRoleResponse(
 
                     rs.getInt   ( "id" ),
                     rs.getString( "title" ),
@@ -49,7 +50,7 @@ public class JobRolesData {
             );
         }
 
-        return jobRolesResponse;
+        return jobRoleResponse;
     }
 
     public boolean updateJobRole( Connection conn, int id, JobRoleRequest jobRoleRequest ) throws SQLException, DatabaseConnectionException {
