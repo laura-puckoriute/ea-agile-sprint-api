@@ -23,12 +23,8 @@ public class CapabilityService {
         this.databaseConnection = databaseConnection;
     }
 
-    public List<Capability> getCapabilities() throws DatabaseConnectionException, SQLException, DataNotFoundException {
+    public List<Capability> getCapabilities() throws DatabaseConnectionException, SQLException {
 
-        List<Capability> capabilities = capabilityData.getCapabilities( databaseConnection.getConnection() );
-
-        if ( !(capabilities.size() > 0) ) throw new DataNotFoundException();
-
-        return capabilities;
+        return capabilityData.getCapabilities( databaseConnection.getConnection() );
     }
 }

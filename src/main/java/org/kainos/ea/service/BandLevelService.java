@@ -21,12 +21,8 @@ public class BandLevelService {
         this.databaseConnection = databaseConnection;
     }
 
-    public List<BandLevel> getBandLevels() throws DatabaseConnectionException, SQLException, DataNotFoundException {
+    public List<BandLevel> getBandLevels() throws DatabaseConnectionException, SQLException {
 
-        List<BandLevel> bandLevels = bandLevelData.getBandLevels( databaseConnection.getConnection() );
-
-        if ( !(bandLevels.size() > 0) ) throw new DataNotFoundException();
-
-        return bandLevels;
+        return bandLevelData.getBandLevels( databaseConnection.getConnection() );
     }
 }
