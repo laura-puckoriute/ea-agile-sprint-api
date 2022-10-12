@@ -65,16 +65,4 @@ public class CapabilityServiceTest {
         Assertions.assertThrows( DatabaseConnectionException.class,
                 () -> capabilityService.getCapabilities() );
     }
-
-    @Test
-    void getCapabilities_shouldThrowDataNotFoundException_whenNoBandLevels() throws DatabaseConnectionException, SQLException {
-
-        List<Capability> capabilities = new ArrayList<>();
-
-        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( capabilityData.getCapabilities( conn ) ).thenReturn( capabilities );
-
-        Assertions.assertThrows( DataNotFoundException.class,
-                () -> capabilityService.getCapabilities() );
-    }
 }

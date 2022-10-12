@@ -65,16 +65,4 @@ public class BandLevelServiceTest {
         Assertions.assertThrows( DatabaseConnectionException.class,
                 () -> bandLevelService.getBandLevels() );
     }
-
-    @Test
-    void getBandLevels_shouldThrowDataNotFoundException_whenNoBandLevels() throws DatabaseConnectionException, SQLException {
-
-        List<BandLevel> bandLevels = new ArrayList<>();
-
-        Mockito.when( databaseConnector.getConnection() ).thenReturn( conn );
-        Mockito.when( bandLevelData.getBandLevels( conn ) ).thenReturn( bandLevels );
-
-        Assertions.assertThrows( DataNotFoundException.class,
-                () -> bandLevelService.getBandLevels() );
-    }
 }
