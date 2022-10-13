@@ -3,6 +3,7 @@ package org.kainos.ea.integration;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
@@ -20,10 +21,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class WebServiceIntegrationTest {
 
     String hostURI = System.getenv("API_URL");
+
+    String registerEndpoint = "/register";
 
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
@@ -43,6 +48,11 @@ public class WebServiceIntegrationTest {
         ObjectMapper mapper = new ObjectMapper();
 
         List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
+
+        assertEquals("Software Engineer", jobList.get(0).getTitle());
+        assertEquals(1, jobList.get(0).getId());
+        assertEquals("Engineering", jobList.get(0).getCapability());
+        assertEquals("Trainee", jobList.get(0).getBandLevel());
 
         Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
         Assertions.assertEquals(1, jobList.get(0).getId());
@@ -72,7 +82,7 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get( Response.class );
 
-        Assertions.assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
+        assertEquals( response.getStatus(), HttpStatus.NOT_FOUND_404 );
     }
     
     @Test
@@ -384,5 +394,32 @@ public class WebServiceIntegrationTest {
         Assertions.assertEquals("Strategy and Planning", jobFamilies.get(0).getTitle());
         Assertions.assertEquals( 12, jobFamilies.get(11).getId() );
         Assertions.assertEquals("Spend Management", jobFamilies.get(11).getTitle());
+    }
+
+    @Test
+    void registerUser_shouldReturnID_whenUserIsRegistered() {
+        String generatedString = RandomStringUtils.randomAlphanumeric(10);
+        int expectedResult = HttpStatus.CREATED_201;
+        UserRequest user = new UserRequest(generatedString + "@email.com", "Testpassword!", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
+    }
+
+    @Test
+    void registerUser_shouldThrow400Error_whenUserCredentialsAreInvalid() {
+        int expectedResult = HttpStatus.BAD_REQUEST_400;
+        UserRequest user = new UserRequest("a", "a", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
     }
 }

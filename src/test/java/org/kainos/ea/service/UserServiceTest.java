@@ -1,5 +1,6 @@
 package org.kainos.ea.service;
 
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,14 +8,19 @@ import org.kainos.ea.data.UserData;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.InvalidUserCredentialsException;
 import org.kainos.ea.models.User;
+import org.kainos.ea.models.UserRequest;
 import org.kainos.ea.util.DatabaseConnection;
 import org.kainos.ea.util.JwtToken;
 
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -26,6 +32,8 @@ public class UserServiceTest {
     UserService userService = new UserService( userData, databaseConnector );
 
     Connection conn;
+
+    UserRequest userRequest = new UserRequest("matthew.knox@email.com", "Testpassword!", 1);
 
     @Test
     public void authenticateUser_shouldReturnToken_whenCredentialsAreValid() throws DatabaseConnectionException, SQLException, InvalidUserCredentialsException {
@@ -136,7 +144,7 @@ public class UserServiceTest {
 
         int response = userService.checkCredentials( user.getEmail(), password );
 
-        Assertions.assertEquals( response, user.getId() );
+        assertEquals( response, user.getId() );
     }
 
     @Test
@@ -155,9 +163,9 @@ public class UserServiceTest {
         int invalidEmail        = userService.checkCredentials( "email", password );
         int invalidCredentials  = userService.checkCredentials( "email", "password" );
 
-        Assertions.assertNotEquals( user.getId(), invalidPassword );
-        Assertions.assertNotEquals( user.getId(), invalidEmail );
-        Assertions.assertNotEquals( user.getId(), invalidCredentials );
+        assertNotEquals( user.getId(), invalidPassword );
+        assertNotEquals( user.getId(), invalidEmail );
+        assertNotEquals( user.getId(), invalidCredentials );
     }
 
     @Test
@@ -174,7 +182,7 @@ public class UserServiceTest {
 
         int result = userService.insertToken( id, token );
 
-        Assertions.assertEquals( expectedResult, result );
+        assertEquals( expectedResult, result );
     }
 
     @Test
@@ -217,7 +225,7 @@ public class UserServiceTest {
 
         String response = userService.removeUserToken( token );
 
-        Assertions.assertEquals( "logout successful", response );
+        assertEquals( "logout successful", response );
 
     }
 
@@ -240,7 +248,7 @@ public class UserServiceTest {
         String first    = "IDENTICALSTRING";
         String second   = "IDENTICALSTRING";
 
-        Assertions.assertEquals( userService.generateHash( first ), userService.generateHash( second ) );
+        assertEquals( userService.generateHash( first ), userService.generateHash( second ) );
     }
 
     @Test
@@ -249,6 +257,35 @@ public class UserServiceTest {
         String first    = "IDENTICALSTRING";
         String second   = "NOTIDENTICALSTRING";
 
-        Assertions.assertNotEquals( userService.generateHash( first ), userService.generateHash( second ) );
+        assertNotEquals( userService.generateHash( first ), userService.generateHash( second ) );
+    }
+
+    @Test
+    public void registerUser_shouldReturnID_whenCredentialsAreValid() throws DatabaseConnectionException, SQLException {
+        int expectedResult = 1;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(userData.registerUser(userRequest, conn)).thenReturn(expectedResult);
+
+        int actualResult = userService.registerUser(userRequest);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void registerUser_shouldThrowSQLException_whenSQLExceptionIsThrown() throws DatabaseConnectionException, SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(userData.registerUser(userRequest, conn)).thenThrow(SQLException.class);
+
+        assertThrows(SQLException.class,
+                () -> userService.registerUser(userRequest));
+    }
+
+    @Test
+    public void registerUser_shouldThrowDatabaseConnectionException_whenDatabaseConnectionExceptionIsThrown() throws DatabaseConnectionException, SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(userData.registerUser(userRequest, conn)).thenThrow(DatabaseConnectionException.class);
+
+        assertThrows(DatabaseConnectionException.class,
+                () -> userService.registerUser(userRequest));
     }
 }
