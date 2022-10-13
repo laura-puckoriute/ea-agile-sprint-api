@@ -99,12 +99,6 @@ public class WebService {
     @GET
     @Path("/job-specification/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJobSpecification(@PathParam("id") int id) throws SQLException, DatabaseConnectionException, DataNotFoundException {
-
-        try {
-
-            return Response.ok(jobsService.getJobSpecification(id)).build();
-            
     @ApiOperation(
 
             value = "Returns the job specification of the job role.",
