@@ -57,11 +57,11 @@ public class WebService {
 
         try {
 
-            return Response.ok( jobsService.getJobRoles() ).build();
+            return Response.ok(jobsService.getJobRoles()).build();
 
-        } catch ( SQLException | DatabaseConnectionException e ) {
+        } catch (SQLException | DatabaseConnectionException e) {
 
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
 
@@ -73,26 +73,26 @@ public class WebService {
             value = "Returns a list of competencies and the band level requested.",
             response = CompetenciesWithBandLevel.class
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
 
-            @ApiResponse( code = 404, message = "The specified band level doesn't exist.")
+            @ApiResponse(code = 404, message = "The specified band level doesn't exist.")
     })
     public Response getCompetenciesByBandLevel(
-            @ApiParam( value = "The band level of the competencies to be viewed.",
-                       required = true )
-            @PathParam("band_level") int id ) {
+            @ApiParam(value = "The band level of the competencies to be viewed.",
+                    required = true)
+            @PathParam("band_level") int id) {
 
         try {
 
             return Response.ok(competencyService.getCompetenciesByBandLevel(id)).build();
 
-        } catch ( SQLException | DatabaseConnectionException e ) {
+        } catch (SQLException | DatabaseConnectionException e) {
 
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
 
-        } catch ( DataNotFoundException e ) {
+        } catch (DataNotFoundException e) {
 
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 
@@ -104,26 +104,26 @@ public class WebService {
             value = "Returns the job specification of the job role.",
             response = JobSpecificationResponse.class
     )
-    @ApiResponses( value = {
+    @ApiResponses(value = {
 
-            @ApiResponse( code = 404, message = "The corresponding job role id could not be found.")
+            @ApiResponse(code = 404, message = "The corresponding job role id could not be found.")
     })
     public Response getJobSpecification(
-            @ApiParam( value = "The job role's id that you wish to view the specification of.",
-                    required = true )
-            @PathParam("id") int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
+            @ApiParam(value = "The job role's id that you wish to view the specification of.",
+                    required = true)
+            @PathParam("id") int id) throws SQLException, DatabaseConnectionException, DataNotFoundException {
 
         try {
 
-            return Response.ok( jobsService.getJobSpecification( id ) ).build();
+            return Response.ok(jobsService.getJobSpecification(id)).build();
 
         } catch (SQLException | DatabaseConnectionException e) {
 
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
 
         } catch (DataNotFoundException e) {
 
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
 
         }
     }
@@ -132,7 +132,7 @@ public class WebService {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerUser(UserRequest user) {
+    public Response registerUser(UserRequest user) throws DatabaseConnectionException, DataNotFoundException {
         if (userValidator.isValidUser(user)) {
             try {
                 int id = userService.registerUser(user);
@@ -140,10 +140,6 @@ public class WebService {
             } catch (DatabaseConnectionException | SQLException e) {
                 System.out.println(e);
                 return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-            } catch (DataNotFoundException e) {
-
-                return Response.status(HttpStatus.NOT_FOUND_404).build();
-
             }
         } else {
             return Response.status(HttpStatus.BAD_REQUEST_400).build();

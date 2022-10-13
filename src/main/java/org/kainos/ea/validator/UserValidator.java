@@ -1,5 +1,6 @@
 package org.kainos.ea.validator;
 
+import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.models.UserRequest;
 
 public class UserValidator {
@@ -8,6 +9,9 @@ public class UserValidator {
     public boolean isValidUser(UserRequest user) {
         if (!user.getEmail().matches(emailRegex) || !user.getPassword().matches(passwordRegex)) {
             return false;
+        }
+        if (user.getUserRoleID() != 1 && user.getUserRoleID() != 2) {
+            throw new DataNotFoundException();
         }
         return true;
     }
