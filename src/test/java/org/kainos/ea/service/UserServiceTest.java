@@ -272,18 +272,6 @@ public class UserServiceTest {
     }
 
     @Test
-    void registerUser_shouldThrow400Error_whenUserCredentialsAreInvalid() throws DatabaseConnectionException, SQLException {
-        int expectedResult = HttpStatus.BAD_REQUEST_400;
-        UserRequest invalidUser = new UserRequest("a", "a", 1);
-
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(userData.registerUser(invalidUser, conn)).thenReturn(expectedResult);
-
-        int actualResult = userService.registerUser(invalidUser);
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
     public void registerUser_shouldThrowSQLException_whenSQLExceptionIsThrown() throws DatabaseConnectionException, SQLException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(userData.registerUser(userRequest, conn)).thenThrow(SQLException.class);
