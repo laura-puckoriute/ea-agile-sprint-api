@@ -140,6 +140,10 @@ public class WebService {
 
             return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "job role title cannot be empty" ).build();
 
+        }  catch ( FieldNameTooLongException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "fields are over the character limit" ).build();
+
         } catch ( BandLevelInvalidException | CapabilityInvalidException | JobFamilyInvalidException e ) {
 
             return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "please check you have valid fields" ).build();
