@@ -74,7 +74,7 @@ public class UserData {
 
         return hash;
     }
-    public int registerUser(UserRequest user, Connection c) throws SQLException {
+    public int registerUser(UserRequest user, Connection c) throws SQLException, DatabaseConnectionException {
         String query = "INSERT INTO `User`(email, password, user_roleID) VALUES (?, ?, ?);";
 
         PreparedStatement st = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
