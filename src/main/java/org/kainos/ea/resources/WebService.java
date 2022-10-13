@@ -121,21 +121,32 @@ public class WebService {
 
             if ( jobRoleRequestValidator.isValidJobRole( jobRoleRequest ) ) {
 
-                return Response.ok(jobsService.updateJobRole(id, jobRoleRequest)).build();
+                try {
+
+                    return Response.ok(jobsService.updateJobRole(id, jobRoleRequest)).build();
+
+                }  catch ( SQLException | DatabaseConnectionException e ) {
+
+                    return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+                } catch ( DataNotFoundException e ) {
+
+                    return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+
+                }
             }
 
-        } catch ( SQLException | DatabaseConnectionException e ) {
+        } catch ( JobRoleTitleEmptyException e ) {
 
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "job role title cannot be empty" ).build();
 
-        } catch ( JobRoleTitleEmptyException | BandLevelInvalidException | CapabilityInvalidException | JobFamilyInvalidException | JobRoleLinkInvalidException e ) {
+        } catch ( BandLevelInvalidException | CapabilityInvalidException | JobFamilyInvalidException e ) {
 
-            return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "please check you have valid fields" ).build();
 
-        } catch ( DataNotFoundException e ) {
+        } catch ( JobRoleLinkInvalidException e ) {
 
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
-
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "check your link format" ).build();
         }
 
         return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
