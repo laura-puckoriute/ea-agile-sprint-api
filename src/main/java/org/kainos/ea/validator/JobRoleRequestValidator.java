@@ -9,22 +9,22 @@ public class JobRoleRequestValidator {
 
         String urlRegex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-        if ( jobRoleRequest.getTitle().length() < 0 ) {
+        if ( jobRoleRequest.getTitle().length() < 1 ) {
 
             throw new JobRoleTitleEmptyException();
         }
 
-        if ( jobRoleRequest.getBandLevelID() < 0 ) {
+        if ( jobRoleRequest.getBandLevelID() < 1 ) {
 
             throw new BandLevelInvalidException();
         }
 
-        if ( jobRoleRequest.getCapabilityID() < 0 ) {
+        if ( jobRoleRequest.getCapabilityID() < 1 ) {
 
             throw new CapabilityInvalidException();
         }
 
-        if ( jobRoleRequest.getJobFamilyID() < 0 ) {
+        if ( jobRoleRequest.getJobFamilyID() < 1 ) {
 
             throw new JobFamilyInvalidException();
         }
