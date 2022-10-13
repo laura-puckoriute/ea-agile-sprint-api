@@ -6,7 +6,7 @@ import org.kainos.ea.models.UserRequest;
 public class UserValidator {
     String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{9,20}$"; //more than 8 chars one upper, one lower, one special
-    public boolean isValidUser(UserRequest user) {
+    public boolean isValidUser(UserRequest user) throws DataNotFoundException {
         if (!user.getEmail().matches(emailRegex) || !user.getPassword().matches(passwordRegex)) {
             return false;
         }

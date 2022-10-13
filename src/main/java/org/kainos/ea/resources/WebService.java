@@ -132,19 +132,21 @@ public class WebService {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerUser(UserRequest user) throws DatabaseConnectionException, DataNotFoundException {
-        if (userValidator.isValidUser(user)) {
-            try {
-                int id = userService.registerUser(user);
-                return Response.status(HttpStatus.CREATED_201).entity(id).build();
-            } catch (DatabaseConnectionException | SQLException e) {
-                System.out.println(e);
-                return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-            } catch (DataNotFoundException e) {
-                return Response.status(HttpStatus.NOT_FOUND_404).build();
+    public Response registerUser(UserRequest user) {
+        try {
+            if (userValidator.isValidUser(user)) {
+                try {
+                    int id = userService.registerUser(user);
+                    return Response.status(HttpStatus.CREATED_201).entity(id).build();
+                } catch (DatabaseConnectionException | SQLException e) {
+                    System.out.println(e);
+                    return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+                }
+            } else {
+                return Response.status(HttpStatus.BAD_REQUEST_400).build();
             }
-        } else {
-            return Response.status(HttpStatus.BAD_REQUEST_400).build();
+        } catch (DataNotFoundException e) {
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 
