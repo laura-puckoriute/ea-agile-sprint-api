@@ -233,6 +233,14 @@ public class WebService {
     @Path("/add-role")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            value = "Adds a new job role."
+    )
+    @ApiResponses( value = {
+
+            @ApiResponse( code = 200, message = "successful operation"),
+            @ApiResponse( code = 404, message = "The job you're trying to update doesn't exist.")
+    })
     public Response addRole(JobRoleRequest role) {
         try {
             int id = jobsService.addRole(role);
@@ -240,8 +248,6 @@ public class WebService {
         } catch (DatabaseConnectionException | SQLException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-        } catch (DataNotFoundException e) {
-            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 }
