@@ -3,7 +3,12 @@ package org.kainos.ea;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+
 import org.kainos.ea.resources.AuthenticationService;
+
+import io.federecio.dropwizard.swagger.SwaggerBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+
 import org.kainos.ea.resources.WebService;
 import org.kainos.ea.util.DatabaseConnection;
 
@@ -20,7 +25,12 @@ public class APIApplication extends Application<APIConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<APIConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(new SwaggerBundle<APIConfiguration>() {
+            @Override
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(APIConfiguration configuration) {
+                return configuration.getSwagger();
+            }
+        });
     }
 
     @Override

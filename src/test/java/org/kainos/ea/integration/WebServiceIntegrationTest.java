@@ -20,7 +20,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,9 +36,9 @@ public class WebServiceIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
-    @Test
-    void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() {
 
+    @Test
+    void getJobRoles_shouldReturnListOfJobRoles_withIdTitleCapability() throws UnsupportedEncodingException {
         JsonNode response = APP.client().target( hostURI + "/job-roles" )
                 .request()
                 .get(JsonNode.class);
@@ -52,6 +54,12 @@ public class WebServiceIntegrationTest {
         assertEquals("Engineering", jobList.get(0).getCapability());
         assertEquals("Trainee", jobList.get(0).getBandLevel());
 
+        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
+        Assertions.assertEquals(1, jobList.get(0).getId());
+        Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
+        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
+        Assertions.assertEquals(6, jobList.get(0).getBandLevelID());
+        Assertions.assertEquals(1, jobList.get(0).getCapabilityID());
     }
 
     @Test
@@ -87,7 +95,6 @@ public class WebServiceIntegrationTest {
                 "As a Trainee Software Engineer with Kainos, you will work on projects where you can make a real difference to people’s lives – the lives of people you know. After taking part in our award-winning, seven-week Engineering Academy, you will then join one of our many project teams, to learn from our experienced developers, project managers and customer-facing staff. You’ll have great support and mentoring, balanced with the experience of being given real, meaningful work to do, to help you truly develop both technically and professionally.");
 
         JobSpecificationResponse response = APP.client().target( hostURI + "/job-specification/1")
-
                 .request()
                 .get(JobSpecificationResponse.class);
 
@@ -98,9 +105,7 @@ public class WebServiceIntegrationTest {
     void getJobSpecification_shouldReturnErrorStatus404() throws UnsupportedEncodingException {
 
         Response expectedResponse = Response.status(HttpStatus.NOT_FOUND_404).build();
-
         Response response = APP.client().target(hostURI + "/job-specification/99999999999")
-
                 .request()
                 .get(Response.class);
 

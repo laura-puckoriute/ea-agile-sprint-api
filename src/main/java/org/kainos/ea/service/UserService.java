@@ -34,12 +34,9 @@ public class UserService {
 
             String token = JwtToken.generateToken( email );
 
-            if ( token != null ) {
+            if ( insertToken( id, token ) > 0 ) {
 
-                if ( insertToken( id, token ) > 0 ) {
-
-                    return token;
-                }
+                return token;
             }
         }
 
@@ -48,9 +45,7 @@ public class UserService {
 
     public String removeUserToken( String token ) throws DatabaseConnectionException, SQLException, InvalidClaimException, InvalidUserCredentialsException {
 
-        String email = JwtToken.verifyToken( token );
-
-        if ( userData.removeToken( databaseConnection.getConnection(), email, token ) ) {
+        if ( userData.removeToken( databaseConnection.getConnection(), JwtToken.verifyToken( token ), token ) ) {
 
             return "logout successful";
         }
