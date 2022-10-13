@@ -5,19 +5,15 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import org.kainos.ea.data.*;
 
-import org.kainos.ea.exception.DataNotFoundException;
-import org.kainos.ea.exception.DatabaseConnectionException;
-
-import org.kainos.ea.models.CompetenciesWithBandLevel;
-import org.kainos.ea.models.JobRolesResponse;
-import org.kainos.ea.models.JobRoleRequest;
-import org.kainos.ea.service.CompetencyService;
-import org.kainos.ea.service.JobsService;
-
+import org.kainos.ea.exception.*;
 import org.kainos.ea.models.*;
 import org.kainos.ea.service.*;
 
 import org.kainos.ea.util.DatabaseConnection;
+
+import org.kainos.ea.validator.JobRoleRequestValidator;
+
+import org.kainos.ea.validator.UserValidator;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,15 +33,23 @@ public class WebService {
     private static JobFamilyService jobFamilyService;
 
     private static CompetencyService competencyService;
+    private static UserService userService;
+    private static UserValidator userValidator;
+
+    private static JobRoleRequestValidator jobRoleRequestValidator;
 
     public WebService() {
 
         DatabaseConnection databaseConnector = new DatabaseConnection();
+
+        userService = new UserService(new UserData(), databaseConnector);
         jobsService = new JobsService( new JobRolesData(), databaseConnector );
         bandLevelService = new BandLevelService( new BandLevelData(), databaseConnector );
         capabilityService = new CapabilityService( new CapabilityData(), databaseConnector );
         jobFamilyService = new JobFamilyService( new JobFamilyData(), databaseConnector );
         competencyService = new CompetencyService( new CompetencyData(), databaseConnector );
+        jobRoleRequestValidator = new JobRoleRequestValidator();
+        userValidator = new UserValidator();
     }
 
     @GET
@@ -89,7 +93,7 @@ public class WebService {
 
             return Response.ok( jobsService.getJobRole( id ) ).build();
 
-        } catch ( SQLException | DatabaseConnectionException e ) {
+        } catch (SQLException | DatabaseConnectionException e ) {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
 
@@ -120,16 +124,41 @@ public class WebService {
 
         try {
 
-            return Response.ok( jobsService.updateJobRole( id, jobRoleRequest ) ).build();
+            if ( jobRoleRequestValidator.isValidJobRole( jobRoleRequest ) ) {
 
-        } catch ( SQLException | DatabaseConnectionException e ) {
+                try {
 
-            return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+                    return Response.ok(jobsService.updateJobRole(id, jobRoleRequest)).build();
 
-        } catch ( DataNotFoundException e ) {
+                }  catch ( SQLException | DatabaseConnectionException e ) {
 
-            return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+                    return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
+
+                } catch ( DataNotFoundException e ) {
+
+                    return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+
+                }
+            }
+
+        } catch ( JobRoleTitleEmptyException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "job role title cannot be empty" ).build();
+
+        }  catch ( FieldNameTooLongException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "fields are over the character limit" ).build();
+
+        } catch (BandLevelInvalidException | CapabilityInvalidException | JobFamilyInvalidException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "please check you have valid fields" ).build();
+
+        } catch ( JobRoleLinkInvalidException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).entity( "check your link format" ).build();
         }
+
+        return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
     }
 
     @GET
@@ -224,6 +253,29 @@ public class WebService {
 
         } catch (DataNotFoundException e) {
 
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
+        }
+    }
+
+    @POST
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(UserRequest user) {
+
+        try {
+            if (userValidator.isValidUser(user)) {
+                try {
+                    int id = userService.registerUser(user);
+                    return Response.status(HttpStatus.CREATED_201).entity(id).build();
+                } catch (DatabaseConnectionException | SQLException e) {
+                    System.out.println(e);
+                    return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+                }
+            } else {
+                return Response.status(HttpStatus.BAD_REQUEST_400).build();
+            }
+        } catch (DataNotFoundException e) {
             return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }

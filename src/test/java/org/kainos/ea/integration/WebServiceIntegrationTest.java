@@ -3,6 +3,7 @@ package org.kainos.ea.integration;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.APIApplication;
 import org.kainos.ea.APIConfiguration;
@@ -26,11 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WebServiceIntegrationTest {
 
     String hostURI = System.getenv("API_URL");
-<<<<<<< HEAD
     String addRoleEndpoint = "/add-role";
-=======
+    String registerEndpoint = "/register";
 
->>>>>>> 7c9e5261ed82d8d694888ee51c23d697d5010bd4
     static final DropwizardAppExtension<APIConfiguration> APP = new DropwizardAppExtension<>(
             APIApplication.class, null,
             new ResourceConfigurationSourceProvider()
@@ -50,12 +49,13 @@ public class WebServiceIntegrationTest {
 
         List<JobRolesResponse> jobList = mapper.convertValue(response, new TypeReference<List<JobRolesResponse>>(){});
 
-        assertEquals("Software Engineer", jobList.get(0).getTitle());
-        assertEquals(1, jobList.get(0).getId());
-        assertEquals("Engineering", jobList.get(0).getCapability());
-        assertEquals("Trainee", jobList.get(0).getBandLevel());
-        assertEquals(6, jobList.get(0).getBandLevelID());
-        assertEquals(1, jobList.get(0).getCapabilityID());
+        Assertions.assertEquals("Software Engineer", jobList.get(0).getTitle());
+        Assertions.assertEquals(1, jobList.get(0).getId());
+        Assertions.assertEquals("Engineering", jobList.get(0).getCapability());
+        Assertions.assertEquals("Trainee", jobList.get(0).getBandLevel());
+        Assertions.assertEquals(6, jobList.get(0).getBandLevelID());
+        Assertions.assertEquals(1, jobList.get(0).getCapabilityID());
+
     }
 
     @Test
@@ -100,11 +100,7 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get( JobRoleResponse.class );
 
-<<<<<<< HEAD
-        assertEquals(expectedResult, response);
-=======
         Assertions.assertTrue( expectedResult.equals( response ) );
->>>>>>> 7c9e5261ed82d8d694888ee51c23d697d5010bd4
     }
 
     @Test
@@ -116,7 +112,6 @@ public class WebServiceIntegrationTest {
                 .request()
                 .get( Response.class );
 
-<<<<<<< HEAD
         assertEquals(expectedResponse.getStatus(), response.getStatus());
     }
 
@@ -135,14 +130,12 @@ public class WebServiceIntegrationTest {
     }
     @Test
     void addRole_shouldThrow404Error_whenDataNotFoundExceptionThrown() {
-        int expectedResult = HttpStatus.NOT_FOUND_404;
+        int expectedResponse = HttpStatus.NOT_FOUND_404;
         Response response = APP.client().target( hostURI + addRoleEndpoint + "/test" )
                 .request()
                 .get(Response.class);
 
-        assertEquals(expectedResult, response.getStatus());
-=======
-        Assertions.assertEquals( expectedResponse.getStatus(), response.getStatus() );
+        Assertions.assertEquals( expectedResponse, response.getStatus() );
     }
 
     @Test
@@ -183,6 +176,186 @@ public class WebServiceIntegrationTest {
                 .getStatus();
 
         Assertions.assertEquals( HttpStatus.NOT_FOUND_404, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenNoJobTitle() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenJobTitleTooLong() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical ArchitectTechnical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenBandLevelIDInvalid() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                -3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenCapabilityIDInvalid() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                -1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenJobFamilyIDInvalid() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                -2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenInvalidLink() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenRequirementsTooLong() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community.•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community.•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community.•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community.•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community.•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community.•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenResponsibilitiesTooLong() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
+    }
+
+    @Test
+    void updateJobRole_shouldReturn400_whenLinkTooLong() {
+
+        JobRoleRequest request = new JobRoleRequest(
+                "Technical Architect",
+                "•Experience delivering software designs for multi-tiered modern software applications.\n•Experience of technical ownership for a product/software project, including architecture, estimation, product planning and user story/requirement creation.\n•Understands non-functional concerns for customers and has experience incorporating these into the application design.\n•Has experience with public cloud platforms, such as AWS and Azure, including SaaS and PaaS offerings.\n•Able to simply and clearly communicate technical design in conversation, documentation and presentations.\n•Able to make effective decisions within fast-moving delivery.\n•We are passionate about developing people – a demonstrated ability in managing, coaching and developing junior members of your team and wider community. ",
+                "As a Technical Architect (Consultant) in Kainos, you’ll be responsible for leading teams and developing high quality solutions which delight our customers and impact the lives of users worldwide. As a technical leader on a project, you’ll work with customer architects to agree technical designs, advising on estimated effort and technical implications of user stories and user journeys. You’ll manage, coach and develop a small number of staff, with a focus on managing employee performance and assisting in their career development. It’s a fast-paced environment so it is important for you to make sound, reasoned decisions. You’ll do this whilst learning about new technologies and approaches, with room to learn, develop and grow.",
+                "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1/https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1/https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1/https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20Profile%20%2D%20Technical%20Architect%20%28Consultant%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1",
+                3,
+                1,
+                2 );
+
+        int response = APP.client().target( hostURI + "/job-roles/1")
+                .request()
+                .put( Entity.entity( request, MediaType.APPLICATION_JSON ) )
+                .getStatus();
+
+        Assertions.assertEquals( HttpStatus.BAD_REQUEST_400, response );
     }
 
     @Test
@@ -240,6 +413,32 @@ public class WebServiceIntegrationTest {
         Assertions.assertEquals("Strategy and Planning", jobFamilies.get(0).getTitle());
         Assertions.assertEquals( 12, jobFamilies.get(11).getId() );
         Assertions.assertEquals("Spend Management", jobFamilies.get(11).getTitle());
->>>>>>> 7c9e5261ed82d8d694888ee51c23d697d5010bd4
+    }
+
+    @Test
+    void registerUser_shouldReturnID_whenUserIsRegistered() {
+        String generatedString = RandomStringUtils.randomAlphanumeric(10);
+        int expectedResult = HttpStatus.CREATED_201;
+        UserRequest user = new UserRequest(generatedString + "@email.com", "Testpassword!", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
+    }
+
+    @Test
+    void registerUser_shouldThrow400Error_whenUserCredentialsAreInvalid() {
+        int expectedResult = HttpStatus.BAD_REQUEST_400;
+        UserRequest user = new UserRequest("a", "a", 1);
+
+        int response = APP.client().target(hostURI + registerEndpoint)
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE))
+                .getStatus();
+
+        assertEquals(expectedResult, response);
     }
 }

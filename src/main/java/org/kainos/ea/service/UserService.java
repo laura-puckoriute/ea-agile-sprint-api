@@ -4,8 +4,10 @@ package org.kainos.ea.service;
 import com.google.common.hash.Hashing;
 import io.jsonwebtoken.InvalidClaimException;
 import org.kainos.ea.data.UserData;
+import org.kainos.ea.exception.DataNotFoundException;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.InvalidUserCredentialsException;
+import org.kainos.ea.models.UserRequest;
 import org.kainos.ea.util.DatabaseConnection;
 import org.kainos.ea.util.JwtToken;
 
@@ -68,5 +70,9 @@ public class UserService {
                 .toString();
 
         return hash;
+    }
+
+    public int registerUser(UserRequest user) throws DatabaseConnectionException, SQLException, DataNotFoundException {
+        return userData.registerUser(user, databaseConnection.getConnection());
     }
 }

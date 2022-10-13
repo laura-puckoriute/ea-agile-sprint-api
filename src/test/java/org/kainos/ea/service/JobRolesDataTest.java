@@ -125,7 +125,7 @@ public class JobRolesDataTest {
     }
 
     @Test
-    void updateJobRole_shouldReturnTrue_whenJobRoleInsertSuccessful() throws DatabaseConnectionException, SQLException, DataNotFoundException {
+    void updateJobRole_shouldReturnRoleHasBeenUpdated_whenJobRoleInsertSuccessful() throws DatabaseConnectionException, SQLException, DataNotFoundException {
 
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Software Engineer",
