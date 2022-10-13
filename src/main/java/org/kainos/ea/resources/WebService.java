@@ -5,14 +5,14 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import org.kainos.ea.data.*;
 
-import org.kainos.ea.exception.DataNotFoundException;
-import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.exception.*;
 
 
 import org.kainos.ea.models.*;
 import org.kainos.ea.service.*;
 
 import org.kainos.ea.util.DatabaseConnection;
+import org.kainos.ea.validator.JobRoleRequestValidator;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -33,6 +33,8 @@ public class WebService {
 
     private static CompetencyService competencyService;
 
+    private static JobRoleRequestValidator jobRoleRequestValidator;
+
     public WebService() {
 
         DatabaseConnection databaseConnector = new DatabaseConnection();
@@ -42,6 +44,7 @@ public class WebService {
         capabilityService = new CapabilityService( new CapabilityData(), databaseConnector );
         jobFamilyService = new JobFamilyService( new JobFamilyData(), databaseConnector );
         competencyService = new CompetencyService( new CompetencyData(), databaseConnector );
+        jobRoleRequestValidator = new JobRoleRequestValidator();
     }
     
     @GET
@@ -116,16 +119,26 @@ public class WebService {
 
         try {
 
-            return Response.ok( jobsService.updateJobRole( id, jobRoleRequest ) ).build();
+            if ( jobRoleRequestValidator.isValidJobRole( jobRoleRequest ) ) {
+
+                return Response.ok(jobsService.updateJobRole(id, jobRoleRequest)).build();
+            }
 
         } catch ( SQLException | DatabaseConnectionException e ) {
 
             return Response.status( HttpStatus.INTERNAL_SERVER_ERROR_500 ).build();
 
+        } catch ( JobRoleTitleEmptyException | BandLevelInvalidException | CapabilityInvalidException | JobFamilyInvalidException | JobRoleLinkInvalidException e ) {
+
+            return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
+
         } catch ( DataNotFoundException e ) {
 
             return Response.status( HttpStatus.NOT_FOUND_404 ).build();
+
         }
+
+        return Response.status( HttpStatus.BAD_REQUEST_400 ).build();
     }
 
     @GET
