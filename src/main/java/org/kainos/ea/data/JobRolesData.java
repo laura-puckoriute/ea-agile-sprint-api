@@ -114,12 +114,12 @@ public class JobRolesData {
 
         PreparedStatement st = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         st.setString(1, role.getTitle());
-        st.setString(2, role.getDescription());
+        st.setString(2, role.getRequirements());
         st.setString(3, role.getResponsibilities());
         st.setString(4, role.getLink());
         st.setInt(5, role.getCapabilityID());
-        st.setInt(6, role.getBand_levelID());
-        st.setInt(7, role.getJob_familyID());
+        st.setInt(6, role.getBandLevelID());
+        st.setInt(7, role.getJobFamilyID());
 
         int affectedRows = st.executeUpdate();
 

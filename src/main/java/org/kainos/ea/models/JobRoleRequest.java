@@ -6,28 +6,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobRoleRequest {
 
     private String title;
-    private String description;
+
+    private String requirements;
+
     private String responsibilities;
+
     private String link;
+
+    private int bandLevelID;
+
     private int capabilityID;
-    private int band_levelID;
-    private int job_familyID;
+
+    private int jobFamilyID;
 
     @JsonCreator
     public JobRoleRequest(@JsonProperty("title") String title,
-                          @JsonProperty("description") String description,
+                          @JsonProperty("requirements") String requirements,
                           @JsonProperty("responsibilities") String responsibilities,
                           @JsonProperty("link") String link,
-                          @JsonProperty("capabilityID") int capabilityID,
-                          @JsonProperty("band_levelID") int band_levelID,
-                          @JsonProperty("job_familyID") int job_familyID) {
-        this.title = title;
-        this.description = description;
-        this.responsibilities = responsibilities;
-        this.link = link;
-        this.capabilityID = capabilityID;
-        this.band_levelID = band_levelID;
-        this.job_familyID = job_familyID;
+                          @JsonProperty("band") int bandLevelID,
+                          @JsonProperty("capability") int capabilityID,
+                          @JsonProperty("jobFamily") int jobFamilyID) {
+        setTitle(title);
+        setRequirements(requirements);
+        setResponsibilities(responsibilities);
+        setLink(link);
+        setBandLevelID(bandLevelID);
+        setCapabilityID(capabilityID);
+        setJobFamilyID(jobFamilyID);
     }
 
     public String getTitle() {
@@ -38,12 +44,12 @@ public class JobRoleRequest {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getRequirements() {
+        return requirements;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
     }
 
     public String getResponsibilities() {
@@ -62,6 +68,14 @@ public class JobRoleRequest {
         this.link = link;
     }
 
+    public int getBandLevelID() {
+        return bandLevelID;
+    }
+
+    public void setBandLevelID(int bandLevelID) {
+        this.bandLevelID = bandLevelID;
+    }
+
     public int getCapabilityID() {
         return capabilityID;
     }
@@ -70,20 +84,11 @@ public class JobRoleRequest {
         this.capabilityID = capabilityID;
     }
 
-    public int getBand_levelID() {
-        return band_levelID;
+    public int getJobFamilyID() {
+        return jobFamilyID;
     }
 
-    public void setBand_levelID(int band_levelID) {
-        this.band_levelID = band_levelID;
-    }
-
-    public int getJob_familyID() {
-        return job_familyID;
-    }
-
-    public void setJob_familyID(int job_familyID) {
-        this.job_familyID = job_familyID;
+    public void setJobFamilyID(int jobFamilyID) {
+        this.jobFamilyID = jobFamilyID;
     }
 }
-
