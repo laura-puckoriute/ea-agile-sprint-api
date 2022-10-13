@@ -133,14 +133,4 @@ public class WebServiceIntegrationTest {
 
         assertEquals(expectedResult, response);
     }
-
-    @Test
-    void registerUser_shouldThrow404Error_whenDataNotFoundExceptionThrown() {
-        int expectedResult = HttpStatus.NOT_FOUND_404;
-        Response response = APP.client().target( hostURI + registerEndpoint + "/test" )
-                .request()
-                .get(Response.class);
-
-        assertEquals(expectedResult, response.getStatus());
-    }
 }

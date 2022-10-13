@@ -37,7 +37,7 @@ public class WebService {
         userService = new UserService(new UserData(), databaseConnector);
         userValidator = new UserValidator();
     }
-    
+
     @GET
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +57,7 @@ public class WebService {
 
         try {
 
-            return Response.ok( competencyService.getCompetenciesByBandLevel( id ) ).build();
+            return Response.ok(competencyService.getCompetenciesByBandLevel(id)).build();
 
         } catch (SQLException | DatabaseConnectionException e) {
 
@@ -72,13 +72,13 @@ public class WebService {
     @GET
     @Path("/job-specification/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJobSpecification( @PathParam("id") int id ) throws SQLException, DatabaseConnectionException, DataNotFoundException {
+    public Response getJobSpecification(@PathParam("id") int id) throws SQLException, DatabaseConnectionException, DataNotFoundException {
 
         try {
 
-            return Response.ok(jobsService.getJobSpecification( id )).build();
+            return Response.ok(jobsService.getJobSpecification(id)).build();
 
-        } catch (SQLException | DatabaseConnectionException e ) {
+        } catch (SQLException | DatabaseConnectionException e) {
 
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
 
@@ -101,8 +101,7 @@ public class WebService {
             } catch (DatabaseConnectionException | SQLException e) {
                 System.out.println(e);
                 return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-            }
-            catch (DataNotFoundException e) {
+            } catch (DataNotFoundException e) {
 
                 return Response.status(HttpStatus.NOT_FOUND_404).build();
 

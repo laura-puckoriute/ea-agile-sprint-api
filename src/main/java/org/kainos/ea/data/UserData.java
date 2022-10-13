@@ -66,7 +66,7 @@ public class UserData {
 
     }
 
-    public String generateHash( String password ) {
+    private String generateHash( String password ) {
 
         String hash = Hashing.sha256()
                 .hashString( password, StandardCharsets.UTF_8 )
@@ -74,7 +74,7 @@ public class UserData {
 
         return hash;
     }
-    public int registerUser(UserRequest user, Connection c) throws SQLException, DatabaseConnectionException {
+    public int registerUser(UserRequest user, Connection c) throws SQLException {
         String query = "INSERT INTO `User`(email, password, user_roleID) VALUES (?, ?, ?);";
 
         PreparedStatement st = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
